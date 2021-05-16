@@ -5,6 +5,8 @@ NAME = 'edatrms'
 DATA_PATH = "~/Workshop/ArchiveAlpha/EDATRMS/api_data"
 # Subdirectory of images
 IMAGE_DIR = 'image'
+# Endpoint of uploaded files
+IMAGE_URL_BASE = 'http://localhost:7000/image/'
 
 # Listen host and port of server
 HOST = '0.0.0.0'
@@ -25,8 +27,7 @@ REQUEST_MAX_SIZE = 100 * 1024 * 1024
 UPLOAD_FILE_MAX_SIZE = 50 * 1024 * 1024
 # Max allowed number of uploaded files
 UPLOAD_FILE_MAX_NUMBER = 10
-# Endpoint of uploaded files
-UPLOAD_FILE_URL_BASE = 'http://localhost:7000/uploaded/'
+
 
 # MySQL connection parameters
 MYSQL_HOST = 'localhost'
