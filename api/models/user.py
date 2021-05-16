@@ -6,9 +6,9 @@ from .common import metadata
 from ..utilities import LocalDateTime
 
 UserModel = sa.Table(
-    'contributor', metadata,
-    sa.Column('id', sa.Integer, nullable=False, primary_key=True, comment='贡献者ID'),
-    sa.Column('name', sa.VARCHAR(30), nullable=False, comment='贡献者名字', unique=True),
+    'user', metadata,
+    sa.Column('id', sa.Integer, nullable=False, primary_key=True, comment='用户ID'),
+    sa.Column('name', sa.VARCHAR(30), nullable=False, comment='用户名', unique=True),
     sa.Column('password', sa.CHAR(64), nullable=False, comment='已加密的密码'),
     sa.Column('salt', sa.CHAR(64), nullable=False, comment='密钥'),
     sa.Column('email', sa.VARCHAR(50), nullable=True, comment='邮箱'),
@@ -26,7 +26,7 @@ UserModel = sa.Table(
     sa.ForeignKeyConstraint(['avatar_id'], ['file.id'], ondelete='SET NULL', onupdate='CASCADE'),
     sa.Index('idx_username', 'name', unique=True),
 
-    comment='贡献者'
+    comment='用户'
 )
 
 
