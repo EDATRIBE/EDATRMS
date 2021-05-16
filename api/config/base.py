@@ -1,10 +1,10 @@
 import os
 
-NAME = 'diary'
+NAME = 'edatrms'
 # Directory of runtime data, like logs and uploaded files etc
 DATA_PATH = "~/Workshop/ArchiveAlpha/EDATRMS/api_data"
-# Subdirectory of uploaded files
-UPLOAD_DIR = 'uploaded'
+# Subdirectory of images
+IMAGE_DIR = 'image'
 
 # Listen host and port of server
 HOST = '0.0.0.0'
