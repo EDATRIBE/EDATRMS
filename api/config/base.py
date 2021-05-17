@@ -2,7 +2,7 @@ import os
 
 NAME = 'edatrms'
 # Directory of runtime data, like logs and uploaded files etc
-DATA_PATH = "~/Workshop/ArchiveAlpha/EDATRMS/api_data"
+DATA_PATH = os.path.expanduser('~/Workshop/ArchiveAlpha/EDATRMS/api_data')
 # Subdirectory of images
 IMAGE_DIR = 'image'
 # Endpoint of uploaded files
