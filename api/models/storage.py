@@ -21,18 +21,11 @@ FileModel = sa.Table(
     sa.Column('bucket', sa.VARCHAR(30), nullable=False, comment='桶'),
     sa.Column('path', sa.VARCHAR(100), nullable=False, comment='路径'),
     sa.Column('meta', sa.JSON, nullable=False, comment='元信息'),
-
     sa.Column('created_by', sa.Integer, nullable=False, comment='上传者 ID'),
     sa.Column("created_at", LocalDateTime, nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP'),comment='创建时间'),
-    sa.Column('updated_by', sa.Integer, nullable=False, comment='最近修改者ID'),
-    sa.Column("updated_at", LocalDateTime, nullable=False,
-              server_default=sasql.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
-              comment='最近更新时间'),
-
-    sa.ForeignKeyConstraint(['created_by', 'updated_by'], ['user.id', 'user.id'],
-                            ondelete='CASCADE', onupdate='CASCADE'),
-
+    sa.ForeignKeyConstraint(['created_by'], ['user.id'],
+                            ondelete='CASCADE', onupdate='CASCADE',name='fkc_created_by'),
     comment='文件',
 )
 

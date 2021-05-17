@@ -3,6 +3,7 @@ import aioredis
 from .common import metadata
 from .storage import StorageRegion, FileModel, FileSchema
 from .user import UserModel, UserSchema
+from .staff import StaffModel
 
 
 async def init_db(config):
