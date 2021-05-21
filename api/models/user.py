@@ -21,6 +21,7 @@ UserModel = sa.Table(
     sa.Column('updated_at', LocalDateTime, nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
               comment='更新时间'),
+    sa.Column('comment', sa.TEXT, nullable=True, comment='备注'),
     sa.ForeignKeyConstraint(['avatar_id'], ['file.id'],
                             ondelete='SET NULL', onupdate='CASCADE',name='fkc_avatar_id'),
     sa.Index('idx_username', 'name', unique=True),
@@ -39,3 +40,15 @@ class UserSchema(Schema):
     updatedAt = fields.DateTime(attribute='updated_at')
 
     avatar = fields.Nested('FileSchema')
+
+StaffModel = sa.Table(
+    'staff', metadata,
+    sa.Column('id', sa.Integer, nullable=False, primary_key=True, comment='工作人员ID'),
+    sa.Column('user_id', sa.Integer, nullable=False, comment='用户ID', unique=True),
+    sa.Column('created_at', LocalDateTime, nullable=False,
+              server_default=sasql.text('CURRENT_TIMESTAMP'),comment='创建时间'),
+    sa.Column('comment', sa.TEXT, nullable=True, comment='备注'),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'],
+                            ondelete='CASCADE', onupdate='CASCADE',name='fkc_user_id'),
+    comment='工作人员'
+)

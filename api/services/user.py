@@ -3,7 +3,7 @@ import string
 import sqlalchemy.sql as sasql
 
 from ..utilities import random_string, sha256_hash
-from ..models import UserModel
+from ..models import UserModel, StaffModel
 
 
 class UserService:
@@ -21,13 +21,13 @@ class UserService:
             result = await conn.execute(sasql.insert(UserModel).values(**data))
             id = result.lastrowid
 
-        return await self.info_by_id(id)
+        return await self.info(id)
 
     async def edit(self, id, **data):
         data = {k: v for k, v in data.items() if v is not None}
 
         if 'password' in data:
-            user = self.info_by_id(id)
+            user = self.info(id)
             data['password'] = sha256_hash(data['password'], user['salt'])
 
         async with self.db.acquire() as conn:
@@ -36,9 +36,9 @@ class UserService:
                 values(**data)
             )
 
-        return await self.info_by_id(id)
+        return await self.info(id)
 
-    async def info_by_id(self, id):
+    async def info(self, id):
         if id is None:
             return None
 
@@ -74,7 +74,7 @@ class UserService:
 
         return None if row is None else dict(row)
 
-    async def info_by_ids(self, ids):
+    async def infos(self, ids):
         valid_ids = [v for v in ids if v is not None]
         if valid_ids:
             async with self.db.acquire() as conn:
@@ -107,4 +107,16 @@ class UserService:
             total = await result.scalar()
 
         return (rows, total)
+
+
+    async def set_staff(self, **data):
+        async with self.db.acquire() as conn:
+            result = await conn.execute(sasql.insert(StaffModel).values(**data))
+            id = result.lastrowid
+
+
+    async def unset_staff(self, id):
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                sasql.delete(StaffModel).where(StaffModel.c.id == id))
 
