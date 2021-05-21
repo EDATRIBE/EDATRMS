@@ -161,7 +161,7 @@
     | salt      | str  | n        |      |      |         |
     | email     | str  | y        |      |      |         |
     | mobile    | str  | y        |      |      |         |
-    | intro     | str  | y        |      |      |         |
+    | intro     | text | y        |      |      |         |
     | avatar_id | int  | y        |      |      |         |
 
 10. contributor_caption

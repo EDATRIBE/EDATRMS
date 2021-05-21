@@ -7,6 +7,11 @@ from .config import config, get_log_config
 from .models import init_db, init_cache, close_cache, close_db
 from .commands import Model, User
 
+#TODO:
+#   Solve The DeprecationWarning:
+#       The loop argument is deprecated since Python 3.8, and scheduled for removal in Python 3.10.
+import warnings
+warnings.filterwarnings("ignore",category=DeprecationWarning)
 
 class Manage:
     def __init__(self, config):
@@ -23,9 +28,6 @@ class Manage:
         await close_cache(self.cache)
         await close_db(self.db)
 
-#TODO:
-#   Solve The DeprecationWarning:
-#       The loop argument is deprecated since Python 3.8, and scheduled for removal in Python 3.10.
 
 if __name__ == '__main__':
     logging.config.dictConfig(get_log_config(config))
