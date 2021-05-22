@@ -33,7 +33,7 @@ class UserService:
         async with self.db.acquire() as conn:
             await conn.execute(
                 sasql.update(UserModel).where(UserModel.c.id == id).
-                values(**data)
+                    values(**data)
             )
 
         return await self.info(id)
@@ -87,12 +87,12 @@ class UserService:
 
         return [d.get(v) for v in ids]
 
-    async def list_(self, *, limit=None, offset=None):
+    async def list_users(self, *, limit=None, offset=None):
         select_sm = UserModel.select()
-        count_sm = sasql.select([sasql.func.count()]).\
+        count_sm = sasql.select([sasql.func.count()]). \
             select_from(UserModel)
 
-        select_sm = select_sm.order_by(UserModel.c.id.desc())
+        # select_sm = select_sm.order_by(UserModel.c.id.desc())
 
         if limit is not None:
             select_sm = select_sm.limit(limit)
@@ -108,15 +108,60 @@ class UserService:
 
         return (rows, total)
 
-
-    async def set_staff(self, **data):
+    async def set_staff(self, id):
         async with self.db.acquire() as conn:
-            result = await conn.execute(sasql.insert(StaffModel).values(**data))
-            id = result.lastrowid
-
+            await conn.execute(
+                sasql.insert(StaffModel).values(user_id=id)
+            )
 
     async def unset_staff(self, id):
         async with self.db.acquire() as conn:
             await conn.execute(
-                sasql.delete(StaffModel).where(StaffModel.c.id == id))
+                sasql.delete(StaffModel).where(StaffModel.c.user_id == id)
+            )
 
+    async def is_staff_by_id(self, id):
+        if id is None:
+            return None
+
+        async with self.db.acquire() as conn:
+            result = await conn.execute(
+                StaffModel.select().where(StaffModel.c.user_id == id)
+            )
+            row = await result.first()
+
+        return False if row is None else True
+
+    async def is_staff_by_ids(self, ids):
+        valid_ids = [v for v in ids if v is not None]
+        if valid_ids:
+            async with self.db.acquire() as conn:
+                result = await conn.execute(
+                    StaffModel.select().where(StaffModel.c.user_id.in_(valid_ids))
+                )
+                d = {v['user_id']: dict(v) for v in await result.fetchall()}
+        else:
+            d = {}
+
+        return [d.get(v) != None for v in ids]
+
+    # async def list_staffs(self, *, limit=None, offset=None):
+    #     select_sm = StaffModel.select()
+    #     count_sm = sasql.select([sasql.func.count()]). \
+    #         select_from(StaffModel)
+    #
+    #     select_sm = select_sm.order_by(StaffModel.c.id.desc())
+    #
+    #     if limit is not None:
+    #         select_sm = select_sm.limit(limit)
+    #     if offset is not None:
+    #         select_sm = select_sm.offset(offset)
+    #
+    #     async with self.db.acquire() as conn:
+    #         result = await conn.execute(select_sm)
+    #         rows = [dict(v) for v in await result.fetchall()]
+    #
+    #         result = await conn.execute(count_sm)
+    #         total = await result.scalar()
+    #
+    #     return (rows, total)

@@ -2,6 +2,9 @@ import sqlalchemy as sa
 
 from ..models import metadata
 
+from rich.theme import Theme
+from rich.console import Console
+
 
 class Model:
     def __init__(self, config, db, cache):
@@ -18,19 +21,41 @@ class Model:
                 config['MYSQL_DB'])
         )
 
+        self.theme = Theme({
+            "info": "green_yellow",
+            "warning": "orange1",
+            "danger": "red"
+        })
+        self.console = Console(theme=self.theme)
+
     def list_models(self):
         tables = metadata.tables
         for t in tables:
-            print(t)
+            self.console.print(t, style="info")
 
     def create_tables(self, tables=None):
         if isinstance(tables, str):
             tables = [tables]
 
-        metadata.create_all(self.engine, tables)
+        try:
+            metadata.create_all(self.engine, tables)
+
+            self.console.print("Done!", style="info")
+
+
+        except Exception as err:
+            self.console.print(err, style="danger")
+            return
 
     def drop_tables(self, tables=None):
         if isinstance(tables, str):
             tables = [tables]
 
-        metadata.drop_all(self.engine, tables)
+        try:
+            metadata.drop_all(self.engine, tables)
+
+            self.console.print("Done!", style="info")
+
+        except Exception as err:
+            self.console.print(err, style="danger")
+            return
