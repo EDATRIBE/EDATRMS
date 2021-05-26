@@ -145,23 +145,3 @@ class UserService:
 
         return [d.get(v) != None for v in ids]
 
-    # async def list_staffs(self, *, limit=None, offset=None):
-    #     select_sm = StaffModel.select()
-    #     count_sm = sasql.select([sasql.func.count()]). \
-    #         select_from(StaffModel)
-    #
-    #     select_sm = select_sm.order_by(StaffModel.c.id.desc())
-    #
-    #     if limit is not None:
-    #         select_sm = select_sm.limit(limit)
-    #     if offset is not None:
-    #         select_sm = select_sm.offset(offset)
-    #
-    #     async with self.db.acquire() as conn:
-    #         result = await conn.execute(select_sm)
-    #         rows = [dict(v) for v in await result.fetchall()]
-    #
-    #         result = await conn.execute(count_sm)
-    #         total = await result.scalar()
-    #
-    #     return (rows, total)

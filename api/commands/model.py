@@ -33,29 +33,20 @@ class Model:
         for t in tables:
             self.console.print(t, style="info")
 
-    def create_tables(self, tables=None):
-        if isinstance(tables, str):
-            tables = [tables]
-
+    def create_tables(self):
         try:
-            metadata.create_all(self.engine, tables)
-
+            metadata.create_all(self.engine)
             self.console.print("Done!", style="info")
-
-
         except Exception as err:
             self.console.print(err, style="danger")
             return
 
-    def drop_tables(self, tables=None):
-        if isinstance(tables, str):
-            tables = [tables]
-
+    def drop_tables(self):
         try:
-            metadata.drop_all(self.engine, tables)
-
+            temp_metadata = sa.MetaData()
+            temp_metadata.reflect(self.engine)
+            temp_metadata.drop_all(self.engine)
             self.console.print("Done!", style="info")
-
         except Exception as err:
             self.console.print(err, style="danger")
             return

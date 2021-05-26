@@ -68,7 +68,6 @@ class User:
 
     def _print_infos_table(self, *rows):
         table = Table(show_header=True, header_style="bold medium_orchid1")
-
         table.add_column("id")
         table.add_column("name")
         table.add_column("email")
@@ -79,16 +78,19 @@ class User:
 
         for row in rows:
             style = "green_yellow" if row.get("staff") else ""
-
             table.add_row(
                 str(row.get("id")),
                 str(row.get("name")),
                 str(row.get("email")),
                 str(row.get("mobile")),
-                row.get("created_at").tzinfo.fromutc(
-                    row.get("created_at")).strftime("%Y-%m-%d %H:%M:%S"),
-                row.get("updated_at").tzinfo.fromutc(
-                    row.get("updated_at")).strftime("%Y-%m-%d %H:%M:%S"),
+                row.get("created_at"). \
+                    tzinfo. \
+                    fromutc(row.get("created_at")). \
+                    strftime("%Y-%m-%d %H:%M:%S"),
+                row.get("updated_at"). \
+                    tzinfo. \
+                    fromutc(row.get("updated_at")). \
+                    strftime("%Y-%m-%d %H:%M:%S"),
                 str(row.get("staff")),
                 style=style
             )
@@ -111,7 +113,6 @@ class User:
                 rows = list(filter(lambda x: x.get("staff"), rows))
 
             self._print_infos_table(*rows)
-
         except Exception as err:
             self.console.print(err, style="danger")
             return
@@ -133,7 +134,6 @@ class User:
             row['staff'] = staff
 
             self._print_info_detail(row)
-
         except Exception as err:
             self.console.print(err, style="danger")
             return
@@ -155,7 +155,6 @@ class User:
             row['staff'] = staff
 
             self._print_info_detail(row)
-
         except Exception as err:
             self.console.print(err, style="danger")
             return
@@ -173,7 +172,6 @@ class User:
             )
 
             self.inspect_user(id=id)
-
         except Exception as err:
             self.console.print(err, style="danger")
             return
@@ -191,7 +189,6 @@ class User:
             )
 
             self.inspect_user(id=id)
-
         except Exception as err:
             self.console.print(err, style="danger")
             return

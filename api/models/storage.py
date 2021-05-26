@@ -24,8 +24,13 @@ FileModel = sa.Table(
     sa.Column('created_by', sa.Integer, nullable=False, comment='上传者 ID'),
     sa.Column("created_at", LocalDateTime, nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP'),comment='创建时间'),
+    sa.Column('updated_by', sa.Integer, nullable=False, comment='最近修改者 ID'),
+    sa.Column("updated_at", LocalDateTime, nullable=False,
+              server_default=sasql.text('CURRENT_TIMESTAMP'),comment='最近修改时间'),
     sa.ForeignKeyConstraint(['created_by'], ['user.id'],
                             ondelete='CASCADE', onupdate='CASCADE',name='fkc_created_by'),
+    sa.ForeignKeyConstraint(['updated_by'], ['user.id'],
+                            ondelete='CASCADE', onupdate='CASCADE',name='fkc_updated_by'),
     comment='文件',
 )
 
