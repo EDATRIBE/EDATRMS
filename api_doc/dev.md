@@ -54,25 +54,25 @@
 
 1. ip
 
-    | Filed                    | Type      | Nullable | PK    | FK   | Comment          |
-    | ------------------------ | --------- | -------- | ----- | ---- | ---------------- |
-    | **id**                   | **int**   |          | **y** |      |                  |
-    | **name**                 | **str**   | **n**    |       |      | **标识名**       |
-    | **reserved_names**       | **json**  | **y**    |       |      | **别名**         |
-    | reserved_names.jp_name   | json.attr |          |       |      | 日文名           |
-    | reserved_names.cn_name   | json.attr |          |       |      | 中文名           |
-    | reserved_names.en_name   | json.attr |          |       |      | 英文名           |
-    | reserved_names.rm_name   | json.attr |          |       |      | 罗马音名         |
-    | reserved_names.misc_name | json.attr |          |       |      | 混合关键字       |
-    | **intros**               | **json**  | y        |       |      | **简介**         |
-    | intro.cn_intro           | json.attr |          |       |      | 中文简介         |
-    | intro.en_intro           | json.attr |          |       |      | 英文简介         |
-    |                          |           |          |       |      |                  |
-    | **created_by**           | **str**   | **n**    |       |      | **创建者**       |
-    | **created_at**           | **date**  | **n**    |       |      | **创建日期**     |
-    | **updated_by**           | **str**   | **n**    |       |      | **最近编辑者**   |
-    | **updated_at**           | **date**  | **n**    |       |      | **最近编辑日期** |
-    | **comment**              | **str**   | **y**    |       |      | **备注**         |
+    | Filed                    | Type      | Nullable | PK      | FK   | Comment          |
+    | ------------------------ | --------- | -------- | ------- | ---- | ---------------- |
+    | **id**                   | **int**   |          | **y**   |      |                  |
+    | **name**                 | **str**   | **n**    |         |      | **标识名**       |
+    | **reserved_names**       | **json**  | **y**    |         |      | **别名**         |
+    | reserved_names.jp_name   | json.attr |          |         |      | 日文名           |
+    | reserved_names.cn_name   | json.attr |          |         |      | 中文名           |
+    | reserved_names.en_name   | json.attr |          |         |      | 英文名           |
+    | reserved_names.rm_name   | json.attr |          |         |      | 罗马音名         |
+    | reserved_names.misc_name | json.attr |          |         |      | 混合关键字       |
+    | **intros**               | **json**  | y        |         |      | **简介**         |
+    | intro.cn_intro           | json.attr |          |         |      | 中文简介         |
+    | intro.en_intro           | json.attr |          |         |      | 英文简介         |
+    |                          |           |          |         |      |                  |
+    | **created_by**           | **str**   | **n**    | user.id |      | **创建者**       |
+    | **created_at**           | **date**  | **n**    |         |      | **创建日期**     |
+    | **updated_by**           | **str**   | **n**    | user.id |      | **最近编辑者**   |
+    | **updated_at**           | **date**  | **n**    |         |      | **最近编辑日期** |
+    | **comment**              | **str**   | **y**    |         |      | **备注**         |
     
 2. animation
 
@@ -107,10 +107,10 @@
     | **id**            | **int**   |          | **y** |                  |                   |
     | **animation_id**  | **int**   | **n**    |       | **animation.id** |                   |
     | **file_url**      | **str**   | **n**    |       |                  | **视频链接**      |
-    | **fike_meta**     | **json**  | **n**    |       |                  | **视频元信息**    |
-    | fike_meta.size    | json.attr |          |       |                  | 视频大小          |
-    | fike_meta.quality | json.attr |          |       |                  | 分辨率（720/原画/ |
-    | fike_meta.format  | json.attr |          |       |                  | 格式（mp4/        |
+    | **file_meta**     | **json**  | **n**    |       |                  | **视频元信息**    |
+    | file_meta.size    | json.attr |          |       |                  | 视频大小          |
+    | file_meta.quality | json.attr |          |       |                  | 分辨率（720/原画/ |
+    | file_meta.format  | json.attr |          |       |                  | 格式（mp4/        |
 
 
 4. caption
@@ -219,4 +219,18 @@
     | **comment**             | **str**   | **y**    |       |      | **备注**         |
     
       
+
+## TODO
+
+实现模型
+
+规范类型值域
+
+检查是否可空
+
+检查外键约束以及修改时的行为
+
+设计索引
+
+
 
