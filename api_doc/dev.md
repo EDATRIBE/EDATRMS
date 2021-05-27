@@ -95,9 +95,10 @@
     | vertical_image_id   | json.attr |  |      |       | 竖向图id |
     | reversed_image_id   | json.attr |  |      |       | 备用图id |
     | **produced_by** | **str** | **n**    |      |       | **出品公司**       |
+    | **released_at** | **dt** | **n** | | | **上映时间** |
     | **written_by**      | **str** | **n** |      |       | **原著作者**       |
     | **type**            | **str** | **n**    |      |       | **TV/movie/SP/OVA/OAD** |
-    | **eps_num**         | **int** | **n**    |      |       | **集数**            |
+    | **episodes_num**    | **int** | **n**    |      |       | **集数**            |
 
 
 3. video
@@ -121,9 +122,9 @@
     | **animation_id** | **int** | **n**    |      | **animation.id** |                 |
     | **integrated** | **bool** | **n**    |      |              | **完整性**      |
     | **status**   | **str** | **n**    |      |              | **doing/todo/done** |
-    | **finished_at** | **date** | **n**    |      |              | **完成于**     |
-    | **file_url** | **str** | **n**    |      |              | **字幕文件链接** |
-    | **file_meta**    | **json**  | **n** |      |       | **文件元信息** |
+    | **finished_at** | **date** | **y** |      |              | **完成于**     |
+    | **file_url** | **str** | **y** |      |              | **字幕文件链接** |
+    | **file_meta**    | **json**  | **y** |      |       | **文件元信息** |
     | file_meta.name   | json.attr |         |      |       | 文件原名       |
     | file_meta.format | json.attr |          |      |       | 格式/txt/pdf   |
     | file_meta.size   | json.attr |         |      |       | 文件大小       |
@@ -149,7 +150,8 @@
     | vertical_image_id   | json.attr |  |      |       | 竖向图id |
     | reversed_image_id   | json.attr |  |      |       | 备用图id |
     | **written_by**   | **str**   | **n**    |      |       | **作者**       |
-    | **volume_num**   | **int**   | **n**    |      |       | **卷数**       |
+    | **volumes_num**  | **int**   | **n**    |      |       | **卷数**       |
+    | **integrated** | **bool** | **n** | | | **完整性** |
     | **file_url**     | **str**   | **n**    |      |       | **文件链接**   |
     | **file_meta**    | **json**  | **n**    |      |       | **文件元信息** |
     | file_meta.name   | json.attr |          |      |       | 文件原名       |
@@ -231,6 +233,8 @@
 检查外键约束以及修改时的行为
 
 设计索引
+
+规范表comment
 
 
 
