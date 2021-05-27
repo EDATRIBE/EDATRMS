@@ -54,24 +54,25 @@
 
 1. ip
 
-    | Filed                   | Type      | Nullable | PK    | FK   | Comment          |
-    | ----------------------- | --------- | -------- | ----- | ---- | ---------------- |
-    | **id**                  | **int**   |          | **y** |      |                  |
-    | **name**                | **str**   | **n**    |       |      | **标识名**       |
-    | **reversed_names**      | **json**  | **y**    |       |      | **别名**         |
-    | reversed_name.jp_name   | json.attr |          |       |      | 日文名           |
-    | reversed_name.cn_name   | json.attr |          |       |      | 中文名           |
-    | reversed_name.en_name   | json.attr |          |       |      | 英文名           |
-    | reversed_name.rm_name   | json.attr |          |       |      | 罗马音名         |
-    | reversed_name.misc_name | json.attr |          |       |      | 混合关键字       |
-    | **intros**              | **json**  | y        |       |      | **简介**         |
-    | intro.cn_intro          | json.attr |          |       |      | 中文简介         |
-    | intro.en_intro          | json.attr |          |       |      | 英文简介         |
-    | **created_by**          | **str**   | **n**    |       |      | **创建者**       |
-    | **created_at**          | **date**  | **n**    |       |      | **创建日期**     |
-    | **updated_by**          | **str**   | **n**    |       |      | **最近编辑者**   |
-    | **updated_at**          | **date**  | **n**    |       |      | **最近编辑日期** |
-    | **comment**             | **str**   | **y**    |       |      | **备注**         |
+    | Filed                    | Type      | Nullable | PK    | FK   | Comment          |
+    | ------------------------ | --------- | -------- | ----- | ---- | ---------------- |
+    | **id**                   | **int**   |          | **y** |      |                  |
+    | **name**                 | **str**   | **n**    |       |      | **标识名**       |
+    | **reserved_names**       | **json**  | **y**    |       |      | **别名**         |
+    | reserved_names.jp_name   | json.attr |          |       |      | 日文名           |
+    | reserved_names.cn_name   | json.attr |          |       |      | 中文名           |
+    | reserved_names.en_name   | json.attr |          |       |      | 英文名           |
+    | reserved_names.rm_name   | json.attr |          |       |      | 罗马音名         |
+    | reserved_names.misc_name | json.attr |          |       |      | 混合关键字       |
+    | **intros**               | **json**  | y        |       |      | **简介**         |
+    | intro.cn_intro           | json.attr |          |       |      | 中文简介         |
+    | intro.en_intro           | json.attr |          |       |      | 英文简介         |
+    |                          |           |          |       |      |                  |
+    | **created_by**           | **str**   | **n**    |       |      | **创建者**       |
+    | **created_at**           | **date**  | **n**    |       |      | **创建日期**     |
+    | **updated_by**           | **str**   | **n**    |       |      | **最近编辑者**   |
+    | **updated_at**           | **date**  | **n**    |       |      | **最近编辑日期** |
+    | **comment**              | **str**   | **y**    |       |      | **备注**         |
     
 2. animation
 
@@ -80,11 +81,12 @@
     | **id**              | **int** |     | **y** |       |                     |
     | **ip_id**           | **int** | **n**   |      | **ip.id** |                     |
     | **name**            | **str** | **n**    |      |       | **标识名**         |
-    | **reversed_names** | **json** | **y** | | | **别名** |
-    | jp_name             | json.attr |         |      |       | 日文名             |
-    | cn_name             | json.attr |         |      |       | 中文名             |
-    | en_name             | json.attr |         |      |       | 英文名             |
-    | rm_name             | json.attr |         |      |       | 罗马音名           |
+    | **reserved_names** | **json** | **y** | | | **别名** |
+    | reserved_names.jp_name | json.attr |         |      |       | 日文名             |
+    | reserved_names.cn_name | json.attr |         |      |       | 中文名             |
+    | reserved_names.en_name | json.attr |         |      |       | 英文名             |
+    | reserved_names.rm_name | json.attr |         |      |       | 罗马音名           |
+    | reserved_names.misc_name |  | | | |  |
     | **intros** | **json** | **y** | | |  |
     | en_intro            | json.attr |         |      |       | 中文简介            |
     | cn_intro            | json.attr |         |      |       | 英文简介            |
@@ -133,12 +135,12 @@
     | **id**           | **int**   |     | **y** |       |                |
     | **ip_id**        | **int**   | **n**    |      | **ip.id** | **参照ip的id** |
     | **name**                | **str**   | **n**    |      |      | **标识名**   |
-    | **reversed_names**      | **json**  | **y**    |      |      | **别名**     |
-    | reversed_name.jp_name   | json.attr |         |      |      | 日文名       |
-    | reversed_name.cn_name   | json.attr |         |      |      | 中文名       |
-    | reversed_name.en_name   | json.attr |         |      |      | 英文名       |
-    | reversed_name.rm_name   | json.attr |         |      |      | 罗马音名     |
-    | reversed_name.misc_name | json.attr |          |      |      | 混合关键字   |
+    | **reserved_names** | **json**  | **y**    |      |      | **别名**     |
+    | reserved_names.jp_name | json.attr |         |      |      | 日文名       |
+    | reserved_names.cn_name | json.attr |         |      |      | 中文名       |
+    | reserved_names.en_name | json.attr |         |      |      | 英文名       |
+    | reserved_names.rm_name | json.attr |         |      |      | 罗马音名     |
+    | reserved_names.misc_name | json.attr |          |      |      | 混合关键字   |
     | **intros**              | **json**  | **y** |      |      | **简介**     |
     | intro.cn_intro          | json.attr |          |      |      | 中文简介     |
     | intro.en_intro          | json.attr |          |      |      | 英文简介     |
@@ -194,7 +196,10 @@
     | **mobile**    | **str** | **n**    |       |      |         |
     | **intro**     | **str** | **n**    |       |      |         |
     | **avatar_id** | **int** | **y**    |       |      |         |
-
+    |                |          |          |       |      |              |
+    | **created_at**          | **date**  | **n**    |       |      | **创建日期**     |
+    | **comment**             | **str**   | **y**    |       |      | **备注**         |
+    
 10. caption_user
 
     | Filed          | Type    | Nullable | PK    | FK   | Comment |
@@ -209,6 +214,9 @@
     | ----------- | ------- | -------- | ----- | ---- | ------- |
     | **id**      | **int** |          | **y** |      |         |
     | **user_id** | **int** | **n**    |       |      |         |
-
+    |                |          |          |       |      |              |
+    | **created_at**          | **date**  | **n**    |       |      | **创建日期**     |
+    | **comment**             | **str**   | **y**    |       |      | **备注**         |
+    
       
 
