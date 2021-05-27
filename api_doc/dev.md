@@ -4,9 +4,9 @@
 
 ### 系统目标
 
-本项目旨在建立一个较为完善的英配资源数据库，将各种EXCEL文档或其他信息整理进数据方便查询调用。
+本项目旨在建立一个用于管理视频、字幕以及轻小说资源的系统。
 
-本项目主要有三种应用场景：
+系统功能主要包含三个方面：
 
 1. 整理资源
 
@@ -48,136 +48,167 @@
 
 ### 数据层设计
 
+将可变的同类型字段（如各种语言的名字，各种语言的简介，文件的元信息）使用json存储。
+
+所有的字符串类型不可为null，默认值为空字符串。
+
 1. ip
 
-    | Filed         | Type | Nullable | PK   | FK   | Comment      |
-    | ------------- | ---- | -------- | ---- | ---- | ------------ |
-    | id            | int  | n        | y    |      |              |
-    | name          | str  | n        |      |      | 标识名       |
-    | reversed_name | str  | y        |      |      | 备用名       |
-    | jp_name       | str  | y        |      |      | 日文名       |
-    | cn_name       | str  | y        |      |      | 中文名       |
-    | en_name       | str  | y        |      |      | 英文名       |
-    | rm_name       | str  | y        |      |      | 罗马音名     |
-    |               |      |          |      |      |              |
-    |               |      |          |      |      |              |
-    | created_by    | str  | n        |      |      | 创建人       |
-    | created_at    | date | n        |      |      | 创建日期     |
-    | updated_by    | str  | n        |      |      | 最近编辑人   |
-    | updated_at    | date | n        |      |      | 最近编辑日期 |
-    | comment       | str  | y        |      |      | 备注         |
-
+    | Filed                   | Type      | Nullable | PK    | FK   | Comment          |
+    | ----------------------- | --------- | -------- | ----- | ---- | ---------------- |
+    | **id**                  | **int**   |          | **y** |      |                  |
+    | **name**                | **str**   | **n**    |       |      | **标识名**       |
+    | **reversed_names**      | **json**  | **y**    |       |      | **别名**         |
+    | reversed_name.jp_name   | json.attr |          |       |      | 日文名           |
+    | reversed_name.cn_name   | json.attr |          |       |      | 中文名           |
+    | reversed_name.en_name   | json.attr |          |       |      | 英文名           |
+    | reversed_name.rm_name   | json.attr |          |       |      | 罗马音名         |
+    | reversed_name.misc_name | json.attr |          |       |      | 混合关键字       |
+    | **intros**              | **json**  | y        |       |      | **简介**         |
+    | intro.cn_intro          | json.attr |          |       |      | 中文简介         |
+    | intro.en_intro          | json.attr |          |       |      | 英文简介         |
+    | **created_by**          | **str**   | **n**    |       |      | **创建者**       |
+    | **created_at**          | **date**  | **n**    |       |      | **创建日期**     |
+    | **updated_by**          | **str**   | **n**    |       |      | **最近编辑者**   |
+    | **updated_at**          | **date**  | **n**    |       |      | **最近编辑日期** |
+    | **comment**             | **str**   | **y**    |       |      | **备注**         |
+    
 2. animation
 
     | Filed               | Type | Nullable | PK   | FK    | Comment             |
     | ------------------- | ---- | -------- | ---- | ----- | ------------------- |
-    | id                  | int  | n        | y    |       |                     |
-    | ip_id               | int  | y        |      | ip.id |                     |
-    | name                | str  | n        |      |       | 标识名              |
-    | jp_name             | str  | y        |      |       | 日文名              |
-    | cn_name             | str  | y        |      |       | 中文名              |
-    | en_name             | str  | y        |      |       | 英文名              |
-    | rm_name             | str  | y        |      |       | 罗马音名            |
-    | studio              | str  | n        |      |       | 出品公司            |
-    | written_by          | str  | y        |      |       | 原著作者            |
-    | type                | str  | n        |      |       | TV/movie/SP/OVA/OAD |
-    | eps_num             | int  | n        |      |       | 集数                |
-    | en_intro            | str  | y        |      |       | 中文简介            |
-    | cn_intro            | str  | y        |      |       | 英文简介            |
-    | horizontal_image_id | id   | y        |      |       | 图片列表            |
-    | vertical_image_id   |      |          |      |       |                     |
-    | reversed_image_id   |      |          |      |       |                     |
+    | **id**              | **int** |     | **y** |       |                     |
+    | **ip_id**           | **int** | **n**   |      | **ip.id** |                     |
+    | **name**            | **str** | **n**    |      |       | **标识名**         |
+    | **reversed_names** | **json** | **y** | | | **别名** |
+    | jp_name             | json.attr |         |      |       | 日文名             |
+    | cn_name             | json.attr |         |      |       | 中文名             |
+    | en_name             | json.attr |         |      |       | 英文名             |
+    | rm_name             | json.attr |         |      |       | 罗马音名           |
+    | **intros** | **json** | **y** | | |  |
+    | en_intro            | json.attr |         |      |       | 中文简介            |
+    | cn_intro            | json.attr |         |      |       | 英文简介            |
+    | **image_ids** | **json** | **y** | | |  |
+    | horizontal_image_id | json.attr |         |      |       | 横向图id       |
+    | vertical_image_id   | json.attr |  |      |       | 竖向图id |
+    | reversed_image_id   | json.attr |  |      |       | 备用图id |
+    | **produced_by** | **str** | **n**    |      |       | **出品公司**       |
+    | **written_by**      | **str** | **n** |      |       | **原著作者**       |
+    | **type**            | **str** | **n**    |      |       | **TV/movie/SP/OVA/OAD** |
+    | **eps_num**         | **int** | **n**    |      |       | **集数**            |
+
 
 3. video
 
-    | Filed         | Type | Nullable | PK   | FK           | Comment           |
-    | ------------- | ---- | -------- | ---- | ------------ | ----------------- |
-    | id            | int  | n        | y    |              |                   |
-    | animation_id  | int  | n        |      | animation.id |                   |
-    | video_url     | str  | n        |      |              | 视频链接          |
-    | video_size    | int  | n        |      |              | 视频大小          |
-    | video_quality | str  | n        |      |              | 分辨率（720/原画/ |
-    | video_format  | str  | n        |      |              | 格式（mp4/        |
+    | Filed             | Type      | Nullable | PK    | FK               | Comment           |
+    | ----------------- | --------- | -------- | ----- | ---------------- | ----------------- |
+    | **id**            | **int**   |          | **y** |                  |                   |
+    | **animation_id**  | **int**   | **n**    |       | **animation.id** |                   |
+    | **file_url**      | **str**   | **n**    |       |                  | **视频链接**      |
+    | **fike_meta**     | **json**  | **n**    |       |                  | **视频元信息**    |
+    | fike_meta.size    | json.attr |          |       |                  | 视频大小          |
+    | fike_meta.quality | json.attr |          |       |                  | 分辨率（720/原画/ |
+    | fike_meta.format  | json.attr |          |       |                  | 格式（mp4/        |
+
 
 4. caption
 
     | Filed        | Type | Nullable | PK   | FK           | Comment         |
     | ------------ | ---- | -------- | ---- | ------------ | --------------- |
-    | id           | int  |          | y    |              |                 |
-    | animation_id | int  | n        |      | animation.id |                 |
-    | caption_url  | str  | n        |      |              | 字幕链接        |
-    | integrity    | bool | n        |      |              | 完整性          |
-    | status       | str  | n        |      |              | doing/todo/done |
-    | done_at      | date | n        |      |              | 完成日          |
-
+    | **id**       | **int** |          | **y** |              |                 |
+    | **animation_id** | **int** | **n**    |      | **animation.id** |                 |
+    | **integrated** | **bool** | **n**    |      |              | **完整性**      |
+    | **status**   | **str** | **n**    |      |              | **doing/todo/done** |
+    | **finished_at** | **date** | **n**    |      |              | **完成于**     |
+    | **file_url** | **str** | **n**    |      |              | **字幕文件链接** |
+    | **file_meta**    | **json**  | **n** |      |       | **文件元信息** |
+    | file_meta.name   | json.attr |         |      |       | 文件原名       |
+    | file_meta.format | json.attr |          |      |       | 格式/txt/pdf   |
+    | file_meta.size   | json.attr |         |      |       | 文件大小       |
+    
 5. novel
 
-    | Filed       | Type | Nullable | PK   | FK    | Comment        |
-    | ----------- | ---- | -------- | ---- | ----- | -------------- |
-    | id          | int  | n        | y    |       |                |
-    | ip_id       | int  | n        |      | ip.id | 参照ip的id     |
-    | name        | str  | n        |      |       | 名字+正篇/番外 |
-    | written_by  | str  | n        |      |       | 作者           |
-    | volume_num  | int  | n        |      |       | 卷数           |
-    | file_format | str  | n        |      |       | 格式/txt/pdf   |
-    | file_size   | int  | n        |      |       | 文件大小       |
-    | file_url    | json | n        |      |       | 文件链接       |
-    | en_intro    | str  | y        |      |       | 中文简介       |
-    | cn_intro    | str  | y        |      |       | 英文简介       |
-    | image_id    | int  |          |      |       |                |
-
+    | Filed            | Type      | Nullable | PK   | FK    | Comment        |
+    | ---------------- | --------- | -------- | ---- | ----- | -------------- |
+    | **id**           | **int**   |     | **y** |       |                |
+    | **ip_id**        | **int**   | **n**    |      | **ip.id** | **参照ip的id** |
+    | **name**                | **str**   | **n**    |      |      | **标识名**   |
+    | **reversed_names**      | **json**  | **y**    |      |      | **别名**     |
+    | reversed_name.jp_name   | json.attr |         |      |      | 日文名       |
+    | reversed_name.cn_name   | json.attr |         |      |      | 中文名       |
+    | reversed_name.en_name   | json.attr |         |      |      | 英文名       |
+    | reversed_name.rm_name   | json.attr |         |      |      | 罗马音名     |
+    | reversed_name.misc_name | json.attr |          |      |      | 混合关键字   |
+    | **intros**              | **json**  | **y** |      |      | **简介**     |
+    | intro.cn_intro          | json.attr |          |      |      | 中文简介     |
+    | intro.en_intro          | json.attr |          |      |      | 英文简介     |
+    | **image_ids** | **json** | **y** | | |  |
+    | horizontal_image_id | json.attr |         |      |       | 横向图id       |
+    | vertical_image_id   | json.attr |  |      |       | 竖向图id |
+    | reversed_image_id   | json.attr |  |      |       | 备用图id |
+    | **written_by**   | **str**   | **n**    |      |       | **作者**       |
+    | **volume_num**   | **int**   | **n**    |      |       | **卷数**       |
+    | **file_url**     | **str**   | **n**    |      |       | **文件链接**   |
+    | **file_meta**    | **json**  | **n**    |      |       | **文件元信息** |
+    | file_meta.name   | json.attr |          |      |       | 文件原名       |
+    | file_meta.format | json.attr |          |      |       | 格式/txt/pdf   |
+    | file_meta.size   | json.attr |          |      |       | 文件大小       |
+    
 6. file
 
     | Filed  | Type | Nullable | PK   | FK   | Comment            |
     | ------ | ---- | -------- | ---- | ---- | ------------------ |
-    | id     | int  | n        | y    |      |                    |
-    | region | str  | n        |      |      | 区域（本地/oss     |
-    | bucket | str  | n        |      |      | 文件桶             |
-    | path   | str  | n        |      |      | 具体路径，包括名字 |
-    | meta   | json | n        |      |      | 文件信息           |
-
+    | **id** | **int** |     | **y** |      |                    |
+    | **region** | **str** | **n**    |      |      | **区域（本地/oss** |
+    | **bucket** | **str** | **n**    |      |      | **文件桶**         |
+    | **path** | **str** | **n**    |      |      | **具体路径，包括名字** |
+    | **file_meta** | **json** | **n**    |      |      | **文件信息**       |
+    | file_meta.name | json.attr |        |      |      | 文件名 |
+    | file_meta.type | json.attr |        |      |      | 文件类型 |
+    | file_meta.size | json.attr |  | | | 文件大小 |
+    
 7. tag
 
-    | Filed | Type | Nullable | PK   | FK   | Comment |
-    | ----- | ---- | -------- | ---- | ---- | ------- |
-    | id    | int  | n        | y    |      |         |
-    | name  | str  | n        |      |      |         |
+    | Filed    | Type    | Nullable | PK    | FK   | Comment |
+    | -------- | ------- | -------- | ----- | ---- | ------- |
+    | **id**   | **int** |          | **y** |      |         |
+    | **name** | **str** | **n**    |       |      |         |
 
-8. tag_ip
+8. ip_tag
 
-    | Filed  | Type | Nullable | PK   | FK   | Comment |
-    | ------ | ---- | -------- | ---- | ---- | ------- |
-    | id     | int  | n        | y    |      |         |
-    | tag_id | int  | n        |      |      |         |
-    | ip_id  | int  | n        |      |      |         |
+    | Filed      | Type    | Nullable | PK    | FK   | Comment |
+    | ---------- | ------- | -------- | ----- | ---- | ------- |
+    | **id**     | **int** |          | **y** |      |         |
+    | **ip_id**  | **int** | **n**    |       |      |         |
+    | **tag_id** | **int** | **n**    |       |      |         |
 
-9. contributor
+9. user
 
-    | Filed     | Type | Nullable | PK   | FK   | Comment |
-    | --------- | ---- | -------- | ---- | ---- | ------- |
-    | id        | int  | n        | y    |      |         |
-    | name      | str  | n        |      |      |         |
-    | password  | str  | n        |      |      |         |
-    | salt      | str  | n        |      |      |         |
-    | email     | str  | y        |      |      |         |
-    | mobile    | str  | y        |      |      |         |
-    | intro     | text | y        |      |      |         |
-    | avatar_id | int  | y        |      |      |         |
+    | Filed         | Type    | Nullable | PK    | FK   | Comment |
+    | ------------- | ------- | -------- | ----- | ---- | ------- |
+    | **id**        | **int** |          | **y** |      |         |
+    | **name**      | **str** | **n**    |       |      |         |
+    | **password**  | **str** | **n**    |       |      |         |
+    | **salt**      | **str** | **n**    |       |      |         |
+    | **email**     | **str** | **n**    |       |      |         |
+    | **mobile**    | **str** | **n**    |       |      |         |
+    | **intro**     | **str** | **n**    |       |      |         |
+    | **avatar_id** | **int** | **y**    |       |      |         |
 
-10. contributor_caption
+10. caption_user
 
-    | Filed          | Type | Nullable | PK   | FK   | Comment |
-    | -------------- | ---- | -------- | ---- | ---- | ------- |
-    | id             | int  | n        | y    |      |         |
-    | contributor_id | int  | n        |      |      |         |
-    | caption_id     | int  | n        |      |      |         |
+    | Filed          | Type    | Nullable | PK    | FK   | Comment |
+    | -------------- | ------- | -------- | ----- | ---- | ------- |
+    | **id**         | **int** |          | **y** |      |         |
+    | **caption_id** | **int** | **n**    |       |      |         |
+    | **user_id**    | **int** | **n**    |       |      |         |
 
 11. staff
 
-    | Filed          | Type | Nullable | PK   | FK   | Comment |
-    | -------------- | ---- | -------- | ---- | ---- | ------- |
-    | id             | int  | n        | y    |      |         |
-    | contributor_id | int  | n        |      |      |         |
+    | Filed       | Type    | Nullable | PK    | FK   | Comment |
+    | ----------- | ------- | -------- | ----- | ---- | ------- |
+    | **id**      | **int** |          | **y** |      |         |
+    | **user_id** | **int** | **n**    |       |      |         |
 
-    
+      
 
