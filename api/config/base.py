@@ -3,10 +3,10 @@ import os
 NAME = 'edatrms'
 # Directory of runtime data, like logs and uploaded files etc
 DATA_PATH = os.path.expanduser('~/Workshop/ArchiveAlpha/EDATRMS/api_data')
-# Subdirectory of images
-IMAGE_DIR = 'image'
+# Subdirectory of files
+FILES_DIR = 'files'
 # Endpoint of uploaded files
-IMAGE_URL_BASE = 'http://localhost:7000/image/'
+FILES_URL_BASE = 'http://localhost:7000/files/'
 
 # Listen host and port of server
 HOST = '0.0.0.0'
