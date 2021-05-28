@@ -73,7 +73,6 @@ class User:
         table.add_column("email")
         table.add_column("mobile")
         table.add_column("created_at")
-        table.add_column("updatedd_at")
         table.add_column("staff")
 
         for row in rows:
@@ -86,10 +85,6 @@ class User:
                 row.get("created_at"). \
                     tzinfo. \
                     fromutc(row.get("created_at")). \
-                    strftime("%Y-%m-%d %H:%M:%S"),
-                row.get("updated_at"). \
-                    tzinfo. \
-                    fromutc(row.get("updated_at")). \
                     strftime("%Y-%m-%d %H:%M:%S"),
                 str(row.get("staff")),
                 style=style
