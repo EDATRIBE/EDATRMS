@@ -16,21 +16,22 @@ class StorageRegion(Enum):
 
 FileModel = sa.Table(
     'file', metadata,
-    sa.Column("id", sa.Integer, nullable=False, primary_key=True, comment='ID'),
+    sa.Column("id", sa.INTEGER(), nullable=False, primary_key=True, comment='ID'),
     sa.Column('region', sa.VARCHAR(30), nullable=False, comment='区域'),
     sa.Column('bucket', sa.VARCHAR(30), nullable=False, comment='桶'),
     sa.Column('path', sa.VARCHAR(100), nullable=False, comment='路径'),
-    sa.Column('meta', sa.JSON, nullable=False, comment='元信息'),
-    sa.Column('created_by', sa.Integer, nullable=False, comment='上传者 ID'),
-    sa.Column("created_at", LocalDateTime, nullable=False,
+    sa.Column('file_meta', sa.JSON(), nullable=False, comment='元信息'),
+    sa.Column('created_by', sa.INTEGER(), nullable=False, comment='上传者 ID'),
+    sa.Column("created_at", LocalDateTime(), nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP'),comment='创建时间'),
-    sa.Column('updated_by', sa.Integer, nullable=False, comment='最近修改者 ID'),
-    sa.Column("updated_at", LocalDateTime, nullable=False,
+    sa.Column('updated_by', sa.INTEGER(), nullable=False, comment='最近修改者 ID'),
+    sa.Column("updated_at", LocalDateTime(), nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP'),comment='最近修改时间'),
-    sa.ForeignKeyConstraint(['created_by'], ['user.id'],
-                            ondelete='CASCADE', onupdate='CASCADE',name='fkc_created_by'),
-    sa.ForeignKeyConstraint(['updated_by'], ['user.id'],
-                            ondelete='CASCADE', onupdate='CASCADE',name='fkc_updated_by'),
+    sa.Column('comment', sa.TEXT(), nullable=True, comment='备注'),
+    sa.ForeignKeyConstraint(('created_by',), ('user.id',),
+                            ondelete='CASCADE', onupdate='CASCADE',name='file_fkc_created_by'),
+    sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
+                            ondelete='CASCADE', onupdate='CASCADE',name='file_fkc_updated_by'),
     comment='文件',
 )
 
@@ -46,6 +47,6 @@ class FileSchema(Schema):
     def add_url(self, data, many):
         url = ''
         if data['region'] == StorageRegion.LOCAL.value:
-            url = '{}{}'.format(config['UPLOAD_FILE_URL_BASE'],
+            url = '{}{}'.format(config['FILES_URL_BASE'],
                                 os.path.join(data['bucket'], data['path']))
         return dict(data, url=url)
