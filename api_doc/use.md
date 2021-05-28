@@ -62,7 +62,7 @@ $ cd your/path/EDATRMS
     ```shell
     Usage:          python -m api.manage user list_users [OPTIONS="VALUE"]
     Options:
-        -role       当该选项值为staff时，仅列出staff用户的信息
+        -role       当该选项值为 staff 时，仅列出 staff 用户的信息
     ```
 
 - 列出单个用户详细信息： inspect_user
@@ -70,8 +70,8 @@ $ cd your/path/EDATRMS
     ```shell
     Usage:          python -m api.manage user inspect_user -id=7
     Options:
-        -id         所要查看的用户id，值为整型，或可以转化为整型的字符串
-        -role       当该选项值为staff时，仅列出staff用户的信息
+        -id         所要查看的用户 id，值为整型，或可以转化为整型的字符串
+        -role       当该选项值为 staff 时，仅列出 staff 用户的信息
     ```
 
 - 设置staff角色： set_staff
@@ -79,7 +79,7 @@ $ cd your/path/EDATRMS
     ```shell
     Usage:          python -m api.manage user set_staff -id=7
     Options:
-        -id         所要设置staff角色的用户id，值为整型，或可以转化为整型的字符串
+        -id         所要设置 staff 角色的用户 id，值为整型，或可以转化为整型的字符串
     ```
 
 - 取消staff角色： unset_staff
@@ -87,6 +87,6 @@ $ cd your/path/EDATRMS
     ```shell
     Usage:          python -m api.manage user unset_staff -id=7
     Options:
-        -id         所要取消staff的用户id，值为整型，或可以转化为整型的字符串
+        -id         所要取消 staff 的用户 id，值为整型，或可以转化为整型的字符串
     ```
 
