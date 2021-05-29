@@ -7,16 +7,14 @@ from ..utilities import LocalDateTime
 
 CaptionUserModel = sa.Table(
     'caption_user', metadata,
-    sa.Column('id', sa.INTEGER(), nullable=False, primary_key=True, comment='caption_user ID'),
-    sa.Column('caption_id', sa.INTEGER(), nullable=False, comment='caption ID'),
-    sa.Column('user_id', sa.INTEGER(), nullable=False, comment='user ID'),
-    sa.Column('created_by', sa.INTEGER(), nullable=False, comment='创建者 ID'),
-    sa.Column("created_at", LocalDateTime(), nullable=False,
-              server_default=sasql.text('CURRENT_TIMESTAMP'),comment='创建时间'),
-    sa.Column('updated_by', sa.INTEGER(), nullable=False, comment='最近修改者 ID'),
-    sa.Column("updated_at", LocalDateTime(), nullable=False,
-              server_default=sasql.text('CURRENT_TIMESTAMP'),comment='最近修改时间'),
-    sa.Column('comment', sa.TEXT(), nullable=True, comment='备注'),
+    sa.Column('id', sa.INTEGER(), primary_key=True),
+    sa.Column('caption_id', sa.INTEGER(), nullable=False),
+    sa.Column('user_id', sa.INTEGER(), nullable=False),
+    sa.Column('created_by', sa.INTEGER(), nullable=False),
+    sa.Column("created_at", LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column('updated_by', sa.INTEGER(), nullable=False),
+    sa.Column("updated_at", LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column('comment', sa.VARCHAR(300), nullable=True, server_default=''),
     sa.ForeignKeyConstraint(('caption_id',), ('caption.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='caption_user_fkc_caption_id'),
     sa.ForeignKeyConstraint(('user_id',), ('user.id',),
@@ -24,6 +22,5 @@ CaptionUserModel = sa.Table(
     sa.ForeignKeyConstraint(('created_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='caption_user_fkc_created_by'),
     sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
-                            ondelete='CASCADE', onupdate='CASCADE', name='caption_user_fkc_updated_by'),
-    comment='caption_user 表'
+                            ondelete='CASCADE', onupdate='CASCADE', name='caption_user_fkc_updated_by')
 )

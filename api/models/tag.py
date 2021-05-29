@@ -7,18 +7,16 @@ from ..utilities import LocalDateTime
 
 TagModel = sa.Table(
     'tag', metadata,
-    sa.Column('id', sa.INTEGER(), nullable=False, primary_key=True, comment='Novel ID'),
-    sa.Column('name', sa.VARCHAR(30), nullable=False, comment='tag名'),
-    sa.Column('created_by', sa.INTEGER(), nullable=False, comment='创建者 ID'),
+    sa.Column('id', sa.INTEGER(), primary_key=True),
+    sa.Column('name', sa.VARCHAR(300), nullable=False),
+    sa.Column('created_by', sa.INTEGER(), nullable=False),
     sa.Column("created_at", LocalDateTime(), nullable=False,
-              server_default=sasql.text('CURRENT_TIMESTAMP'),comment='创建时间'),
-    sa.Column('updated_by', sa.INTEGER(), nullable=False, comment='最近修改者 ID'),
-    sa.Column("updated_at", LocalDateTime(), nullable=False,
-              server_default=sasql.text('CURRENT_TIMESTAMP'),comment='最近修改时间'),
-    sa.Column('comment', sa.TEXT(), nullable=True, comment='备注'),
+              server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column('updated_by', sa.INTEGER(), nullable=False),
+    sa.Column("updated_at", LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column('comment', sa.VARCHAR(300), nullable=True, server_default=''),
     sa.ForeignKeyConstraint(('created_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='tag_fkc_created_by'),
     sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
-                            ondelete='CASCADE', onupdate='CASCADE', name='tag_fkc_updated_by'),
-    comment='tag 表'
+                            ondelete='CASCADE', onupdate='CASCADE', name='tag_fkc_updated_by')
 )

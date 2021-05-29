@@ -7,16 +7,14 @@ from ..utilities import LocalDateTime
 
 IPTagModel = sa.Table(
     'ip_tag', metadata,
-    sa.Column('id', sa.INTEGER(), nullable=False, primary_key=True, comment='ip_tag ID'),
-    sa.Column('ip_id', sa.INTEGER(), nullable=False, comment='IP ID'),
-    sa.Column('tag_id', sa.INTEGER(), nullable=False, comment='tag ID'),
-    sa.Column('created_by', sa.INTEGER(), nullable=False, comment='创建者 ID'),
-    sa.Column("created_at", LocalDateTime(), nullable=False,
-              server_default=sasql.text('CURRENT_TIMESTAMP'),comment='创建时间'),
-    sa.Column('updated_by', sa.INTEGER(), nullable=False, comment='最近修改者 ID'),
-    sa.Column("updated_at", LocalDateTime(), nullable=False,
-              server_default=sasql.text('CURRENT_TIMESTAMP'),comment='最近修改时间'),
-    sa.Column('comment', sa.TEXT(), nullable=True, comment='备注'),
+    sa.Column('id', sa.INTEGER(), primary_key=True),
+    sa.Column('ip_id', sa.INTEGER(), nullable=False),
+    sa.Column('tag_id', sa.INTEGER(), nullable=False),
+    sa.Column('created_by', sa.INTEGER(), nullable=False),
+    sa.Column("created_at", LocalDateTime(), nullable=False,server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column('updated_by', sa.INTEGER(), nullable=False),
+    sa.Column("updated_at", LocalDateTime(), nullable=False,server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column('comment', sa.VARCHAR(300), nullable=True, server_default=''),
     sa.ForeignKeyConstraint(('ip_id',), ('ip.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='ip_tag_fkc_ip_id'),
     sa.ForeignKeyConstraint(('tag_id',), ('tag.id',),
@@ -24,6 +22,5 @@ IPTagModel = sa.Table(
     sa.ForeignKeyConstraint(('created_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='ip_tag_fkc_created_by'),
     sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
-                            ondelete='CASCADE', onupdate='CASCADE', name='ip_tag_fkc_updated_by'),
-    comment='ip_tag 表'
+                            ondelete='CASCADE', onupdate='CASCADE', name='ip_tag_fkc_updated_by')
 )
