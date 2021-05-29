@@ -60,175 +60,231 @@
 
 所有的字符串类型不可为null，默认值为空字符串。
 
+枚举值使用字符串类型，具体值域另行记录
+
 #### 逻辑层设计
 
-* **ip**
+* **Table Name: ip **
 
-    | Filed                        | Type      | Nullable | PK      | FK   | Comment      |
-    | ---------------------------- | --------- | -------- | ------- | ---- | ------------ |
-    | id                           | int       |          | y       |      |              |
-    | name                         | str       | n        |         |      | 标识名       |
-    | reserved_names               | json      | y        |         |      | 别名         |
-    | [ reserved_names.jp_name ]   | json.attr |          |         |      | 日文名       |
-    | [ reserved_names.cn_name ]   | json.attr |          |         |      | 中文名       |
-    | [ reserved_names.en_name ]   | json.attr |          |         |      | 英文名       |
-    | [ reserved_names.rm_name ]   | json.attr |          |         |      | 罗马音名     |
-    | [ reserved_names.misc_name ] | json.attr |          |         |      | 混合关键字   |
-    | intros                       | json      | y        |         |      | 简介         |
-    | [ intro.cn_intro ]           | json.attr |          |         |      | 中文简介     |
-    | [ intro.en_intro ]           | json.attr |          |         |      | 英文简介     |
-    |                              |           |          |         |      |              |
-    | created_by                   | str       | n        | user.id |      | 创建者       |
-    | created_at                   | date      | n        |         |      | 创建日期     |
-    | updated_by                   | str       | n        | user.id |      | 最近编辑者   |
-    | updated_at                   | date      | n        |         |      | 最近编辑日期 |
-    | comment                      | str       | y        |         |      | 备注         |
+    **Column:**
+
+    | Filed                        | Type           | Nullable | Comment      |
+    | ---------------------------- | -------------- | -------- | ------------ |
+    | id                           | integer        | PK       |              |
+    | name                         | varchar(300)   | False    | 标识名       |
+    | reserved_names               | json           | True     | 别名         |
+    | [ reserved_names.jp_name ]   | json.attr: str | Optional | 日文名       |
+    | [ reserved_names.cn_name ]   | json.attr: str | Optional | 中文名       |
+    | [ reserved_names.en_name ]   | json.attr: str | Optional | 英文名       |
+    | [ reserved_names.rm_name ]   | json.attr: str | Optional | 罗马音名     |
+    | [ reserved_names.misc_name ] | json.attr: str | Optional | 混合关键字   |
+    | intros                       | json           | True     | 简介         |
+    | [ intro.cn_intro ]           | json.attr: str | Optional | 中文简介     |
+    | [ intro.en_intro ]           | json.attr: str | Optional | 英文简介     |
+    |                              |                |          |              |
+    | created_by                   | integer        | False    | 创建者       |
+    | created_at                   | datetime       | False    | 创建日期     |
+    | updated_by                   | integer        | False    | 最近编辑者   |
+    | updated_at                   | datetime       | False    | 最近编辑日期 |
+    | comment                      | varchar(300)   | False    | 备注         |
+
+    **Foreign Key Constraint:**
+
+    * (created_by , user.id, ondelete='SET NULL', onupdate='CASCADE')
+    * (created_by , user.id, ondelete='SET NULL', onupdate='CASCADE')
+
+    **Index**:
+
+    - (name, unique=True)
+
+* **Table Name: animation**
+
+    **Column:**
     
-* **animation**
-
-    | Filed               | Type | Nullable | PK   | FK    | Comment             |
-    | ------------------- | ---- | -------- | ---- | ----- | ------------------- |
-    | id              | int |     | y |       |                     |
-    | ip_id           | int | n   |      | ip.id |                     |
-    | name            | str | n    |      |       | 标识名         |
-    | reserved_names | json | y | | | 别名 |
-    | [ reserved_names.jp_name ] | json.attr |         |      |       | 日文名             |
-    | [ reserved_names.cn_name ] | json.attr |         |      |       | 中文名             |
-    | [ reserved_names.en_name ] | json.attr |         |      |       | 英文名             |
-    | [ reserved_names.rm_name ] | json.attr |         |      |       | 罗马音名           |
-    | [ reserved_names.misc_name ] | json.attr | | | |  |
-    | intros | json | y | | |  |
-    | [ en_intro ]        | json.attr |         |      |       | 中文简介            |
-    | [ cn_intro ]        | json.attr |         |      |       | 英文简介            |
-    | image_ids | json | y | | |  |
-    | [ image_ids.horizontal_image_id ] | json.attr |         |      |       | 横向图id       |
-    | [ image_ids.vertical_image_id ] | json.attr |  |      |       | 竖向图id |
-    | [ image_ids.reversed_image_id ] | json.attr |  |      |       | 备用图id |
-    | produced_by | str | n    |      |       | 出品公司       |
-    | released_at | dt | n | | | 上映时间 |
-    | written_by      | str | n |      |       | 原著作者       |
-    | type            | str | n    |      |       | TV/movie/SP/OVA/OAD |
-    | episodes_num    | int | n    |      |       | 集数            |
-
-
-* video
-
-    | Filed                 | Type      | Nullable | PK   | FK           | Comment           |
-    | --------------------- | --------- | -------- | ---- | ------------ | ----------------- |
-    | id                    | int       |          | y    |              |                   |
-    | animation_id          | int       | n        |      | animation.id |                   |
-    | file_url              | str       | n        |      |              | 视频链接          |
-    | file_meta             | json      | n        |      |              | 视频元信息        |
-    | [ file_meta.size ]    | json.attr |          |      |              | 视频大小          |
-    | [ file_meta.quality ] | json.attr |          |      |              | 分辨率（720/原画/ |
-    | [ file_meta.format ]  | json.attr |          |      |              | 格式（mp4/        |
-
-
-* caption
-
-    | Filed        | Type | Nullable | PK   | FK           | Comment         |
-    | ------------ | ---- | -------- | ---- | ------------ | --------------- |
-    | id       | int |          | y |              |                 |
-    | animation_id | int | n    |      | animation.id |                 |
-    | integrated | bool | n    |      |              | 完整性      |
-    | status   | str | n    |      |              | doing/todo/done |
-    | finished_at | date | y |      |              | 完成于     |
-    | file_url | str | y |      |              | 字幕文件链接 |
-    | file_meta    | json  | y |      |       | 文件元信息 |
-    | [ file_meta.name ] | json.attr |         |      |       | 文件原名       |
-    | [ file_meta.format ] | json.attr |          |      |       | 格式/txt/pdf   |
-    | [ file_meta.size ] | json.attr |         |      |       | 文件大小       |
+    | Filed               | Type | Nullable | Comment             |
+    | ------------------- | ---- | -------- | ------------------- |
+    | id              | integer | PK |                     |
+    | ip_id           | integer | False | 所属ip的id |
+    | name            | varchar(300) | False | 标识名         |
+    | reserved_names | json | True | 别名 |
+    | [ reserved_names.jp_name ] | json.attr: str | Optional | 日文名             |
+    | [ reserved_names.cn_name ] | json.attr: str | Optional | 中文名             |
+    | [ reserved_names.en_name ] | json.attr: str | Optional | 英文名             |
+    | [ reserved_names.rm_name ] | json.attr: str | Optional | 罗马音名           |
+    | [ reserved_names.misc_name ] | json.attr: str | Optional | 混合关键词 |
+    | intros | json | True | 简介 |
+    | [ en_intro ]        | json.attr: str | Optional | 中文简介            |
+    | [ cn_intro ]        | json.attr: str | Optional | 英文简介            |
+    | image_ids | json | True | 展示图id |
+    | [ image_ids.horizontal_image_id ] | json.attr: int | Necessary | 横向图id       |
+    | [ image_ids.vertical_image_id ] | json.attr: int | Necessary | 竖向图id |
+    | [ image_ids.reversed_image_id ] | json.attr: int | Optional | 备用图id |
+    | produced_by | varchar(300) | False | 出品公司       |
+    | released_at | datetime | False | 上映时间 |
+    | written_by      | varchar(300) | False | 原著作者       |
+    | type            | varchar(300) | False | TV/movie/SP/OVA/OAD |
+    | episodes_num    | integer | False | 集数            |
     
-* novel
+    **Enum:**
+    
+    - type: (TV, MOVIE, SP, OVA, OAD)
+    
+    **Foreign Key Constraint:**
+    
+    * (ip_id , ip.id, ondelete='CASCADE', onupdate='CASCADE')
 
-    | Filed            | Type      | Nullable | PK   | FK    | Comment        |
-    | ---------------- | --------- | -------- | ---- | ----- | -------------- |
-    | id           | int   |     | y |       |                |
-    | ip_id        | int   | n    |      | ip.id | 参照ip的id |
-    | name                | str   | n    |      |      | 标识名   |
-    | reserved_names | json  | y    |      |      | 别名     |
-    | [ reserved_names.jp_name ] | json.attr |         |      |      | 日文名       |
-    | [ reserved_names.cn_name ] | json.attr |         |      |      | 中文名       |
-    | [ reserved_names.en_name ] | json.attr |         |      |      | 英文名       |
-    | [ reserved_names.rm_name ] | json.attr |         |      |      | 罗马音名     |
-    | [ reserved_names.misc_name ] | json.attr |          |      |      | 混合关键字   |
-    | intros              | json  | y |      |      | 简介     |
-    | [ intro.cn_intro ]    | json.attr |          |      |      | 中文简介     |
-    | [ intro.en_intro ]    | json.attr |          |      |      | 英文简介     |
-    | image_ids | json | y | | |  |
-    | [ image_ids.horizontal_image_id ] | json.attr |         |      |       | 横向图id       |
-    | [ image_ids.vertical_image_id ] | json.attr |  |      |       | 竖向图id |
-    | [ image_ids.reversed_image_id ] | json.attr |  |      |       | 备用图id |
-    | written_by   | str   | n    |      |       | 作者       |
-    | volumes_num  | int   | n    |      |       | 卷数       |
-    | integrated | bool | n | | | 完整性 |
-    | file_url     | str   | n    |      |       | 文件链接   |
-    | file_meta    | json  | n    |      |       | 文件元信息 |
-    | [ file_meta.name ] | json.attr |          |      |       | 文件原名       |
-    | [ file_meta.format ] | json.attr |          |      |       | 格式/txt/pdf   |
-    | [ file_meta.size ] | json.attr |          |      |       | 文件大小       |
+
+* **Table Name: video**
+
+    **Column:**
+    
+    | Filed                 | Type           | Nullable | Comment           |
+    | --------------------- | -------------- | -------- | ----------------- |
+    | id                    | integer        | PK       |                   |
+    | animation_id          | integer        | False    |                   |
+    | file_url              | varchar(300)   | False    | 视频链接          |
+    | file_meta             | json           | False    | 视频元信息        |
+    | [ file_meta.size ]    | json.attr: int | Optional | 视频大小          |
+    | [ file_meta.quality ] | json.attr: str | Optional | 分辨率（720/原画/ |
+    | [ file_meta.format ]  | json.attr: str | Optional | 格式（mp4/        |
+    
+    **Enum:**
+    
+    - file_meta.quality: (720P, 1080P)
+    - file_meta.format: (MP4,)
+    
+    **Foreign Key Constraint:**
+    
+    * (animation_id , animation.id, ondelete='CASCADE', onupdate='CASCADE')
+
+
+* **Table Name: caption**
+
+    **Column:**
+    
+    | Filed        | Type | Nullable | Comment         |
+    | ------------ | ---- | -------- | --------------- |
+    | id       | integer | PK |                 |
+    | animation_id | integer | False | 所属animation的id |
+    | integrated | bool | False | 完整1，不完整0 |
+    | status   | varchar(300) | False | doing/todo/done |
+    | finished_at | datetime | True | 完成于     |
+    | file_url | varchar(300) | False | 字幕文件链接 |
+    | file_meta    | json  | True | 文件元信息 |
+    | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
+    | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
+    | [ file_meta.size ] | json.attr: int | Optional | 文件大小       |
+    
+    **Enum:**
+    
+    - status: (todo, doing, done)
+    
+    - file_meta.format: (SRT,)
+    
+    **Foreign Key Constraint:**
+    
+    * (animation_id , animation.id, ondelete='CASCADE', onupdate='CASCADE')
+    
+* **Table Name: novel**
+
+    **Column:**
+    
+    | Filed            | Type      | Nullable | Comment        |
+    | ---------------- | --------- | -------- | -------------- |
+    | id           | integer | PK |                |
+    | ip_id        | integer | False | 参照ip的id |
+    | name                | varchar(300) | False | 标识名   |
+    | reserved_names | json  | True | 别名     |
+    | [ reserved_names.jp_name ] | json.attr: str | Optional | 日文名       |
+    | [ reserved_names.cn_name ] | json.attr: str | Optional | 中文名       |
+    | [ reserved_names.en_name ] | json.attr: str | Optional | 英文名       |
+    | [ reserved_names.rm_name ] | json.attr: str | Optional | 罗马音名     |
+    | [ reserved_names.misc_name ] | json.attr: str | Optional | 混合关键字   |
+    | intros              | json  | True | 简介     |
+    | [ intro.cn_intro ]    | json.attr: str | Optional | 中文简介     |
+    | [ intro.en_intro ]    | json.attr: str | Optional | 英文简介     |
+    | image_ids | json | True |  |
+    | [ image_ids.horizontal_image_id ] | json.attr: int | Necessary | 横向图id       |
+    | [ image_ids.vertical_image_id ] | json.attr: int | Necessary | 竖向图id |
+    | [ image_ids.reversed_image_id ] | json.attr: int | Optional | 备用图id |
+    | written_by   | varchar(300) | False | 作者       |
+    | volumes_num  | integer | False | 卷数       |
+    | integrated | bool | False | 完整性 |
+    | file_url     | varchar(300) | False | 文件链接   |
+    | file_meta    | json  | True | 文件元信息 |
+    | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
+    | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
+    | [ file_meta.size ] | json.attr: int | Optional | 文件大小       |
+    
+    **Enum:**
+    
+    - file_meta.format: (TXT, PDF)
+    
+    **Foreign Key Constraint**:
+    
+    * (ip_id , ip.id, ondelete='CASCADE', onupdate='CASCADE')
     
 * file
 
-    | Filed  | Type | Nullable | PK   | FK   | Comment            |
-    | ------ | ---- | -------- | ---- | ---- | ------------------ |
-    | id | int |     | y |      |                    |
-    | region | str | n    |      |      | 区域（本地/oss |
-    | bucket | str | n    |      |      | 文件桶         |
-    | path | str | n    |      |      | 具体路径，包括名字 |
-    | file_meta | json | n    |      |      | 文件信息       |
-    | [ file_meta.name ] | json.attr |        |      |      | 文件名 |
-    | [ file_meta.type ] | json.attr |        |      |      | 文件类型 |
-    | [ file_meta.size ] | json.attr |  | | | 文件大小 |
+    | Filed  | Type | Nullable | Comment            |
+    | ------ | ---- | -------- | ------------------ |
+    | id | integer | PK |                    |
+    | region | varchar(300) | False | 区域（本地/oss |
+    | bucket | varchar(300) | False | 文件桶         |
+    | path | varchar(300) | False | 具体路径，包括名字 |
+    | file_meta | json | True | 文件信息       |
+    | [ file_meta.name ] | json.attr: str | Optional | 文件名 |
+    | [ file_meta.type ] | json.attr: str | Optional | 文件类型 |
+    | [ file_meta.size ] | json.attr: int | Optional | 文件大小 |
     
 * tag
 
-    | Filed | Type | Nullable | PK   | FK   | Comment |
-    | ----- | ---- | -------- | ---- | ---- | ------- |
-    | id    | int  |          | y    |      |         |
-    | name  | str  | n        |      |      |         |
+    | Filed | Type         | Nullable | Comment |
+    | ----- | ------------ | -------- | ------- |
+    | id    | integer      | PK       |         |
+    | name  | varchar(300) | False    |         |
 
 * ip_tag
 
-    | Filed  | Type | Nullable | PK   | FK   | Comment |
-    | ------ | ---- | -------- | ---- | ---- | ------- |
-    | id     | int  |          | y    |      |         |
-    | ip_id  | int  | n        |      |      |         |
-    | tag_id | int  | n        |      |      |         |
+    | Filed  | Type    | Nullable | Comment |
+    | ------ | ------- | -------- | ------- |
+    | id     | integer | PK       |         |
+    | ip_id  | integer | False    |         |
+    | tag_id | integer | False    |         |
 
 * user
 
-    | Filed         | Type    | Nullable | PK    | FK   | Comment |
-    | ------------- | ------- | -------- | ----- | ---- | ------- |
-    | id        | int |          | y |      |         |
-    | name      | str | n    |       |      |         |
-    | password  | str | n    |       |      |         |
-    | salt      | str | n    |       |      |         |
-    | email     | str | n    |       |      |         |
-    | mobile    | str | n    |       |      |         |
-    | intro     | str | n    |       |      |         |
-    | avatar_id | int | y    |       |      |         |
-    |            |      |          |      |      |          |
-    | created_at          | date  | n    |       |      | 创建日期     |
-    | comment             | str   | y    |       |      | 备注         |
+    | Filed         | Type    | Nullable | Comment |
+    | ------------- | ------- | -------- | ------- |
+    | id        | integer | PK |         |
+    | name      | varchar(300) | False |         |
+    | password  | char(64) | False |         |
+    | salt      | char(64) | False |         |
+    | email     | varchar(300) | False |         |
+    | mobile    | varchar(300) | False |         |
+    | intro     | varchar(300) | False |         |
+    | avatar_id | integer | True |         |
+    |            |      |          |          |
+    | created_at          | datetime | False | 创建日期     |
+    | comment             | varchar(300) | False | 备注         |
     
 * caption_user
 
-    | Filed      | Type | Nullable | PK   | FK   | Comment |
-    | ---------- | ---- | -------- | ---- | ---- | ------- |
-    | id         | int  |          | y    |      |         |
-    | caption_id | int  | n        |      |      |         |
-    | user_id    | int  | n        |      |      |         |
+    | Filed      | Type   | Nullable | Comment |
+    | ---------- | ------ | -------- | ------- |
+    | id         | intger | PK       |         |
+    | caption_id | intger | False    |         |
+    | user_id    | intger | False    |         |
 
 * staff
 
-    | Filed       | Type    | Nullable | PK    | FK   | Comment |
-    | ----------- | ------- | -------- | ----- | ---- | ------- |
-    | id      | int |          | y |      |         |
-    | user_id | int | n    |       |      |         |
-    |            |      |          |      |      |          |
-    | created_at          | date  | n    |       |      | 创建日期     |
-    | comment             | str   | y    |       |      | 备注         |
+    | Filed       | Type    | Nullable | Comment |
+    | ----------- | ------- | -------- | ------- |
+    | id      | intger | PK |         |
+    | user_id | intger | False |         |
+    |            |      |          |          |
+    | created_at          | date  | False | 创建日期     |
+    | comment             | varchar(300) | False | 备注         |
     
       
 
@@ -282,9 +338,9 @@
 
 - [x] 实现模型
 - [x] 重构开发文档
-- [ ] 规范类型值域
-- [ ] 检查是否可空
-- [ ] 检查外键约束以及修改时的行为
+- [x] 规范类型值域
+- [x] 检查是否可空
+- [x] 检查外键约束以及修改时的行为
 - [ ] 设计索引
 - [ ] 规范表comment
 - [ ] 规范枚举值

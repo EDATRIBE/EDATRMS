@@ -68,24 +68,24 @@ $ cd your/path/EDATRMS
 - 列出单个用户详细信息： inspect_user
 
     ```shell
-    Usage:          python -m api.manage user inspect_user -id=7
+    Usage:          python -m api.manage user inspect_user [OPTIONS="VALUE"]
     Options:
         -id         所要查看的用户 id，值为整型，或可以转化为整型的字符串
         -role       当该选项值为 staff 时，仅列出 staff 用户的信息
     ```
 
-- 设置staff角色： set_staff
+- 为用户设置 staff 角色： set_staff
 
     ```shell
-    Usage:          python -m api.manage user set_staff -id=7
+    Usage:          python -m api.manage user set_staff [OPTIONS="VALUE"]
     Options:
         -id         所要设置 staff 角色的用户 id，值为整型，或可以转化为整型的字符串
     ```
 
-- 取消staff角色： unset_staff
+- 取消用户的 staff 角色： unset_staff
 
     ```shell
-    Usage:          python -m api.manage user unset_staff -id=7
+    Usage:          python -m api.manage user unset_staff [OPTIONS="VALUE"]
     Options:
         -id         所要取消 staff 的用户 id，值为整型，或可以转化为整型的字符串
     ```
