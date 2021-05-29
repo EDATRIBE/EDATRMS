@@ -64,7 +64,7 @@
 
 #### 逻辑层设计
 
-* **Table Name: ip **
+* **Table Name: ip**
 
     **Column:**
 
@@ -224,7 +224,9 @@
     
     * (ip_id , ip.id, ondelete='CASCADE', onupdate='CASCADE')
     
-* file
+* **Table Name: file**
+
+    **Column:**
 
     | Filed  | Type | Nullable | Comment            |
     | ------ | ---- | -------- | ------------------ |
@@ -237,14 +239,18 @@
     | [ file_meta.type ] | json.attr: str | Optional | 文件类型 |
     | [ file_meta.size ] | json.attr: int | Optional | 文件大小 |
     
-* tag
+* **Table Name: tag**
+
+    **Column:**
 
     | Filed | Type         | Nullable | Comment |
     | ----- | ------------ | -------- | ------- |
     | id    | integer      | PK       |         |
     | name  | varchar(300) | False    |         |
 
-* ip_tag
+* **Table Name: ip_tag**
+
+    **Column:**
 
     | Filed  | Type    | Nullable | Comment |
     | ------ | ------- | -------- | ------- |
@@ -252,7 +258,9 @@
     | ip_id  | integer | False    |         |
     | tag_id | integer | False    |         |
 
-* user
+* **Table Name: user**
+
+    **Column:**
 
     | Filed         | Type    | Nullable | Comment |
     | ------------- | ------- | -------- | ------- |
@@ -268,7 +276,9 @@
     | created_at          | datetime | False | 创建日期     |
     | comment             | varchar(300) | False | 备注         |
     
-* caption_user
+* **Table Name: caption_user**
+
+    **Column:**
 
     | Filed      | Type   | Nullable | Comment |
     | ---------- | ------ | -------- | ------- |
@@ -276,7 +286,9 @@
     | caption_id | intger | False    |         |
     | user_id    | intger | False    |         |
 
-* staff
+* **Table Name: staff**
+
+    **Column:**
 
     | Filed       | Type    | Nullable | Comment |
     | ----------- | ------- | -------- | ------- |
