@@ -62,7 +62,7 @@
 
 枚举值使用字符串类型，具体值域另行记录
 
-#### 逻辑层设计
+#### 逻辑结构
 
 * **Table Name: ip**
 
@@ -302,6 +302,12 @@
 
 ### 业务功能
 
+#### 设计准则
+
+删除操作不返回任何数据，其他操作返回操作后的数据对象
+
+#### 具体功能
+
 * **ip**
     * 新增、更新、删除 ip 对象
     * 按 id 查询单个 ip 对象、按 id 列表查询多个 ip 对象
@@ -324,10 +330,12 @@
     * 按 limit、offset、ip_id 顺序列出 novel 对象
 * **tag**
     * 新增、更新、删除 tag 对象
+    * 按 id 查询单个 tag 对象、按 id 列表查询多个 tag 对象
+    * 按 limit、offset 顺序列出 tag 对象
 * **ip_tag**
     * 新增、删除 ip_tag 关系
-    * 按 ip_id 生成 tag_id 列表
-    * 按 tag_id 生成 ip_id 列表
+    * 按 limit、offset、ip_id 顺序列出 ip_tag 对象
+    * 按 limit、offset、tag_id 顺序列出 ip_tag 对象
 * **user**
     * 新增、更新、删除 user 对象
     * 按 id 查询单个 user 对象、按 id 列表查询多个 user 对象
@@ -337,8 +345,8 @@
     * 按 id 或 id 列表来判断单个 user 或多个 user 对象是否拥有 staff 角色
 * **caption_user**
     * 新增、删除 caption_user 关系
-    * 按 caption_id 生成 user_id 列表
-    * 按 user_id 生成 user_id 列表
+    * 按 limit、offset、caption_id 顺序列出 caption_user 对象
+    * 按 limit、offset、user_id 顺序列出 caption_user 对象
 
 
 
@@ -356,6 +364,10 @@
 - [ ] 设计索引
 - [ ] 规范表comment
 - [ ] 规范枚举值
-- [ ] 实现业务逻辑
+- [x] 实现业务逻辑
 - [ ] 设计api端点
+- [ ] 整理import
+- [ ] 规范异常处理
+- [ ] 设计统计与日志模块
+- [ ] 重构文件存储
 
