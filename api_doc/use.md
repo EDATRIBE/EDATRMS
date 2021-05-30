@@ -51,7 +51,7 @@ $ cd your/path/EDATRMS
     Options:
         -name       用户名，该选项不可省略
         -password   用户密码，该选项不可省略
-        -mai        邮箱
+        -mail       邮箱
         -mobile     联系电话
         -intr       自我介绍
         -comment    备注 
@@ -62,7 +62,7 @@ $ cd your/path/EDATRMS
     ```shell
     Usage:          python -m api.manage user list_users [OPTIONS="VALUE"]
     Options:
-        -role       当该选项值为 staff 时，仅列出 staff 用户的信息
+        -staff_only	当该选项值为 y 时，仅列出 staff 用户的信息
     ```
 
 - 列出单个用户详细信息： inspect_user

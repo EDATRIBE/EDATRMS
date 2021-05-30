@@ -1,7 +1,8 @@
 from ..services import UserService
+from ..models import UserSchema
 import asyncio
+from marshmallow import Schema, fields, ValidationError
 
-import schema
 from rich.theme import Theme
 from rich.console import Console
 from rich.table import Table
@@ -22,36 +23,6 @@ class User:
         })
         self.console = Console(theme=self.theme)
 
-        self.user_validator = schema.Schema(
-            {
-                schema.Optional("id"): schema.Use(int, error="请检查用户id：整型数字"),
-                schema.Optional("name"): schema.Regex(
-                    r"^[a-zA-Z][a-zA-Z0-9_]{0,29}$",
-                    error="请检查用户名：字母开头，可包含字母、数字、下划线，长度不超过30位"
-                ),
-                schema.Optional("password"): schema.And(
-                    schema.Use(str),
-                    schema.Regex(
-                        r"[a-zA-Z0-9_]{6,18}$"
-                    ),
-                    error="请检查密码：可包含字母、数字、下划线，长度为6-18位"
-                ),
-                schema.Optional("email"): schema.Regex(
-                    r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$",
-                    error="请检查邮箱格式"
-                ),
-                schema.Optional("mobile"): schema.And(
-                    schema.Use(str),
-                    schema.Regex(
-                        r"^\d{11}$"
-                    ),
-                    error="请检查手机号码：11位数字"
-                ),
-                schema.Optional("intro"): schema.Use(str, error="请检查自我介绍"),
-                schema.Optional("comment"): schema.Use(str, error="请检查备注")
-            },
-            ignore_extra_keys=True
-        )
 
     def _print_info_detail(self, row):
         table = Table(show_header=False)
@@ -93,53 +64,66 @@ class User:
         self.console.print(table)
 
     def list_users(self, **kwargs):
+        for k,v in kwargs.items():
+            kwargs[k]= str(v)
         try:
             rows, total = asyncio.get_event_loop().run_until_complete(
                 self.user_service.list_users()
             )
-
             staffs = asyncio.get_event_loop().run_until_complete(
                 self.user_service.is_staff_by_ids([r['id'] for r in rows])
             )
-            for row, staff in zip(rows, staffs):
-                row['staff'] = staff
-
-            if kwargs.get("role") == "staff":
-                rows = list(filter(lambda x: x.get("staff"), rows))
-
-            self._print_infos_table(*rows)
         except Exception as err:
             self.console.print(err, style="danger")
             return
 
-    def inspect_user(self, **kwargs):
-        try:
-            data = self.user_validator.validate(kwargs)
-            if data.get("id") == None:
-                self.console.print("请指定用户id", style="danger")
-                return
+        for row, staff in zip(rows, staffs):
+            row['staff'] = staff
+        if kwargs.get("staff_only") in ['y','Y',"yes", "YES"]:
+            rows = list(filter(lambda x: x.get("staff"), rows))
 
-            id = data.get("id")
+        self._print_infos_table(*rows)
+
+
+    def inspect_user(self, **kwargs):
+        for k,v in kwargs.items():
+            kwargs[k]= str(v)
+        try:
+            data = UserSchema().load(kwargs)
+            if data.get("id") is None:
+                raise ValidationError("请指定用户id")
+        except ValidationError as err:
+            self.console.print(err.messages, style="danger")
+            return
+
+        id = data.get("id")
+        try:
             row = asyncio.get_event_loop().run_until_complete(
                 self.user_service.info(id)
             )
             staff = asyncio.get_event_loop().run_until_complete(
                 self.user_service.is_staff_by_id(id)
             )
-            row['staff'] = staff
-
-            self._print_info_detail(row)
         except Exception as err:
             self.console.print(err, style="danger")
             return
+        row['staff'] = staff
+
+        self._print_info_detail(row)
+
 
     def create_user(self, **kwargs):
+        for k,v in kwargs.items():
+            kwargs[k]= str(v)
         try:
-            data = self.user_validator.validate(kwargs)
-            if data.get("name") == None or data.get("password") == None:
-                self.console.print("用户名或密码不能为空", style="danger")
-                return
+            data = UserSchema().load(kwargs)
+            if data.get("name") is None or data.get("password") is None:
+                raise ValidationError("用户名或密码不能为空")
+        except ValidationError as err:
+            self.console.print(err.messages, style="danger")
+            return
 
+        try:
             row = asyncio.get_event_loop().run_until_complete(
                 self.user_service.create(**data)
             )
@@ -147,43 +131,53 @@ class User:
             staff = asyncio.get_event_loop().run_until_complete(
                 self.user_service.is_staff_by_id(id)
             )
-            row['staff'] = staff
-
-            self._print_info_detail(row)
         except Exception as err:
             self.console.print(err, style="danger")
             return
+        row['staff'] = staff
+
+        self._print_info_detail(row)
 
     def set_staff(self, **kwargs):
+        for k,v in kwargs.items():
+            kwargs[k]= str(v)
         try:
-            data = self.user_validator.validate(kwargs)
-            if data.get("id") == None:
-                self.console.print("请指定用户id", style="danger")
-                return
-            id = data.get("id")
+            data = UserSchema().load(kwargs)
+            if data.get("id") is None:
+                raise ValidationError("请指定用户id")
+        except ValidationError as err:
+            self.console.print(err.messages, style="danger")
+            return
 
+        id = data.get("id")
+        try:
             asyncio.get_event_loop().run_until_complete(
                 self.user_service.set_staff(id)
             )
-
-            self.inspect_user(id=id)
         except Exception as err:
             self.console.print(err, style="danger")
             return
 
-    def unset_staff(self, **kwargs):
-        try:
-            data = self.user_validator.validate(kwargs)
-            if data.get("id") == None:
-                self.console.print("请指定用户id", style="danger")
-                return
-            id = data.get("id")
+        self.inspect_user(id=id)
 
+    def unset_staff(self, **kwargs):
+        for k,v in kwargs.items():
+            kwargs[k]= str(v)
+        try:
+            data = UserSchema().load(kwargs)
+            if data.get("id") is None:
+                raise ValidationError("请指定用户id")
+        except ValidationError as err:
+            self.console.print(err.messages, style="danger")
+            return
+
+        id = data.get("id")
+        try:
             asyncio.get_event_loop().run_until_complete(
                 self.user_service.unset_staff(id)
             )
-
-            self.inspect_user(id=id)
         except Exception as err:
             self.console.print(err, style="danger")
             return
+
+        self.inspect_user(id=id)
