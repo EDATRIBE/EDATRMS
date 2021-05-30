@@ -50,6 +50,20 @@ class UserService:
 
         return None if row is None else dict(row)
 
+    async def infos(self, ids):
+        valid_ids = [v for v in ids if v is not None]
+
+        if valid_ids:
+            async with self.db.acquire() as conn:
+                result = await conn.execute(
+                    UserModel.select().where(UserModel.c.id.in_(valid_ids))
+                )
+                d = {v['id']: dict(v) for v in await result.fetchall()}
+        else:
+            d = {}
+
+        return [d.get(v) for v in ids]
+
     async def info_by_name(self, name):
         if name is None:
             return None
@@ -74,18 +88,6 @@ class UserService:
 
         return None if row is None else dict(row)
 
-    async def infos(self, ids):
-        valid_ids = [v for v in ids if v is not None]
-        if valid_ids:
-            async with self.db.acquire() as conn:
-                result = await conn.execute(
-                    UserModel.select().where(UserModel.c.id.in_(valid_ids))
-                )
-                d = {v['id']: dict(v) for v in await result.fetchall()}
-        else:
-            d = {}
-
-        return [d.get(v) for v in ids]
 
     async def list_users(self, *, limit=None, offset=None):
         select_sm = UserModel.select()
@@ -134,6 +136,7 @@ class UserService:
 
     async def is_staff_by_ids(self, ids):
         valid_ids = [v for v in ids if v is not None]
+
         if valid_ids:
             async with self.db.acquire() as conn:
                 result = await conn.execute(
