@@ -1,6 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.sql as sasql
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields,validate
 
 from .common import metadata
 from ..utilities import LocalDateTime
@@ -25,15 +25,17 @@ UserModel = sa.Table(
 
 class UserSchema(Schema):
     id = fields.Integer()
-    name = fields.String()
-    email = fields.String()
-    mobile = fields.String()
-    intro = fields.String()
+    name = fields.String(validate=validate.Regexp(r"^[a-zA-Z][a-zA-Z0-9_]{0,29}$"))
+    password = fields.String(validate=validate.Regexp(r"[a-zA-Z0-9_]{6,18}$"))
+    email = fields.String(validate=validate.Email())
+    mobile = fields.String(validate=validate.Length(11,11))
+    intro = fields.String(validate=validate.Length(0,300))
     avatarId = fields.Integer(attribute='avatar_id')
     createdAt = fields.DateTime(attribute='created_at')
-    updatedAt = fields.DateTime(attribute='updated_at')
+    comment = fields.String(validate=validate.Length(0,300))
 
     avatar = fields.Nested('FileSchema')
+    staff = fields.Boolean()
 
 
 StaffModel = sa.Table(
