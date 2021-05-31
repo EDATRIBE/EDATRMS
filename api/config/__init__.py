@@ -5,6 +5,7 @@ from .log import get_log_config
 
 config = Config(load_env=False)
 config.from_object(base_config)
-config.load_environment_vars('EDATRMS_')
+
+config.load_environment_vars(config.get("PREFIX"))
 
 log_config = get_log_config(config)

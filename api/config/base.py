@@ -1,6 +1,8 @@
 import os
 
-NAME = 'edatrms'
+NAME = 'EDATRMS'
+PREFIX = 'EDATRMS_'
+
 # Directory of runtime data, like logs and uploaded files etc
 DATA_PATH = os.path.expanduser('~/Workshop/ArchiveAlpha/EDATRMS/api_data')
 # Subdirectory of files

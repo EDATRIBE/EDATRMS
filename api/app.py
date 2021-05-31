@@ -5,7 +5,7 @@ from sanic_session import Session, AIORedisSessionInterface
 
 from .config import config, log_config
 from .models import init_db, close_db, init_cache, close_cache
-from .blueprints import handle_exception
+from .blueprints import handle_exception, account
 
 os.makedirs(config['DATA_PATH'], 0o755, True)
 
@@ -17,6 +17,7 @@ app.error_handler.add(Exception, handle_exception)
 app.static('/files', os.path.join(config['DATA_PATH'], config['FILES_DIR']),
            stream_large_files=True)
 
+app.blueprint(account)
 
 @app.listener('before_server_start')
 async def server_init(app, loop):
@@ -26,7 +27,7 @@ async def server_init(app, loop):
     Session(
         app,
         AIORedisSessionInterface(
-            app.cache, expiry=config['SESSION_EXPIRY']
+            app.cache, expiry=config['SESSION_EXPIRY'],prefix= config.get("PREFIX")
         )
     )
 
