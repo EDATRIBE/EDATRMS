@@ -14,7 +14,7 @@
 
 2. **分享资源**
 
-    目前部落分享资源主要通过 list.edatribe.com 网址分享资源，这就是一个静态网页，里面的信息很少，而且需要手动更新。如果连接此数据库就可以自动更新信息，而且可以显示更多信息，包括大小，集数，视频质量等等。下载资源的体验会更好。
+    目前部落分享资源主要通过 [list.edatribe.com](https://list.edatribe.com/)网址分享资源，这就是一个静态网页，里面的信息很少，而且需要手动更新。如果连接此数据库就可以自动更新信息，而且可以显示更多信息，包括大小，集数，视频质量等等。下载资源的体验会更好。
 
 3. **网站调用**
 
@@ -26,7 +26,7 @@
 
 1. **信息录入功能**
 
-    当有新资源时需要录入到数据库，有些信息需要手工操作，有些信息可以直接爬其他网站。比如：https://anidb.net/（英文数据库）、https://bangumi.tv/（中文数据库）https://reelgood.com/。录入时可以调用爬取的资源，如果信息不对也可以手动修改。
+    当有新资源时需要录入到数据库，有些信息需要手工操作，有些信息可以直接爬其他网站。比如：[anidb.net](https://anidb.net/)（英文数据库）、[bangumi.tv](https://bangumi.tv/)（中文数据库）、[reelgood.com](https://reelgood.com/)。录入时可以调用爬取的资源，如果信息不对也可以手动修改。
 
 2. **信息查询功能**
 
@@ -90,8 +90,8 @@
 
     **Foreign Key Constraint:**
 
-    * (created_by , user.id, ondelete='SET NULL', onupdate='CASCADE')
-    * (created_by , user.id, ondelete='SET NULL', onupdate='CASCADE')
+    * (created_by, user.id, ondelete='SET NULL', onupdate='CASCADE')
+    * (created_by, user.id, ondelete='SET NULL', onupdate='CASCADE')
 
     **Index**:
 
@@ -131,7 +131,7 @@
     
     **Foreign Key Constraint:**
     
-    * (ip_id , ip.id, ondelete='CASCADE', onupdate='CASCADE')
+    * (ip_id, ip.id, ondelete='CASCADE', onupdate='CASCADE')
 
 
 * **Table Name: video**
@@ -150,12 +150,12 @@
     
     **Enum:**
     
-    - file_meta.quality: (720P, 1080P)
-    - file_meta.format: (MP4,)
+    - file_meta.quality: (360P, 640P, 720P, 960P, 1080P)
+    - file_meta.format: (MP4, MKV, AV1, OGG)
     
     **Foreign Key Constraint:**
     
-    * (animation_id , animation.id, ondelete='CASCADE', onupdate='CASCADE')
+    * (animation_id, animation.id, ondelete='CASCADE', onupdate='CASCADE')
 
 
 * **Table Name: caption**
@@ -177,13 +177,13 @@
     
     **Enum:**
     
-    - status: (todo, doing, done)
+    - status: (TODO, DOING, DONE)
     
-    - file_meta.format: (SRT,)
+    - file_meta.format: (SRT, ASS, VTT, SUP, SSA)
     
     **Foreign Key Constraint:**
     
-    * (animation_id , animation.id, ondelete='CASCADE', onupdate='CASCADE')
+    * (animation_id, animation.id, ondelete='CASCADE', onupdate='CASCADE')
     
 * **Table Name: novel**
 
@@ -218,11 +218,11 @@
     
     **Enum:**
     
-    - file_meta.format: (TXT, PDF)
+    - file_meta.format: (TXT, PDF, EPUB)
     
     **Foreign Key Constraint**:
     
-    * (ip_id , ip.id, ondelete='CASCADE', onupdate='CASCADE')
+    * (ip_id, ip.id, ondelete='CASCADE', onupdate='CASCADE')
     
 * **Table Name: file**
 
