@@ -1,5 +1,5 @@
 import sqlalchemy as sa
-
+from sqlalchemy.exc import SQLAlchemyError
 from ..models import metadata
 
 from rich.theme import Theme
@@ -42,29 +42,32 @@ class Model:
             temp_metadata.reflect(self.engine)
             temp_metadata.drop_all(self.engine)
             tables = temp_metadata.tables
-            if not tables :
-                self.console.print("[ NULL! ]", style="info")
-                return
-            for t in tables:
-                self.console.print(t, style="info")
-        except Exception as err:
+        except SQLAlchemyError as err:
             self.console.print(err, style="danger")
             return
+
+        if not tables:
+            self.console.print("[ NULL! ]", style="info")
+            return
+        for t in tables:
+            self.console.print(t, style="info")
 
     def create_tables(self):
         try:
             metadata.create_all(self.engine)
-            self.console.print("[ Done! ]", style="info")
-        except Exception as err:
+        except SQLAlchemyError as err:
             self.console.print(err, style="danger")
             return
+
+        self.console.print("[ Done! ]", style="info")
 
     def drop_tables(self):
         try:
             temp_metadata = sa.MetaData()
             temp_metadata.reflect(self.engine)
             temp_metadata.drop_all(self.engine)
-            self.console.print("[ Done! ]", style="info")
-        except Exception as err:
+        except SQLAlchemyError as err:
             self.console.print(err, style="danger")
             return
+
+        self.console.print("[ Done! ]", style="info")

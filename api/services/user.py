@@ -5,13 +5,24 @@ import sqlalchemy.sql as sasql
 from ..utilities import random_string, sha256_hash
 from ..models import UserModel, StaffModel
 
-
+import json
 class UserService:
 
     def __init__(self, config, db, cache):
         self.config = config
         self.db = db
         self.cache = cache
+
+    async def force_logout(self,id):
+        keys = await self.cache.keys(pattern=self.config.get("PREFIX")+'*')
+        for key in keys:
+            bytes_value = await self.cache.get(key)
+            try:
+                value = json.loads(bytes_value.decode())
+            except json.decoder.JSONDecodeError:
+                continue
+            if type(value) is dict and value.get("user") is not None and value.get("user").get("id") == id:
+                await self.cache.set(key, json.dumps({}), expire=self.config.get("SESSION_EXPIRY"))
 
     async def create(self, **data):
         data['salt'] = random_string(64)
@@ -27,7 +38,7 @@ class UserService:
         data = {k: v for k, v in data.items() if v is not None}
 
         if 'password' in data:
-            user = self.info(id)
+            user = await self.info(id)
             data['password'] = sha256_hash(data['password'], user['salt'])
 
         async with self.db.acquire() as conn:

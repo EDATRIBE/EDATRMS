@@ -2,7 +2,7 @@ from ..services import UserService
 from ..models import UserSchema
 import asyncio
 from marshmallow import Schema, fields, ValidationError
-
+from pymysql.err import DatabaseError
 from rich.theme import Theme
 from rich.console import Console
 from rich.table import Table
@@ -39,12 +39,8 @@ class User:
 
     def _print_infos_table(self, *rows):
         table = Table(show_header=True, header_style="bold medium_orchid1")
-        table.add_column("id")
-        table.add_column("name")
-        table.add_column("email")
-        table.add_column("mobile")
-        table.add_column("created_at")
-        table.add_column("staff")
+        for c in ["id","name","email","mobile","created_at","staff"]:
+            table.add_column(c)
 
         for row in rows:
             style = "green_yellow" if row.get("staff") else ""
@@ -104,7 +100,7 @@ class User:
             staff = asyncio.get_event_loop().run_until_complete(
                 self.user_service.is_staff_by_id(id)
             )
-        except Exception as err:
+        except DatabaseError as err:
             self.console.print(err, style="danger")
             return
         row['staff'] = staff
@@ -131,7 +127,7 @@ class User:
             staff = asyncio.get_event_loop().run_until_complete(
                 self.user_service.is_staff_by_id(id)
             )
-        except Exception as err:
+        except DatabaseError as err:
             self.console.print(err, style="danger")
             return
         row['staff'] = staff
@@ -154,7 +150,10 @@ class User:
             asyncio.get_event_loop().run_until_complete(
                 self.user_service.set_staff(id)
             )
-        except Exception as err:
+            asyncio.get_event_loop().run_until_complete(
+                self.user_service.force_logout(id)
+            )
+        except DatabaseError as err:
             self.console.print(err, style="danger")
             return
 
@@ -176,7 +175,10 @@ class User:
             asyncio.get_event_loop().run_until_complete(
                 self.user_service.unset_staff(id)
             )
-        except Exception as err:
+            asyncio.get_event_loop().run_until_complete(
+                self.user_service.force_logout(id)
+            )
+        except DatabaseError as err:
             self.console.print(err, style="danger")
             return
 
