@@ -71,9 +71,8 @@ $ cd your/path/EDATRMS
     Usage:          python -m api.manage user inspect_user [OPTIONS="VALUE"]
     Options:
         -id         所要查看的用户 id，值为整型，或可以转化为整型的字符串
-        -role       当该选项值为 staff 时，仅列出 staff 用户的信息
     ```
-
+    
 - 为用户设置 staff 角色： set_staff
 
     ```shell
