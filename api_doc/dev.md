@@ -64,9 +64,9 @@
 
 #### 逻辑结构
 
-* **Table Name: ip**
+##### ip
 
-    **Column:**
+* **Column:**
 
     | Filed                        | Type           | Nullable | Comment      |
     | ---------------------------- | -------------- | -------- | ------------ |
@@ -87,20 +87,20 @@
     | updated_by                   | integer        | False    | 最近编辑者   |
     | updated_at                   | datetime       | False    | 最近编辑日期 |
     | comment                      | varchar(300)   | False    | 备注         |
-
-    **Foreign Key Constraint:**
+    
+* **Foreign Key Constraint:**
 
     * (created_by, user.id, ondelete='SET NULL', onupdate='CASCADE')
     * (created_by, user.id, ondelete='SET NULL', onupdate='CASCADE')
 
-    **Index**:
+* **Index**:
 
     - (name, unique=True)
 
-* **Table Name: animation**
+##### animation
 
-    **Column:**
-    
+* **Column:**
+
     | Filed               | Type | Nullable | Comment             |
     | ------------------- | ---- | -------- | ------------------- |
     | id              | integer | PK |                     |
@@ -125,19 +125,19 @@
     | type            | varchar(300) | False | TV/movie/SP/OVA/OAD |
     | episodes_num    | integer | False | 集数            |
     
-    **Enum:**
-    
+* **Enum:**
+
     - type: (TV, MOVIE, SP, OVA, OAD)
-    
-    **Foreign Key Constraint:**
-    
+
+* **Foreign Key Constraint:**
+
     * (ip_id, ip.id, ondelete='CASCADE', onupdate='CASCADE')
 
+##### video
 
-* **Table Name: video**
 
-    **Column:**
-    
+* **Column:**
+
     | Filed                 | Type           | Nullable | Comment           |
     | --------------------- | -------------- | -------- | ----------------- |
     | id                    | integer        | PK       |                   |
@@ -148,20 +148,20 @@
     | [ file_meta.quality ] | json.attr: str | Optional | 分辨率（720/原画/ |
     | [ file_meta.format ]  | json.attr: str | Optional | 格式（mp4/        |
     
-    **Enum:**
-    
+* **Enum:**
+
     - file_meta.quality: (360P, 640P, 720P, 960P, 1080P)
     - file_meta.format: (MP4, MKV, AV1, OGG)
-    
-    **Foreign Key Constraint:**
-    
+
+* **Foreign Key Constraint:**
+
     * (animation_id, animation.id, ondelete='CASCADE', onupdate='CASCADE')
 
+##### caption
 
-* **Table Name: caption**
 
-    **Column:**
-    
+* **Column:**
+
     | Filed        | Type | Nullable | Comment         |
     | ------------ | ---- | -------- | --------------- |
     | id       | integer | PK |                 |
@@ -175,20 +175,22 @@
     | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
     | [ file_meta.size ] | json.attr: int | Optional | 文件大小       |
     
-    **Enum:**
-    
-    - status: (TODO, DOING, DONE)
-    
-    - file_meta.format: (SRT, ASS, VTT, SUP, SSA)
-    
-    **Foreign Key Constraint:**
-    
-    * (animation_id, animation.id, ondelete='CASCADE', onupdate='CASCADE')
-    
-* **Table Name: novel**
+* **Enum:**
 
-    **Column:**
-    
+    - status: (TODO, DOING, DONE)
+
+    - file_meta.format: (SRT, ASS, VTT, SUP, SSA)
+
+* **Foreign Key Constraint:**
+
+    * (animation_id, animation.id, ondelete='CASCADE', onupdate='CASCADE')
+
+
+##### novel
+
+
+* **Column:**
+
     | Filed            | Type      | Nullable | Comment        |
     | ---------------- | --------- | -------- | -------------- |
     | id           | integer | PK |                |
@@ -216,17 +218,19 @@
     | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
     | [ file_meta.size ] | json.attr: int | Optional | 文件大小       |
     
-    **Enum:**
-    
-    - file_meta.format: (TXT, PDF, EPUB)
-    
-    **Foreign Key Constraint**:
-    
-    * (ip_id, ip.id, ondelete='CASCADE', onupdate='CASCADE')
-    
-* **Table Name: file**
+* **Enum:**
 
-    **Column:**
+    - file_meta.format: (TXT, PDF, EPUB)
+
+* **Foreign Key Constraint**:
+
+    * (ip_id, ip.id, ondelete='CASCADE', onupdate='CASCADE')
+
+
+##### file
+
+
+* **Column:**
 
     | Filed  | Type | Nullable | Comment            |
     | ------ | ---- | -------- | ------------------ |
@@ -239,28 +243,34 @@
     | [ file_meta.type ] | json.attr: str | Optional | 文件类型 |
     | [ file_meta.size ] | json.attr: int | Optional | 文件大小 |
     
-* **Table Name: tag**
 
-    **Column:**
+##### tag
+
+
+* **Column:**
 
     | Filed | Type         | Nullable | Comment |
     | ----- | ------------ | -------- | ------- |
     | id    | integer      | PK       |         |
     | name  | varchar(300) | False    |         |
+    
 
-* **Table Name: ip_tag**
+##### ip_tag
 
-    **Column:**
+
+* **Column:**
 
     | Filed  | Type    | Nullable | Comment |
     | ------ | ------- | -------- | ------- |
     | id     | integer | PK       |         |
     | ip_id  | integer | False    |         |
     | tag_id | integer | False    |         |
+    
 
-* **Table Name: user**
+##### user
 
-    **Column:**
+
+* **Column:**
 
     | Filed         | Type    | Nullable | Comment |
     | ------------- | ------- | -------- | ------- |
@@ -276,19 +286,23 @@
     | created_at          | datetime | False | 创建日期     |
     | comment             | varchar(300) | False | 备注         |
     
-* **Table Name: caption_user**
 
-    **Column:**
+##### caption_user
+
+
+* **Column:**
 
     | Filed      | Type   | Nullable | Comment |
     | ---------- | ------ | -------- | ------- |
     | id         | intger | PK       |         |
     | caption_id | intger | False    |         |
     | user_id    | intger | False    |         |
+    
 
-* **Table Name: staff**
+##### staff
 
-    **Column:**
+
+* **Column:**
 
     | Filed       | Type    | Nullable | Comment |
     | ----------- | ------- | -------- | ------- |
@@ -304,53 +318,86 @@
 
 #### 设计准则
 
-删除操作不返回任何数据，其他操作返回操作后的数据对象
+删除操作不返回任何数据，其他操作返回操作后的数据对象。
 
-#### 具体功能
+大范围使用了可变关键字参数，且对传入的数据只有最基础的非空校验。
 
-* **ip**
-    * 新增、更新、删除 ip 对象
-    * 按 id 查询单个 ip 对象、按 id 列表查询多个 ip 对象
-    * 按 limit、offset 顺序列出 ip 对象
-* **animation**
-    * 新增、更新、删除 animation 对象
-    * 按 id 查询单个 animation 对象、按 id 列表查询多个 animation 对象
-    * 按 limit、offset、ip_id 顺序列出 animation 对象
-* **video**
-    * 新增、更新、删除 video 对象
-    * 按 id 查询单个 video 对象、按 id 列表查询多个 video 对象
-    * 按 limit、offset、animation_id 顺序列出 video 对象
-* **caption**
-    * 新增、更新、删除 video 对象
-    * 按 id 查询单个 caption 对象、按 id 列表查询多个 caption 对象
-    * 按 limit、offset、animation_id 顺序列出 caption 对象
-* **novel**
-    * 新增、更新、删除 novel 对象
-    * 按 id 查询单个 novel 对象、按 id 列表查询多个 novel 对象
-    * 按 limit、offset、ip_id 顺序列出 novel 对象
-* **tag**
-    * 新增、更新、删除 tag 对象
-    * 按 id 查询单个 tag 对象、按 id 列表查询多个 tag 对象
-    * 按 limit、offset 顺序列出 tag 对象
-* **ip_tag**
-    * 新增、删除 ip_tag 关系
-    * 按 limit、offset、ip_id 顺序列出 ip_tag 对象
-    * 按 limit、offset、tag_id 顺序列出 ip_tag 对象
-* **user**
-    * 新增、更新、删除 user 对象
-    * 按 id 查询单个 user 对象、按 id 列表查询多个 user 对象
-    * 按 mobile、email 查询单个 user 对象
-    * 按 limit、offset 顺序列出所有 user 对象
-    * 按 id 设置、取消 user 对象的 staff 角色
-    * 按 id 或 id 列表来判断单个 user 或多个 user 对象是否拥有 staff 角色
-* **caption_user**
-    * 新增、删除 caption_user 关系
-    * 按 limit、offset、caption_id 顺序列出 caption_user 对象
-    * 按 limit、offset、user_id 顺序列出 caption_user 对象
+#### 具体设计
+
+##### ip
+
+* 新增、更新、删除 ip 对象
+* 按 id 查询单个 ip 对象、按 id 列表查询多个 ip 对象
+* 按 limit、offset 顺序列出 ip 对象
+
+##### animation
+
+-   新增、更新、删除 animation 对象
+-   按 id 查询单个 animation 对象、按 id 列表查询多个 animation 对象
+-   按 limit、offset、ip_id 顺序列出 animation 对象
+
+##### video
+
+-   新增、更新、删除 video 对象
+-   按 id 查询单个 video 对象、按 id 列表查询多个 video 对象
+-   按 limit、offset、animation_id 顺序列出 video 对象
+
+##### caption
+
+-   新增、更新、删除 video 对象
+-   按 id 查询单个 caption 对象、按 id 列表查询多个 caption 对象
+-   按 limit、offset、animation_id 顺序列出 caption 对象
+
+##### novel
+
+-   新增、更新、删除 novel 对象
+-   按 id 查询单个 novel 对象、按 id 列表查询多个 novel 对象
+-   按 limit、offset、ip_id 顺序列出 novel 对象
+
+##### tag
+
+-   新增、更新、删除 tag 对象
+-   按 id 查询单个 tag 对象、按 id 列表查询多个 tag 对象
+-   按 limit、offset 顺序列出 tag 对象
+
+##### ip_tag
+
+-   新增、删除 ip_tag 关系
+-   按 limit、offset、ip_id 顺序列出 ip_tag 对象
+-   按 limit、offset、tag_id 顺序列出 ip_tag 对象
+
+##### user
+
+-   新增、更新、删除 user 对象
+-   按 id 查询单个 user 对象、按 id 列表查询多个 user 对象
+-   按 mobile、email 查询单个 user 对象
+-   按 limit、offset 顺序列出所有 user 对象
+-   按 id 设置、取消 user 对象的 staff 角色
+-   按 id 或 id 列表来判断单个 user 或多个 user 对象是否拥有 staff 角色
+
+##### caption_user
+
+-   新增、删除 caption_user 关系
+-   按 limit、offset、caption_id 顺序列出 caption_user 对象
+-   按 limit、offset、user_id 顺序列出 caption_user 对象
 
 
 
 ### API 端点
+
+#### 设计准则
+
+对用户传入的数据进行如下处理：
+
+-   格式检验
+-   必要参数是否为空
+-   过滤出可用的关键字
+
+#### 具体设计
+
+##### account
+
+-   account/login
 
 
 
