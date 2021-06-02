@@ -3,7 +3,7 @@ import os
 
 import sqlalchemy as sa
 import sqlalchemy.sql as sasql
-from marshmallow import Schema, fields, post_dump
+from marshmallow import Schema, fields, post_dump,validate
 
 from ..config import config
 from ..utilities import LocalDateTime
@@ -12,6 +12,9 @@ from .common import metadata
 
 class StorageRegion(Enum):
     LOCAL = 'local'
+
+class StorageBucket(Enum):
+    IMAGES = 'images'
 
 
 FileModel = sa.Table(
@@ -35,10 +38,18 @@ FileModel = sa.Table(
 
 class FileSchema(Schema):
     id = fields.Integer()
-    region = fields.String()
-    bucket = fields.String()
-    path = fields.String()
-    meta = fields.Dict()
+    region = fields.String(validate=validate.OneOf([StorageRegion.LOCAL.value]))
+    bucket = fields.String(validate=validate.OneOf([StorageBucket.IMAGES.value]))
+    path = fields.String(validate=validate.Length(0,300))
+    fileMeta = fields.Dict(attribute='file_meta')
+    createdBy = fields.Integer(attribute='created_by')
+    createdAt = fields.DateTime(attribute='created_at')
+    updateBy = fields.Integer(attribute='updated_by')
+    updateAt = fields.DateTime(attribute='updated_at')
+    comment = fields.String(validate=validate.Length(0, 300))
+
+    class Meta:
+        ordered = True
 
     @post_dump
     def add_url(self, data, many):

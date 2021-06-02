@@ -37,6 +37,9 @@ class UserSchema(Schema):
     avatar = fields.Nested('FileSchema')
     staff = fields.Boolean()
 
+    class Meta:
+        ordered = True
+
 
 StaffModel = sa.Table(
     'staff', metadata,

@@ -12,27 +12,25 @@ account = Blueprint('account', url_prefix='/account')
 @account.post('/login')
 async def login(request):
     data = UserSchema().load(request.json)
-    name = data.get('name')
-    password = data['password']
+    for key in ["name","password"]:
+        if data.get(key) is None:
+            return response_json(code=ResponseCode.FAILURE, message='Missing key: '+key)
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    if name is not None:
-        user = await user_service.info_by_name(name)
-    else:
-        user = None
+    user = await user_service.info_by_name(data['name'])
 
-    if user is None or sha256_hash(password, user['salt']) != user['password']:
+    if user is None or sha256_hash(data['password'], user['salt']) != user['password']:
         return response_json(code=ResponseCode.FAILURE, message='Incorrect name or password')
 
     request['session']['user'] = await dump_user_info(request, user)
 
-    return response_json(user=request['session'].get('user'))
+    return response_json(user=request['session']['user'])
 
 
 @account.get('/info')
 @authenticated_user()
 async def info(request):
-    user_repr = request['session'].get('user')
+    user_repr = request['session']['user']
 
     return response_json(user=user_repr)
 
@@ -41,28 +39,21 @@ async def info(request):
 @authenticated_user()
 async def edit(request):
     id = request['session']['user']['id']
-
     data = UserSchema().load(request.json)
-    username = data.get('username')
-    password = data.get('password')
-    mobile = data.get('mobile')
-    email = data.get('email')
-    intro = data.get('intro')
-    avatar_id = data.get('avatar_id')
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
+    for key, value in data.items():
+        if key not in ["name", "password", "mobile", "email", "intro", "avatar_id"]:
+            del data[key]
+    user = await user_service.edit(id, **data)
 
-    user = await user_service.edit(
-        id, username=username, password=password, mobile=mobile,
-        email=email, avatar_id=avatar_id, intro=intro
-    )
-
-    request['session']['user'] = await dump_user_info(request, user)
-    if password is not None:
+    if data.get("password") is not None:
         await user_service.force_logout(id)
         request['session'].pop('user', None)
+    else:
+        request['session']['user'] = await dump_user_info(request, user)
 
-    return response_json(user=request['session'].get('user'))
+    return response_json(user=request['session']['user'])
 
 
 @account.get('/logout')

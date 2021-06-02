@@ -62,9 +62,7 @@
 
 枚举值使用字符串类型，具体值域另行记录
 
-#### 逻辑结构
-
-##### ip
+#### ip
 
 * **Column:**
 
@@ -97,7 +95,7 @@
 
     - (name, unique=True)
 
-##### animation
+#### animation
 
 * **Column:**
 
@@ -133,7 +131,7 @@
 
     * (ip_id, ip.id, ondelete='CASCADE', onupdate='CASCADE')
 
-##### video
+#### video
 
 
 * **Column:**
@@ -157,7 +155,7 @@
 
     * (animation_id, animation.id, ondelete='CASCADE', onupdate='CASCADE')
 
-##### caption
+#### caption
 
 
 * **Column:**
@@ -186,7 +184,7 @@
     * (animation_id, animation.id, ondelete='CASCADE', onupdate='CASCADE')
 
 
-##### novel
+#### novel
 
 
 * **Column:**
@@ -227,7 +225,7 @@
     * (ip_id, ip.id, ondelete='CASCADE', onupdate='CASCADE')
 
 
-##### file
+#### file
 
 
 * **Column:**
@@ -244,7 +242,7 @@
     | [ file_meta.size ] | json.attr: int | Optional | 文件大小 |
     
 
-##### tag
+#### tag
 
 
 * **Column:**
@@ -255,7 +253,7 @@
     | name  | varchar(300) | False    |         |
     
 
-##### ip_tag
+#### ip_tag
 
 
 * **Column:**
@@ -267,7 +265,7 @@
     | tag_id | integer | False    |         |
     
 
-##### user
+#### user
 
 
 * **Column:**
@@ -287,7 +285,7 @@
     | comment             | varchar(300) | False | 备注         |
     
 
-##### caption_user
+#### caption_user
 
 
 * **Column:**
@@ -299,7 +297,7 @@
     | user_id    | intger | False    |         |
     
 
-##### staff
+#### staff
 
 
 * **Column:**
@@ -322,51 +320,49 @@
 
 大范围使用了可变关键字参数，且对传入的数据只有最基础的非空校验。
 
-#### 具体设计
-
-##### ip
+#### ip
 
 * 新增、更新、删除 ip 对象
 * 按 id 查询单个 ip 对象、按 id 列表查询多个 ip 对象
 * 按 limit、offset 顺序列出 ip 对象
 
-##### animation
+#### animation
 
 -   新增、更新、删除 animation 对象
 -   按 id 查询单个 animation 对象、按 id 列表查询多个 animation 对象
 -   按 limit、offset、ip_id 顺序列出 animation 对象
 
-##### video
+#### video
 
 -   新增、更新、删除 video 对象
 -   按 id 查询单个 video 对象、按 id 列表查询多个 video 对象
 -   按 limit、offset、animation_id 顺序列出 video 对象
 
-##### caption
+#### caption
 
 -   新增、更新、删除 video 对象
 -   按 id 查询单个 caption 对象、按 id 列表查询多个 caption 对象
 -   按 limit、offset、animation_id 顺序列出 caption 对象
 
-##### novel
+#### novel
 
 -   新增、更新、删除 novel 对象
 -   按 id 查询单个 novel 对象、按 id 列表查询多个 novel 对象
 -   按 limit、offset、ip_id 顺序列出 novel 对象
 
-##### tag
+#### tag
 
 -   新增、更新、删除 tag 对象
 -   按 id 查询单个 tag 对象、按 id 列表查询多个 tag 对象
 -   按 limit、offset 顺序列出 tag 对象
 
-##### ip_tag
+#### ip_tag
 
 -   新增、删除 ip_tag 关系
 -   按 limit、offset、ip_id 顺序列出 ip_tag 对象
 -   按 limit、offset、tag_id 顺序列出 ip_tag 对象
 
-##### user
+#### user
 
 -   新增、更新、删除 user 对象
 -   按 id 查询单个 user 对象、按 id 列表查询多个 user 对象
@@ -375,7 +371,7 @@
 -   按 id 设置、取消 user 对象的 staff 角色
 -   按 id 或 id 列表来判断单个 user 或多个 user 对象是否拥有 staff 角色
 
-##### caption_user
+#### caption_user
 
 -   新增、删除 caption_user 关系
 -   按 limit、offset、caption_id 顺序列出 caption_user 对象
@@ -391,11 +387,8 @@
 
 -   格式检验
 -   必要参数是否为空
--   过滤出可用的关键字
 
-#### 具体设计
-
-##### account
+#### account
 
 -   account/login
 
@@ -404,19 +397,36 @@
 ## TODO
 
 - [x] 实现模型
+
 - [x] 重构开发文档
+
 - [x] 规范类型值域
+
 - [x] 检查是否可空
+
 - [x] 检查外键约束以及修改时的行为
+
 - [ ] 设计索引
+
 - [x] 规范表comment
+
 - [ ] 规范枚举值
+
 - [x] 实现业务逻辑
+
 - [ ] 规范异常
+
 - [ ] 设计api端点
+
 - [ ] 整理import
+
 - [ ] 规范异常处理
+
 - [ ] 设计统计与日志模块
+
 - [ ] 重构文件存储
+
+    idea: 先上传到临时文件夹，在使用时拷贝至新的文件夹。初次上传时就登记数据库，拷贝时更新数据库。
+
 - [ ] 以同步方式重构命令模块
 

@@ -88,7 +88,7 @@ async def dump_user_info(request, user):
         return None
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
-    user['avatar'] = await storage_service.file_info(user['avatar_id'])
+    user['avatar'] = await storage_service.info(user['avatar_id'])
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
     user["staff"] = await user_service.is_staff_by_id(user['id'])
@@ -103,7 +103,7 @@ async def dump_user_infos(request, users):
         return []
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
-    files = await storage_service.file_infos([v['avatar_id'] for v in users])
+    files = await storage_service.infos([v['avatar_id'] for v in users])
     for user, file in zip(users, files):
         user['avatar'] = file
 
