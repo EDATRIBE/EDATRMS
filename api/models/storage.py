@@ -3,7 +3,7 @@ import os
 
 import sqlalchemy as sa
 import sqlalchemy.sql as sasql
-from marshmallow import Schema, fields, post_dump,validate
+from marshmallow import Schema, fields, post_dump, validate
 
 from ..config import config
 from ..utilities import LocalDateTime
@@ -43,8 +43,15 @@ FileModel = sa.Table(
 
 class FileSchema(Schema):
     id = fields.Integer()
-    region = fields.String(validate=validate.OneOf([StorageRegion.LOCAL.value]))
-    bucket = fields.String()
+    region = fields.String(validate=validate.OneOf([
+        StorageRegion.LOCAL.value
+    ]))
+    bucket = fields.String(validate=validate.OneOf([
+        StorageBucket.LIMBO.value,
+        StorageBucket.USER.value,
+        StorageBucket.ANIMATION.value,
+        StorageBucket.NOVEL.value,
+    ]))
     path = fields.String()
     fileMeta = fields.Dict(attribute='file_meta')
     createdBy = fields.Integer(attribute='created_by')
