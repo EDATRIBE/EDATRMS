@@ -8,7 +8,7 @@ from .animation import AnimationModel
 from .video import VideoModel
 from .caption import CaptionModel
 from .novel import NovelModel
-from .storage import StorageRegion, FileModel, FileSchema
+from .storage import StorageRegion,StorageBucket, FileModel, FileSchema
 from .tag import TagModel
 from .ip_tag import IPTagModel
 from .user import UserModel, UserSchema, StaffModel

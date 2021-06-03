@@ -14,7 +14,11 @@ class StorageRegion(Enum):
     LOCAL = 'local'
 
 class StorageBucket(Enum):
-    IMAGES = 'images'
+    LIMBO = 'limbo'
+    USER = 'user'
+    ANIMATION = 'animation'
+    NOVEL = 'novel'
+
 
 
 FileModel = sa.Table(
@@ -27,7 +31,8 @@ FileModel = sa.Table(
     sa.Column('created_by', sa.INTEGER(), nullable=False),
     sa.Column("created_at", LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
     sa.Column('updated_by', sa.INTEGER(), nullable=False),
-    sa.Column("updated_at", LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column("updated_at", LocalDateTime(), nullable=False,
+              server_default=sasql.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')),
     sa.Column('comment', sa.VARCHAR(300), nullable=True, server_default=''),
     sa.ForeignKeyConstraint(('created_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='file_fkc_created_by'),
@@ -39,8 +44,8 @@ FileModel = sa.Table(
 class FileSchema(Schema):
     id = fields.Integer()
     region = fields.String(validate=validate.OneOf([StorageRegion.LOCAL.value]))
-    bucket = fields.String(validate=validate.OneOf([StorageBucket.IMAGES.value]))
-    path = fields.String(validate=validate.Length(0,300))
+    bucket = fields.String()
+    path = fields.String()
     fileMeta = fields.Dict(attribute='file_meta')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
@@ -55,6 +60,6 @@ class FileSchema(Schema):
     def add_url(self, data, many):
         url = ''
         if data['region'] == StorageRegion.LOCAL.value:
-            url = '{}{}'.format(config['FILES_URL_BASE'],
+            url = '{}{}'.format(config['LOCAL_FILES_URL_BASE'],
                                 os.path.join(data['bucket'], data['path']))
         return dict(data, url=url)
