@@ -14,7 +14,7 @@ app.config.update(config)
 
 app.error_handler.add(Exception, handle_exception)
 
-app.static('/files', os.path.join(config['DATA_PATH'], config['FILES_DIR']),
+app.static('/local', os.path.join(config['DATA_PATH'], config['LOCAL_FILES_DIR']),
            stream_large_files=True)
 
 app.blueprint(account)

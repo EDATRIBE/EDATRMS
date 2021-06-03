@@ -1,5 +1,5 @@
 import sys
-
+import os
 
 def get_log_config(config):
     default_level = 'DEBUG' if config['DEBUG'] else 'INFO'
@@ -51,7 +51,7 @@ def get_log_config(config):
             'access_file': {
                 'class': 'logging.handlers.RotatingFileHandler',
                 'formatter': 'access',
-                'filename': '{}/access.log'.format(config['DATA_PATH']),
+                'filename': '{}'.format(os.path.join(config['DATA_PATH'],config['LOGS_DIR'],"access.log")),
                 'maxBytes': 10 * 1024 * 1024,
             },
             'app_console': {
@@ -62,7 +62,7 @@ def get_log_config(config):
             'app_file': {
                 'class': 'logging.handlers.RotatingFileHandler',
                 'formatter': 'generic',
-                'filename': '{}/app.log'.format(config['DATA_PATH']),
+                'filename': '{}'.format(os.path.join(config['DATA_PATH'],config['LOGS_DIR'],"app.log")),
                 'maxBytes': 10 * 1024 * 1024,
             },
         },

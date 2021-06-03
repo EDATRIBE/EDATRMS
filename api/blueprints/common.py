@@ -1,12 +1,13 @@
 from enum import Enum
 import traceback
 from functools import wraps
-
+import aiofiles
+import os
 from sanic import response
 from sanic.exceptions import SanicException, Unauthorized
 from pymysql.err import DatabaseError
-
-from ..models import UserSchema
+from ..utilities import random_string
+from ..models import UserSchema, StorageRegion, StorageBucket
 from ..services import ServiceException, StorageService, UserService
 
 from marshmallow import Schema, fields, ValidationError
@@ -55,6 +56,12 @@ def response_json(*, status=200, code=ResponseCode.SUCCESS, message='', **data):
     )
 
 
+def not_null_validation(*, data, not_null_field):
+    for key in not_null_field:
+        if data.get(key) is None:
+            return response_json(code=ResponseCode.DIRTY, message='Missing field: ' + key)
+
+
 def handle_exception(request, e):
     status = 500
     code = ResponseCode.FAILURE
@@ -93,7 +100,7 @@ async def dump_user_info(request, user):
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
     user["staff"] = await user_service.is_staff_by_id(user['id'])
 
-    visible_field = ["id", "name", "email", "mobile", "intro", "avatar", "createdAt","staff"]
+    visible_field = ["id", "name", "email", "mobile", "intro", "avatar", "createdAt", "staff"]
     user = UserSchema(only=visible_field).dump(user)
     return user
 
@@ -112,6 +119,38 @@ async def dump_user_infos(request, users):
     for user, is_staff in zip(users, is_staff_list):
         user['staff'] = is_staff
 
-    visible_field = ["id", "name", "email", "mobile", "intro", "avatar", "createdAt","staff"]
+    visible_field = ["id", "name", "email", "mobile", "intro", "avatar", "createdAt", "staff"]
     users = [UserSchema(only=visible_field).dump(v) for v in users]
     return users
+
+
+async def move_files(request, *, files, target_bucket, target_path):
+    storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
+
+    local_files = [file for file in files if file["region"] == StorageRegion.LOCAL.value]
+    print(local_files)
+    target_dir = os.path.join(
+        request.app.config['DATA_PATH'], request.app.config['LOCAL_FILES_DIR'],
+        target_bucket.value, target_path
+    )
+    os.makedirs(target_dir, 0o755, True)
+    for local_file in local_files:
+        source_posi = os.path.join(
+            request.app.config['DATA_PATH'], request.app.config['LOCAL_FILES_DIR'],
+            local_file['bucket'], local_file['path']
+        )
+        async with aiofiles.open(source_posi, 'rb') as f:
+            body = await f.read()
+
+        _, ext = os.path.splitext(local_file["file_meta"]['name'])
+        file_name = '{}{}'.format(random_string(16), ext)
+        target_posi = os.path.join(target_dir, file_name)
+        async with aiofiles.open(target_posi, 'wb') as f:
+            await f.write(body)
+
+        await storage_service.edit_file(
+            local_file['id'],
+            bucket=target_bucket.value,
+            path=os.path.join(target_path, file_name),
+            updated_by=request['session']['user']['id']
+        )

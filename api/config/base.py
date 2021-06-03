@@ -6,9 +6,12 @@ PREFIX = 'EDATRMS_'
 # Directory of runtime data, like logs and uploaded files etc
 DATA_PATH = os.path.expanduser('~/Workshop/ArchiveAlpha/EDATRMS/api_data')
 # Subdirectory of files
-FILES_DIR = 'files'
+LOCAL_FILES_DIR = 'local'
 # Endpoint of uploaded files
-FILES_URL_BASE = 'http://localhost:7000/files/'
+LOCAL_FILES_URL_BASE = 'http://localhost:7000/local/'
+# Subdirectory of logs
+LOGS_DIR = 'logs'
+
 
 # Listen host and port of server
 HOST = '0.0.0.0'
