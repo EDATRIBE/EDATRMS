@@ -10,7 +10,7 @@
 
 
 
->   A resource management system designed for EDATRIBE
+A resource management system designed for EDATRIBE.
 
-Find more in [Development Documentation](api_doc/dev.md) and [User Manual](api_doc/use.md).
+Find more in [Development Documentation CN](api_doc/dev.md) and [User Manual CN](api_doc/use.md).
 
