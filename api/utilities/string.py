@@ -1,6 +1,6 @@
+import hashlib
 import random
 import string
-import hashlib
 
 
 def random_string(length=8, letters=None):

@@ -1,5 +1,6 @@
-import sys
 import os
+import sys
+
 
 def get_log_config(config):
     default_level = 'DEBUG' if config['DEBUG'] else 'INFO'

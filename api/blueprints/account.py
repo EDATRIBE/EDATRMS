@@ -1,12 +1,12 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
+from ..models import StorageBucket, StorageRegion, UserSchema
+from ..services import StorageService, UserService
 from ..utilities import sha256_hash
-from ..models import UserSchema
-from ..services import UserService, StorageService
-from ..models import UserSchema,StorageRegion,StorageBucket
-from .common import response_json, ResponseCode, authenticated_user, authenticated_staff, dump_user_info, \
-    not_null_validation,move_files
+from .common import (ResponseCode, authenticated_staff, authenticated_user,
+                     dump_user_info, move_files, not_null_validation,
+                     response_json)
 
 account = Blueprint('account', url_prefix='/account')
 

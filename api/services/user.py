@@ -1,11 +1,12 @@
+import json
 import string
 
 import sqlalchemy.sql as sasql
 
+from ..models import StaffModel, UserModel
 from ..utilities import random_string, sha256_hash
-from ..models import UserModel, StaffModel
 
-import json
+
 class UserService:
 
     def __init__(self, config, db, cache):

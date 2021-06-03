@@ -1,16 +1,17 @@
-from enum import Enum
-import traceback
-from functools import wraps
-import aiofiles
 import os
+import traceback
+from enum import Enum
+from functools import wraps
+
+import aiofiles
+from marshmallow import Schema, ValidationError, fields
+from pymysql.err import DatabaseError
 from sanic import response
 from sanic.exceptions import SanicException, Unauthorized
-from pymysql.err import DatabaseError
-from ..utilities import random_string
-from ..models import UserSchema, StorageRegion, StorageBucket
-from ..services import ServiceException, StorageService, UserService
 
-from marshmallow import Schema, fields, ValidationError
+from ..models import StorageBucket, StorageRegion, UserSchema
+from ..services import ServiceException, StorageService, UserService
+from ..utilities import random_string
 
 
 def authenticated_user():
@@ -128,7 +129,6 @@ async def move_files(request, *, files, target_bucket, target_path):
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
 
     local_files = [file for file in files if file["region"] == StorageRegion.LOCAL.value]
-    print(local_files)
     target_dir = os.path.join(
         request.app.config['DATA_PATH'], request.app.config['LOCAL_FILES_DIR'],
         target_bucket.value, target_path

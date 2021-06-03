@@ -2,8 +2,8 @@ import sqlalchemy as sa
 import sqlalchemy.sql as sasql
 from marshmallow import Schema, fields
 
-from .common import metadata
 from ..utilities import LocalDateTime
+from .common import metadata
 
 NovelModel = sa.Table(
     'novel', metadata,

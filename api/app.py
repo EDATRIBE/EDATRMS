@@ -1,11 +1,11 @@
 import os
 
 from sanic import Sanic
-from sanic_session import Session, AIORedisSessionInterface
+from sanic_session import AIORedisSessionInterface, Session
 
+from .blueprints import account, handle_exception, storage
 from .config import config, log_config
-from .models import init_db, close_db, init_cache, close_cache
-from .blueprints import handle_exception, account,storage
+from .models import close_cache, close_db, init_cache, init_db
 
 os.makedirs(config['DATA_PATH'], 0o755, True)
 

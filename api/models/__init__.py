@@ -1,18 +1,17 @@
-from aiomysql.sa import create_engine
 import aioredis
+from aiomysql.sa import create_engine
 
-from .common import metadata
-
-from .ip import IpModel
 from .animation import AnimationModel
-from .video import VideoModel
 from .caption import CaptionModel
-from .novel import NovelModel
-from .storage import StorageRegion,StorageBucket, FileModel, FileSchema
-from .tag import TagModel
-from .ip_tag import IPTagModel
-from .user import UserModel, UserSchema, StaffModel
 from .caption_user import CaptionUserModel
+from .common import metadata
+from .ip import IpModel
+from .ip_tag import IPTagModel
+from .novel import NovelModel
+from .storage import FileModel, FileSchema, StorageBucket, StorageRegion
+from .tag import TagModel
+from .user import StaffModel, UserModel, UserSchema
+from .video import VideoModel
 
 
 async def init_db(config):

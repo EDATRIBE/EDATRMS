@@ -1,9 +1,9 @@
 import sqlalchemy as sa
-from sqlalchemy.exc import SQLAlchemyError
-from ..models import metadata
-
-from rich.theme import Theme
 from rich.console import Console
+from rich.theme import Theme
+from sqlalchemy.exc import SQLAlchemyError
+
+from ..models import metadata
 
 
 class Model:

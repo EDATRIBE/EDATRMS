@@ -1,11 +1,13 @@
-from ..services import UserService
-from ..models import UserSchema
 import asyncio
-from marshmallow import Schema, fields, ValidationError
+
+from marshmallow import Schema, ValidationError, fields
 from pymysql.err import DatabaseError
-from rich.theme import Theme
 from rich.console import Console
 from rich.table import Table
+from rich.theme import Theme
+
+from ..models import UserSchema
+from ..services import UserService
 
 
 class User:
