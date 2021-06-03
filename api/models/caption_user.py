@@ -15,7 +15,7 @@ CaptionUserModel = sa.Table(
     sa.Column('updated_by', sa.INTEGER(), nullable=False),
     sa.Column("updated_at", LocalDateTime(), nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')),
-    sa.Column('comment', sa.VARCHAR(300), nullable=True, server_default=''),
+    sa.Column('comment', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.ForeignKeyConstraint(('caption_id',), ('caption.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='caption_user_fkc_caption_id'),
     sa.ForeignKeyConstraint(('user_id',), ('user.id',),

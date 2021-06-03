@@ -15,7 +15,7 @@ IPTagModel = sa.Table(
     sa.Column('updated_by', sa.INTEGER(), nullable=False),
     sa.Column("updated_at", LocalDateTime(), nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')),
-    sa.Column('comment', sa.VARCHAR(300), nullable=True, server_default=''),
+    sa.Column('comment', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.ForeignKeyConstraint(('ip_id',), ('ip.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='ip_tag_fkc_ip_id'),
     sa.ForeignKeyConstraint(('tag_id',), ('tag.id',),

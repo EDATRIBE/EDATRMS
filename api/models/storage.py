@@ -33,13 +33,20 @@ FileModel = sa.Table(
     sa.Column('updated_by', sa.INTEGER(), nullable=False),
     sa.Column("updated_at", LocalDateTime(), nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')),
-    sa.Column('comment', sa.VARCHAR(300), nullable=True, server_default=''),
+    sa.Column('comment', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.ForeignKeyConstraint(('created_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='file_fkc_created_by'),
     sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='file_fkc_updated_by')
 )
 
+
+class FileMetaSchema(Schema):
+    name = fields.String()
+    type = fields.String()
+    size = fields.String()
+    class Meta:
+        ordered = True
 
 class FileSchema(Schema):
     id = fields.Integer()
@@ -53,7 +60,7 @@ class FileSchema(Schema):
         StorageBucket.NOVEL.value,
     ]))
     path = fields.String()
-    fileMeta = fields.Dict(attribute='file_meta')
+    fileMeta = fields.Nested('FileMetaSchema',attribute='file_meta')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
     updateBy = fields.Integer(attribute='updated_by')

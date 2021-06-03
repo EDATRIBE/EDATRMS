@@ -5,7 +5,7 @@ from .animation import AnimationModel
 from .caption import CaptionModel
 from .caption_user import CaptionUserModel
 from .common import metadata
-from .ip import IpModel
+from .ip import IPModel,IPSchema
 from .ip_tag import IPTagModel
 from .novel import NovelModel
 from .storage import FileModel, FileSchema, StorageBucket, StorageRegion

@@ -16,7 +16,7 @@ UserModel = sa.Table(
     sa.Column('intro', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.Column('avatar_id', sa.INTEGER(), nullable=True),
     sa.Column('created_at', LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
-    sa.Column('comment', sa.VARCHAR(300), nullable=True, server_default=''),
+    sa.Column('comment', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.ForeignKeyConstraint(('avatar_id',), ('file.id',),
                             ondelete='SET NULL', onupdate='CASCADE', name='user_fkc_avatar_id'),
     sa.Index('idx_username', 'name', unique=True)
@@ -45,7 +45,7 @@ StaffModel = sa.Table(
     'staff', metadata,
     sa.Column('id', sa.INTEGER(), primary_key=True),
     sa.Column('user_id', sa.INTEGER(), nullable=False, unique=True),
-    sa.Column('created_at', LocalDateTime, nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column('created_at', LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
     sa.Column('comment', sa.VARCHAR(300), nullable=True, server_default=''),
     sa.ForeignKeyConstraint(('user_id',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='staff_fkc_user_id')
