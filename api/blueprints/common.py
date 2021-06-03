@@ -57,10 +57,16 @@ def response_json(*, status=200, code=ResponseCode.SUCCESS, message='', **data):
     )
 
 
-def not_null_validation(*, data, not_null_field):
+def validate_nullable(*, data, not_null_field):
     for key in not_null_field:
         if data.get(key) is None:
             return response_json(code=ResponseCode.DIRTY, message='Missing field: ' + key)
+
+def sift_dict_by_key(*,data,allowed_key):
+    if data is None:
+        return {}
+    else:
+        return dict([(key, value) for key, value in data.items() if key in allowed_key])
 
 
 def handle_exception(request, e):

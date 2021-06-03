@@ -5,7 +5,7 @@ from ..models import StorageBucket, StorageRegion, UserSchema
 from ..services import StorageService, UserService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, move_files, not_null_validation,
+                     dump_user_info, move_files, validate_nullable,sift_dict_by_key,
                      response_json)
 
 account = Blueprint('account', url_prefix='/account')
@@ -14,7 +14,7 @@ account = Blueprint('account', url_prefix='/account')
 @account.post('/login')
 async def login(request):
     data = UserSchema().load(request.json)
-    not_null_validation(data=data, not_null_field=["name", "password"])
+    validate_nullable(data=data, not_null_field=["name", "password"])
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
     user = await user_service.info_by_name(data['name'])
@@ -40,6 +40,7 @@ async def info(request):
 async def edit(request):
     user = request['session']['user']
     data = UserSchema().load(request.json)
+    data = sift_dict_by_key(data=data,allowed_key=["name", "password", "mobile", "email", "intro", "avatar_id"])
 
     if data.get("avatar_id") is not None:
         storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
@@ -51,9 +52,6 @@ async def edit(request):
         await move_files(request,files=[file],target_bucket=StorageBucket.USER,target_path=str(user['id']))
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    for key, value in data.items():
-        if key not in ["name", "password", "mobile", "email", "intro", "avatar_id"]:
-            del data[key]
     user = await user_service.edit(user['id'], **data)
 
     if data.get("password") is not None:
