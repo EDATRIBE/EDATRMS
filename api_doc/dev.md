@@ -70,13 +70,13 @@
     | ---------------------------- | -------------- | -------- | ------------ |
     | id                           | integer        | PK       |              |
     | name                         | varchar(300)   | False    | 标识名       |
-    | reserved_names               | json           | True     | 别名         |
+    | reserved_names               | json           | False    | 别名         |
     | [ reserved_names.jp_name ]   | json.attr: str | Optional | 日文名       |
     | [ reserved_names.cn_name ]   | json.attr: str | Optional | 中文名       |
     | [ reserved_names.en_name ]   | json.attr: str | Optional | 英文名       |
     | [ reserved_names.rm_name ]   | json.attr: str | Optional | 罗马音名     |
     | [ reserved_names.misc_name ] | json.attr: str | Optional | 混合关键字   |
-    | intros                       | json           | True     | 简介         |
+    | intros                       | json           | False    | 简介         |
     | [ intro.cn_intro ]           | json.attr: str | Optional | 中文简介     |
     | [ intro.en_intro ]           | json.attr: str | Optional | 英文简介     |
     |                              |                |          |              |
@@ -104,16 +104,16 @@
     | id              | integer | PK |                     |
     | ip_id           | integer | False | 所属ip的id |
     | name            | varchar(300) | False | 标识名         |
-    | reserved_names | json | True | 别名 |
+    | reserved_names | json | False | 别名 |
     | [ reserved_names.jp_name ] | json.attr: str | Optional | 日文名             |
     | [ reserved_names.cn_name ] | json.attr: str | Optional | 中文名             |
     | [ reserved_names.en_name ] | json.attr: str | Optional | 英文名             |
     | [ reserved_names.rm_name ] | json.attr: str | Optional | 罗马音名           |
     | [ reserved_names.misc_name ] | json.attr: str | Optional | 混合关键词 |
-    | intros | json | True | 简介 |
+    | intros | json | False | 简介 |
     | [ en_intro ]        | json.attr: str | Optional | 中文简介            |
     | [ cn_intro ]        | json.attr: str | Optional | 英文简介            |
-    | image_ids | json | True | 展示图id |
+    | image_ids | json | False | 展示图id |
     | [ image_ids.horizontal_image_id ] | json.attr: int | Necessary | 横向图id       |
     | [ image_ids.vertical_image_id ] | json.attr: int | Necessary | 竖向图id |
     | [ image_ids.reversed_image_id ] | json.attr: int | Optional | 备用图id |
@@ -168,7 +168,7 @@
     | status   | varchar(300) | False | doing/todo/done |
     | finished_at | datetime | True | 完成于     |
     | file_url | varchar(300) | False | 字幕文件链接 |
-    | file_meta    | json  | True | 文件元信息 |
+    | file_meta    | json  | False | 文件元信息 |
     | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
     | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
     | [ file_meta.size ] | json.attr: int | Optional | 文件大小       |
@@ -194,13 +194,13 @@
     | id           | integer | PK |                |
     | ip_id        | integer | False | 参照ip的id |
     | name                | varchar(300) | False | 标识名   |
-    | reserved_names | json  | True | 别名     |
+    | reserved_names | json  | False | 别名     |
     | [ reserved_names.jp_name ] | json.attr: str | Optional | 日文名       |
     | [ reserved_names.cn_name ] | json.attr: str | Optional | 中文名       |
     | [ reserved_names.en_name ] | json.attr: str | Optional | 英文名       |
     | [ reserved_names.rm_name ] | json.attr: str | Optional | 罗马音名     |
     | [ reserved_names.misc_name ] | json.attr: str | Optional | 混合关键字   |
-    | intros              | json  | True | 简介     |
+    | intros              | json  | False | 简介     |
     | [ intro.cn_intro ]    | json.attr: str | Optional | 中文简介     |
     | [ intro.en_intro ]    | json.attr: str | Optional | 英文简介     |
     | image_ids | json | True |  |
@@ -211,7 +211,7 @@
     | volumes_num  | integer | False | 卷数       |
     | integrated | bool | False | 完整性 |
     | file_url     | varchar(300) | False | 文件链接   |
-    | file_meta    | json  | True | 文件元信息 |
+    | file_meta    | json  | False | 文件元信息 |
     | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
     | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
     | [ file_meta.size ] | json.attr: int | Optional | 文件大小       |
@@ -236,7 +236,7 @@
     | region | varchar(300) | False | 区域（本地/oss |
     | bucket | varchar(300) | False | 文件桶         |
     | path | varchar(300) | False | 具体路径，包括名字 |
-    | file_meta | json | True | 文件信息       |
+    | file_meta | json | False | 文件信息       |
     | [ file_meta.name ] | json.attr: str | Optional | 文件名 |
     | [ file_meta.type ] | json.attr: str | Optional | 文件类型 |
     | [ file_meta.size ] | json.attr: int | Optional | 文件大小 |
@@ -394,39 +394,40 @@
 
 
 
+### 存储方案
+
+```
+api_data
+├── logs
+│   ├── access.log
+│   └── app.log
+├── region: (local,remote,...)
+│  └── buckets: (limbo,user,animation,novel,...)
+│       └── path: (user.id,animation.id,...)
+│           └── file: (random_string16.ext)
+├── region
+│  └── ...
+...
+```
+
+
+
 ## TODO
 
 - [x] 实现模型
-
 - [x] 重构开发文档
-
 - [x] 规范类型值域
-
 - [x] 检查是否可空
-
 - [x] 检查外键约束以及修改时的行为
-
-- [ ] 设计索引
-
 - [x] 规范表comment
-
-- [ ] 规范枚举值
-
+- [x] 规范枚举值
 - [x] 实现业务逻辑
-
-- [ ] 规范异常
-
+- [x] 规范异常
+- [x] 整理import
+- [x] 规范异常处理
+- [x] 重构文件存储
 - [ ] 设计api端点
-
-- [ ] 整理import
-
-- [ ] 规范异常处理
-
 - [ ] 设计统计与日志模块
-
-- [ ] 重构文件存储
-
-    idea: 先上传到临时文件夹，在使用时拷贝至新的文件夹。初次上传时就登记数据库，拷贝时更新数据库。
-
+- [ ] 设计索引
 - [ ] 以同步方式重构命令模块
 
