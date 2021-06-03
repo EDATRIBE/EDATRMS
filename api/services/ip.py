@@ -2,7 +2,7 @@ import string
 
 import sqlalchemy.sql as sasql
 
-from ..models import IpModel
+from ..models import IPModel
 
 
 class IPService:
@@ -14,7 +14,7 @@ class IPService:
 
     async def create(self, **data):
         async with self.db.acquire() as conn:
-            result = await conn.execute(sasql.insert(IpModel).values(**data))
+            result = await conn.execute(sasql.insert(IPModel).values(**data))
             id = result.lastrowid
 
         return await self.info(id)
@@ -24,7 +24,7 @@ class IPService:
 
         async with self.db.acquire() as conn:
             await conn.execute(
-                sasql.update(IpModel).where(IpModel.c.id == id).
+                sasql.update(IPModel).where(IPModel.c.id == id).
                     values(**data)
             )
 
@@ -33,7 +33,7 @@ class IPService:
     async def delete(self, id):
         async with self.db.acquire() as conn:
             await conn.execute(
-                sasql.delete(IpModel).where(IpModel.c.id == id))
+                sasql.delete(IPModel).where(IPModel.c.id == id))
 
     async def info(self, id):
         if id is None:
@@ -41,7 +41,7 @@ class IPService:
 
         async with self.db.acquire() as conn:
             result = await conn.execute(
-                IpModel.select().where(IpModel.c.id == id)
+                IPModel.select().where(IPModel.c.id == id)
             )
             row = await result.first()
 
@@ -53,7 +53,7 @@ class IPService:
         if valid_ids:
             async with self.db.acquire() as conn:
                 result = await conn.execute(
-                    IpModel.select().where(IpModel.c.id.in_(valid_ids))
+                    IPModel.select().where(IPModel.c.id.in_(valid_ids))
                 )
                 d = {v['id']: dict(v) for v in await result.fetchall()}
         else:
@@ -62,9 +62,9 @@ class IPService:
         return [d.get(v) for v in ids]
 
     async def list_ips(self, *, limit=None, offset=None):
-        select_sm = IpModel.select()
+        select_sm = IPModel.select()
         count_sm = sasql.select([sasql.func.count()]). \
-            select_from(IpModel)
+            select_from(IPModel)
 
         # select_sm = select_sm.order_by(UserModel.c.id.desc())
 
