@@ -38,7 +38,6 @@ async def info(request):
 @account.post('/edit')
 @authenticated_user()
 async def edit(request):
-    user = request['session']['user']
     data = UserSchema().load(request.json)
     data = sift_dict_by_key(data=data,allowed_key=["name", "password", "mobile", "email", "intro", "avatar_id"])
 
@@ -47,15 +46,23 @@ async def edit(request):
         file = await storage_service.info(data["avatar_id"])
         if file is None:
             return response_json(code=ResponseCode.DIRTY, message='Missing file: ' + data.get("avatar_id"))
-        if file['created_by'] != user['id']:
+        if file['created_by'] != request['session']['user']['id']:
             return response_json(code=ResponseCode.FAILURE, message='Access deny')
-        await move_files(request,files=[file],target_bucket=StorageBucket.USER,target_path=str(user['id']))
+        await move_files(
+            request,
+            files=[file],
+            target_bucket=StorageBucket.USER,
+            target_path=str(request['session']['user']['id'])
+        )
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    user = await user_service.edit(user['id'], **data)
+    user = await user_service.edit(
+        request['session']['user']['id'],
+        **data
+    )
 
     if data.get("password") is not None:
-        await user_service.force_logout(user['id'])
+        await user_service.force_logout(request['session']['user']['id'])
         request['session'].pop('user', None)
     else:
         request['session']['user'] = await dump_user_info(request, user)

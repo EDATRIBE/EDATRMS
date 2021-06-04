@@ -74,6 +74,9 @@ async def upload(request):
 
 @storage.get('/file/info/<id:int>')
 async def info(request, id):
+    if id is None:
+        return response_json(code=ResponseCode.DIRTY, message='Missing file id')
+
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
     file = await storage_service.info(id)
     if file is None:

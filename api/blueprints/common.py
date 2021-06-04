@@ -9,9 +9,50 @@ from pymysql.err import DatabaseError
 from sanic import response
 from sanic.exceptions import SanicException, Unauthorized
 
-from ..models import StorageBucket, StorageRegion, UserSchema
+from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema
 from ..services import ServiceException, StorageService, UserService
 from ..utilities import random_string
+
+
+class ResponseCode(Enum):
+    SUCCESS = 'success'
+    FAILURE = 'failure'
+    DIRTY = 'dirty'
+
+
+def response_json(*, status=200, code=ResponseCode.SUCCESS, message='', **data):
+    return response.json(
+        {'code': code.value, 'message': message, 'data': data},
+        status
+    )
+
+
+def handle_exception(request, e):
+    status = 500
+    code = ResponseCode.FAILURE
+    message = repr(e)
+
+    if isinstance(e, SanicException):
+        status = e.status_code
+    elif isinstance(e, DatabaseError):
+        status = 200
+        code = ResponseCode.DIRTY
+    elif isinstance(e, ValidationError):
+        message = e.messages
+        code = ResponseCode.DIRTY
+        status = 200
+    elif isinstance(e, ServiceException):
+        message = e.message
+        if e.code is not None:
+            code = e.code
+        status = 200
+
+    data = {}
+    if request.app.config['DEBUG']:
+        traceback.print_exc()
+        data['exception'] = traceback.format_exc()
+
+    return response_json(status=status, code=code, message=message, **data)
 
 
 def authenticated_user():
@@ -44,57 +85,48 @@ def authenticated_staff():
     return decorator
 
 
-class ResponseCode(Enum):
-    SUCCESS = 'success'
-    FAILURE = 'failure'
-    DIRTY = 'dirty'
-
-
-def response_json(*, status=200, code=ResponseCode.SUCCESS, message='', **data):
-    return response.json(
-        {'code': code.value, 'message': message, 'data': data},
-        status
-    )
-
-
 def validate_nullable(*, data, not_null_field):
     for key in not_null_field:
         if data.get(key) is None:
             return response_json(code=ResponseCode.DIRTY, message='Missing field: ' + key)
 
-def sift_dict_by_key(*,data,allowed_key):
+
+def sift_dict_by_key(*, data, allowed_key):
     if data is None:
         return {}
     else:
         return dict([(key, value) for key, value in data.items() if key in allowed_key])
 
 
-def handle_exception(request, e):
-    status = 500
-    code = ResponseCode.FAILURE
-    message = repr(e)
+async def move_files(request, *, files, target_bucket, target_path):
+    storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
 
-    if isinstance(e, SanicException):
-        status = e.status_code
-    elif isinstance(e, DatabaseError):
-        status = 200
-        code = ResponseCode.DIRTY
-    elif isinstance(e, ValidationError):
-        message = e.messages
-        code = ResponseCode.DIRTY
-        status = 200
-    elif isinstance(e, ServiceException):
-        message = e.message
-        if e.code is not None:
-            code = e.code
-        status = 200
+    local_files = [file for file in files if file["region"] == StorageRegion.LOCAL.value]
+    target_dir = os.path.join(
+        request.app.config['DATA_PATH'], request.app.config['LOCAL_FILES_DIR'],
+        target_bucket.value, target_path
+    )
+    os.makedirs(target_dir, 0o755, True)
+    for local_file in local_files:
+        source_posi = os.path.join(
+            request.app.config['DATA_PATH'], request.app.config['LOCAL_FILES_DIR'],
+            local_file['bucket'], local_file['path']
+        )
+        async with aiofiles.open(source_posi, 'rb') as f:
+            body = await f.read()
 
-    data = {}
-    if request.app.config['DEBUG']:
-        traceback.print_exc()
-        data['exception'] = traceback.format_exc()
+        _, ext = os.path.splitext(local_file["file_meta"]['name'])
+        file_name = '{}{}'.format(random_string(16), ext)
+        target_posi = os.path.join(target_dir, file_name)
+        async with aiofiles.open(target_posi, 'wb') as f:
+            await f.write(body)
 
-    return response_json(status=status, code=code, message=message, **data)
+        await storage_service.edit_file(
+            local_file['id'],
+            bucket=target_bucket.value,
+            path=os.path.join(target_path, file_name),
+            updated_by=request['session']['user']['id']
+        )
 
 
 async def dump_user_info(request, user):
@@ -131,32 +163,24 @@ async def dump_user_infos(request, users):
     return users
 
 
-async def move_files(request, *, files, target_bucket, target_path):
-    storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
+async def dump_ip_info(request, ip):
+    if ip is None:
+        return None
 
-    local_files = [file for file in files if file["region"] == StorageRegion.LOCAL.value]
-    target_dir = os.path.join(
-        request.app.config['DATA_PATH'], request.app.config['LOCAL_FILES_DIR'],
-        target_bucket.value, target_path
-    )
-    os.makedirs(target_dir, 0o755, True)
-    for local_file in local_files:
-        source_posi = os.path.join(
-            request.app.config['DATA_PATH'], request.app.config['LOCAL_FILES_DIR'],
-            local_file['bucket'], local_file['path']
-        )
-        async with aiofiles.open(source_posi, 'rb') as f:
-            body = await f.read()
+    visible_field = [
+        "id", "name", "reservedNames", "intros","createdBy", "createdAt",
+        "updateBy", "updateAt", "comment"
+    ]
+    ip = IPSchema(only=visible_field).dump(ip)
+    return ip
 
-        _, ext = os.path.splitext(local_file["file_meta"]['name'])
-        file_name = '{}{}'.format(random_string(16), ext)
-        target_posi = os.path.join(target_dir, file_name)
-        async with aiofiles.open(target_posi, 'wb') as f:
-            await f.write(body)
+async def dump_ip_infos(request, ips):
+    if not ips :
+        return []
 
-        await storage_service.edit_file(
-            local_file['id'],
-            bucket=target_bucket.value,
-            path=os.path.join(target_path, file_name),
-            updated_by=request['session']['user']['id']
-        )
+    visible_field = [
+        "id", "name", "reservedNames", "intros","createdBy", "createdAt",
+        "updateBy", "updateAt", "comment"
+    ]
+    ips = [IPSchema(only=visible_field).dump(v) for v in ips]
+    return ips
