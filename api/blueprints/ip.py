@@ -5,8 +5,8 @@ from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema
 from ..services import StorageService, UserService, IPService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, move_files, validate_nullable, sift_dict_by_key,
-                     response_json, dump_ip_info,dump_ip_infos)
+                     dump_user_info, copy_file, validate_nullable, sift_dict_by_key,
+                     response_json, dump_ip_info, dump_ip_infos)
 
 ip = Blueprint('ip', url_prefix='/ip')
 
@@ -50,7 +50,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=["name", "reservedNames", "intros", "comment"]
+        allowed_key=["name", "reserved_names", "intros", "comment"]
     )
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
