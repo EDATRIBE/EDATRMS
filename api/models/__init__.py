@@ -1,17 +1,17 @@
 import aioredis
 from aiomysql.sa import create_engine
 
-from .animation import AnimationModel
-from .caption import CaptionModel
+from .animation import AnimationModel,AnimationSchema
+from .caption import CaptionModel,CaptionSchema
 from .caption_user import CaptionUserModel
 from .common import metadata
 from .ip import IPModel,IPSchema
 from .ip_tag import IPTagModel
-from .novel import NovelModel
+from .novel import NovelModel,NovelSchema
 from .storage import FileModel, FileSchema, StorageBucket, StorageRegion
-from .tag import TagModel
+from .tag import TagModel,TagSchema
 from .user import StaffModel, UserModel, UserSchema
-from .video import VideoModel
+from .video import VideoModel,VideoSchema
 
 
 async def init_db(config):
