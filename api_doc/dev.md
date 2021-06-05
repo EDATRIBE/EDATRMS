@@ -142,14 +142,15 @@
     | animation_id          | integer        | False    |                   |
     | file_url              | varchar(300)   | False    | 视频链接          |
     | file_meta             | json           | False    | 视频元信息        |
+    | [ file_meta.name ]    | json.attr: str | Optional | 文件原名          |
+    | [ file_meta.type ]    | json.attr: str | Optional | 格式（mp4/        |
     | [ file_meta.size ]    | json.attr: int | Optional | 视频大小          |
     | [ file_meta.quality ] | json.attr: str | Optional | 分辨率（720/原画/ |
-    | [ file_meta.format ]  | json.attr: str | Optional | 格式（mp4/        |
     
 * **Enum:**
 
-    - file_meta.quality: (360P, 640P, 720P, 960P, 1080P)
     - file_meta.format: (MP4, MKV, AV1, OGG)
+    - file_meta.quality: (360P, 640P, 720P, 960P, 1080P)
 
 * **Foreign Key Constraint:**
 
@@ -165,17 +166,17 @@
     | id       | integer | PK |                 |
     | animation_id | integer | False | 所属animation的id |
     | integrated | bool | False | 完整1，不完整0 |
-    | status   | varchar(300) | False | doing/todo/done |
-    | finished_at | datetime | True | 完成于     |
+    | state | varchar(300) | False | doing/todo/done |
+    | released_at | datetime | True | 完成于     |
     | file_url | varchar(300) | False | 字幕文件链接 |
     | file_meta    | json  | False | 文件元信息 |
     | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
-    | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
+    | [ file_meta.type ] | json.attr: str | Optional | 格式/txt/pdf   |
     | [ file_meta.size ] | json.attr: int | Optional | 文件大小       |
     
 * **Enum:**
 
-    - status: (TODO, DOING, DONE)
+    - state: (TODO, DOING, DONE)
 
     - file_meta.format: (SRT, ASS, VTT, SUP, SSA)
 
@@ -387,6 +388,8 @@
 
 -   格式检验
 -   必要参数是否为空
+
+编辑对象时，如果编辑的字段未知，则需要sift_dict_by_key。若编辑的字段已知(如创建时)，则逐一填写。
 
 #### account
 
