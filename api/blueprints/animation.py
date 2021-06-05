@@ -61,7 +61,7 @@ async def publish(request):
 @animation.get('/info/<id:int>')
 async def info(request, id):
     if id is None:
-        return response_json(code=ResponseCode.DIRTY, message='Missing ip id')
+        return response_json(code=ResponseCode.DIRTY, message='Missing animation id')
 
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
     animation = await animation_service.info(id)

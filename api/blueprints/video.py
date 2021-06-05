@@ -52,7 +52,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=["animation_id", "file_meta", "comment"]
+        allowed_key=["animation_id",  "file_url","file_meta", "comment"]
     )
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)

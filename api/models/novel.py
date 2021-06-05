@@ -55,16 +55,26 @@ class NovelImageIdsSchema(Schema):
     class Meta:
         ordered = True
 
+
+class NovelFileMetaSchema(Schema):
+    name = fields.String()
+    type = fields.String(validate=validate.OneOf(['TXT','PDF','EPUB']))
+    size = fields.Integer()
+    class Meta:
+        ordered = True
+
 class NovelSchema(Schema):
     id = fields.Integer()
-    ipId = fields.Integer()
+    ipId = fields.Integer(attribute="ip_id")
     name = fields.String(validate=validate.Length(0,300))
     reservedNames = fields.Nested('NovelReservedNamesSchema',attribute='reserved_names')
     intros = fields.Nested('NovelIntrosSchema')
-    imageIds = fields.Nested('NovelImageIdsSchema',attribute='')
+    imageIds = fields.Nested('NovelImageIdsSchema',attribute='image_ids')
     writtenBy = fields.String(validate=validate.Length(0,300),attribute='written_by')
     volumesNum = fields.Integer(attribute='volumes_num')
     integrated = fields.Boolean()
+    fileUrl = fields.String(validate=validate.Length(0, 300), attribute='file_url')
+    fileMeta = fields.Nested('NovelFileMetaSchema', attribute='file_meta')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
     updateBy = fields.Integer(attribute='updated_by')
