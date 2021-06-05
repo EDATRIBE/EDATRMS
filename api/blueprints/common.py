@@ -2,14 +2,15 @@ import os
 import traceback
 from enum import Enum
 from functools import wraps
-from sanic.exceptions import NotFound,ServerError
+from sanic.exceptions import NotFound, ServerError
 import aiofiles
 from marshmallow import Schema, ValidationError, fields
 from pymysql.err import DatabaseError
 from sanic import response
 from sanic.exceptions import SanicException, Unauthorized
 
-from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema,AnimationSchema,VideoSchema,CaptionSchema,NovelSchema,TagSchema
+from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, AnimationSchema, VideoSchema, CaptionSchema, \
+    NovelSchema, TagSchema
 from ..services import ServiceException, StorageService, UserService
 from ..utilities import random_string
 
@@ -88,7 +89,7 @@ def authenticated_staff():
 def validate_nullable(*, data, not_null_field):
     for key in not_null_field:
         if data.get(key) is None:
-            return response_json(code=ResponseCode.DIRTY, message='Missing field: ' + key)
+            raise ValidationError(message='Missing field: ' + key)
 
 
 def sift_dict_by_key(*, data, allowed_key):
@@ -96,6 +97,7 @@ def sift_dict_by_key(*, data, allowed_key):
         return {}
     else:
         return dict([(key, value) for key, value in data.items() if key in allowed_key])
+
 
 @authenticated_user()
 async def copy_file(request, *, file, target_bucket, target_path):
@@ -176,38 +178,41 @@ async def dump_ip_info(request, ip):
         return None
 
     visible_field = [
-        "id", "name", "reservedNames", "intros","createdBy", "createdAt",
+        "id", "name", "reservedNames", "intros", "createdBy", "createdAt",
         "updateBy", "updateAt", "comment"
     ]
     ip = IPSchema(only=visible_field).dump(ip)
     return ip
 
+
 async def dump_ip_infos(request, ips):
-    if not ips :
+    if not ips:
         return []
 
     visible_field = [
-        "id", "name", "reservedNames", "intros","createdBy", "createdAt",
+        "id", "name", "reservedNames", "intros", "createdBy", "createdAt",
         "updateBy", "updateAt", "comment"
     ]
     ips = [IPSchema(only=visible_field).dump(v) for v in ips]
     return ips
+
 
 async def dump_animation_info(request, animation):
     if animation is None:
         return None
 
     visible_field = [
-        "id", "ipId","name", "reservedNames", "intros","imageIds",
-        "producedBy","releasedAt","writtenBy","type","episodesNum",
+        "id", "ipId", "name", "reservedNames", "intros", "imageIds",
+        "producedBy", "releasedAt", "writtenBy", "type", "episodesNum",
         "createdBy", "createdAt",
         "updateBy", "updateAt", "comment"
     ]
     animation = AnimationSchema(only=visible_field).dump(animation)
     return animation
 
+
 async def dump_animation_infos(request, animations):
-    if not animations :
+    if not animations:
         return []
 
     visible_field = [
@@ -219,26 +224,104 @@ async def dump_animation_infos(request, animations):
     animations = [AnimationSchema(only=visible_field).dump(v) for v in animations]
     return animations
 
+
 async def dump_video_info(request, video):
     if video is None:
         return None
 
     visible_field = [
-        "id", "animationId","fileMeta",
+        "id", "animationId", "fileUrl", "fileMeta",
         "createdBy", "createdAt",
         "updateBy", "updateAt", "comment"
     ]
     video = VideoSchema(only=visible_field).dump(video)
     return video
 
+
 async def dump_video_infos(request, videos):
-    if not videos :
+    if not videos:
         return []
 
     visible_field = [
-        "id", "animationId", "fileMeta",
+        "id", "animationId", "fileUrl", "fileMeta",
         "createdBy", "createdAt",
         "updateBy", "updateAt", "comment"
     ]
     videos = [VideoSchema(only=visible_field).dump(v) for v in videos]
     return videos
+
+
+async def dump_caption_info(request, caption):
+    if caption is None:
+        return None
+
+    visible_field = [
+        "id", "animationId", "integrated", "state", "releasedAt",
+        "fileUrl", "fileMeta",
+        "createdBy", "createdAt",
+        "updateBy", "updateAt", "comment"
+    ]
+    caption = CaptionSchema(only=visible_field).dump(caption)
+    return caption
+
+
+async def dump_caption_infos(request, captions):
+    if not captions:
+        return []
+
+    visible_field = [
+        "id", "animationId", "integrated", "state", "releasedAt",
+        "fileUrl", "fileMeta",
+        "createdBy", "createdAt",
+        "updateBy", "updateAt", "comment"
+    ]
+    captions = [CaptionSchema(only=visible_field).dump(v) for v in captions]
+    return captions
+
+
+async def dump_novel_info(request, novel):
+    if novel is None:
+        return None
+
+    visible_field = [
+        "id", "ipId", "name", "reservedNames", "intros", "imageIds",
+        "writtenBy", "volumesNum", "integrated", "fileUrl", "fileMeta",
+        "createdBy", "createdAt",
+        "updateBy", "updateAt", "comment"
+    ]
+    novel = NovelSchema(only=visible_field).dump(novel)
+    return novel
+
+
+async def dump_novel_infos(request, novels):
+    if not novels:
+        return []
+
+    visible_field = [
+        "id", "ipId", "name", "reservedNames", "intros", "imageIds",
+        "writtenBy", "volumesNum", "integrated", "fileUrl", "fileMeta",
+        "createdBy", "createdAt",
+        "updateBy", "updateAt", "comment"
+    ]
+    novels = [NovelSchema(only=visible_field).dump(v) for v in novels]
+    return novels
+
+
+async def dump_tag_info(request, tag):
+    if tag is None:
+        return None
+
+    visible_field = ["id", "name", "createdBy", "createdAt",
+                     "updateBy", "updateAt", "comment"]
+    tag = TagSchema(only=visible_field).dump(tag)
+    return tag
+
+
+async def dump_tag_infos(request, tags):
+    if not tags:
+        return []
+
+    visible_field = ["id", "name", "createdBy", "createdAt",
+                     "updateBy", "updateAt", "comment"]
+    tags = [TagSchema(only=visible_field).dump(v) for v in tags]
+    return tags
