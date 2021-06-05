@@ -13,23 +13,15 @@ ip = Blueprint('ip', url_prefix='/ip')
 
 @ip.post('/publish')
 @authenticated_staff()
-async def login(request):
+async def publish(request):
     data = IPSchema().load(request.json)
     validate_nullable(data=data, not_null_field=["name"])
-    data["reserved_names"] = sift_dict_by_key(
-        data=data.get("reserved_names"),
-        allowed_key=["jp_name", "cn_name", "en_name", "rm_name", "misc_name"]
-    )
-    data["intros"] = sift_dict_by_key(
-        data=data.get("intros"),
-        allowed_key=["cn_intro", "en_intro"]
-    )
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = await ip_service.create(
         name=data["name"],
-        reserved_names=data["reserved_names"],
-        intros=data["intros"],
+        reserved_names=data.get("reserved_names",{}),
+        intros=data.get("intros",{}),
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
         comment=data.get("comment", '')
@@ -55,17 +47,8 @@ async def edit(request):
     data = IPSchema().load(request.json)
     validate_nullable(data=data,not_null_field=["id"])
     id = data["id"]
-    if data.get("reserved_names"):
-        data["reserved_names"] = sift_dict_by_key(
-            data=data.get("reserved_names"),
-            allowed_key=["jp_name", "cn_name", "en_name", "rm_name", "misc_name"]
-        )
-    if data.get("intros"):
-        data["intros"] = sift_dict_by_key(
-            data=data.get("intros"),
-            allowed_key=["cn_intro", "en_intro"]
-        )
-    data = sift_dict_by_key(
+
+    allowed_data = sift_dict_by_key(
         data=data,
         allowed_key=["name", "reservedNames", "intros", "comment"]
     )
@@ -73,7 +56,7 @@ async def edit(request):
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = await ip_service.edit(
         id,
-        **data,
+        **allowed_data,
         updated_by=request['session']['user']['id']
     )
 
