@@ -62,9 +62,9 @@ async def edit(request):
 
     return response_json(ip=await dump_ip_info(request, ip))
 
-@ip.post('/delet')
+@ip.post('/delete')
 @authenticated_staff()
-async def delet(request):
+async def delete(request):
     data = IPSchema().load(request.json)
     validate_nullable(data=data, not_null_field=["id"])
 

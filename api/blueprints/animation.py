@@ -114,10 +114,10 @@ async def edit(request):
     return response_json(animation=await dump_animation_info(request, animation))
 
 
-@animation.post('/delet')
+@animation.post('/delete')
 @authenticated_staff()
-async def delet(request):
-    data = IPSchema().load(request.json)
+async def delete(request):
+    data = AnimationSchema().load(request.json)
     validate_nullable(data=data, not_null_field=["id"])
 
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)

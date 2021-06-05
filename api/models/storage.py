@@ -44,7 +44,7 @@ FileModel = sa.Table(
 class FileMetaSchema(Schema):
     name = fields.String()
     type = fields.String()
-    size = fields.String()
+    size = fields.Integer()
     class Meta:
         ordered = True
 

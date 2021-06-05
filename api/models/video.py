@@ -29,7 +29,7 @@ VideoModel = sa.Table(
 class VideoFileMetaSchema(Schema):
     name = fields.String()
     type = fields.String(validate=validate.OneOf(['MP4','MKV','AV1','OGG']))
-    size = fields.String()
+    size = fields.Integer()
     quality = fields.String(validate=validate.OneOf(['360p','640P','720P','960P','1080P']))
     class Meta:
         ordered = True
@@ -38,7 +38,7 @@ class VideoSchema(Schema):
     id = fields.Integer()
     animationId = fields.Integer(attribute='animation_id')
     fileUrl = fields.String(validate=validate.Length(0, 300),attribute='file_url')
-    fileMeta = fields.Nested('FileMetaSchema',attribute='file_meta')
+    fileMeta = fields.Nested('VideoFileMetaSchema',attribute='file_meta')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
     updateBy = fields.Integer(attribute='updated_by')

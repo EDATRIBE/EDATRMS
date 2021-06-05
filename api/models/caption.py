@@ -31,7 +31,7 @@ CaptionModel = sa.Table(
 class CaptionFileMetaSchema(Schema):
     name = fields.String()
     type = fields.String(validate=validate.OneOf(['SRT','ASS','VTT','SUP','SSA']))
-    size = fields.String()
+    size = fields.Integer()
     class Meta:
         ordered = True
 
@@ -42,7 +42,7 @@ class CaptionSchema(Schema):
     state = fields.String(validate=validate.OneOf(['TODO','DOING','DONE']))
     releasedAt = fields.DateTime(attribute='released_at')
     fileUrl = fields.String(validate=validate.Length(0, 300),attribute='file_url')
-    fileMeta = fields.Nested('FileMetaSchema',attribute='file_meta')
+    fileMeta = fields.Nested('CaptionFileMetaSchema',attribute='file_meta')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
     updateBy = fields.Integer(attribute='updated_by')

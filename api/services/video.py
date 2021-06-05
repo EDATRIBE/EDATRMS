@@ -61,7 +61,7 @@ class VideoService:
 
         return [d.get(v) for v in ids]
 
-    async def list_animations(self, *,animation_id=None, limit=None, offset=None):
+    async def list_videos(self, *,animation_id=None, limit=None, offset=None):
         select_sm = VideoModel.select()
         count_sm = sasql.select([sasql.func.count()]). \
             select_from(VideoModel)
