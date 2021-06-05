@@ -57,11 +57,11 @@ class AnimationImageIdsSchema(Schema):
 
 class AnimationSchema(Schema):
     id = fields.Integer()
-    ipId = fields.Integer()
+    ipId = fields.Integer(attribute="ip_id")
     name = fields.String(validate=validate.Length(0,300))
     reservedNames = fields.Nested('AnimationReservedNamesSchema',attribute='reserved_names')
     intros = fields.Nested('AnimationIntrosSchema')
-    imageIds = fields.Nested('AnimationImageIdsSchema',attribute='')
+    imageIds = fields.Nested('AnimationImageIdsSchema',attribute='image_ids')
     producedBy = fields.String(validate=validate.Length(0,300),attribute='produced_by')
     releasedAt = fields.DateTime(attribute='released_at')
     writtenBy = fields.String(validate=validate.Length(0,300),attribute='written_by')

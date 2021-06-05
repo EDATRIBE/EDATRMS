@@ -3,7 +3,7 @@ import os
 from sanic import Sanic
 from sanic_session import AIORedisSessionInterface, Session
 
-from .blueprints import account, handle_exception, storage,ip
+from .blueprints import account, handle_exception, storage,ip,animation
 from .config import config, log_config
 from .models import close_cache, close_db, init_cache, init_db
 
@@ -20,6 +20,7 @@ app.static('/local', os.path.join(config['DATA_PATH'], config['LOCAL_FILES_DIR']
 app.blueprint(account)
 app.blueprint(storage)
 app.blueprint(ip)
+app.blueprint(animation)
 
 @app.listener('before_server_start')
 async def server_init(app, loop):
