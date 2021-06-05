@@ -2,14 +2,14 @@ import os
 import traceback
 from enum import Enum
 from functools import wraps
-
+from sanic.exceptions import NotFound,ServerError
 import aiofiles
 from marshmallow import Schema, ValidationError, fields
 from pymysql.err import DatabaseError
 from sanic import response
 from sanic.exceptions import SanicException, Unauthorized
 
-from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema
+from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema,AnimationSchema,VideoSchema,CaptionSchema,NovelSchema,TagSchema
 from ..services import ServiceException, StorageService, UserService
 from ..utilities import random_string
 
@@ -97,36 +97,44 @@ def sift_dict_by_key(*, data, allowed_key):
     else:
         return dict([(key, value) for key, value in data.items() if key in allowed_key])
 
-
-async def move_files(request, *, files, target_bucket, target_path):
+@authenticated_user()
+async def copy_file(request, *, file, target_bucket, target_path):
+    if file is None:
+        raise ServerError("invalid usage of func copy_files!")
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
 
-    local_files = [file for file in files if file["region"] == StorageRegion.LOCAL.value]
-    target_dir = os.path.join(
-        request.app.config['DATA_PATH'], request.app.config['LOCAL_FILES_DIR'],
-        target_bucket.value, target_path
-    )
-    os.makedirs(target_dir, 0o755, True)
-    for local_file in local_files:
+    if file["region"] == StorageRegion.LOCAL.value:
+        target_dir = os.path.join(
+            request.app.config['DATA_PATH'], request.app.config['LOCAL_FILES_DIR'],
+            target_bucket.value, target_path
+        )
+
+        os.makedirs(target_dir, 0o755, True)
+
         source_posi = os.path.join(
             request.app.config['DATA_PATH'], request.app.config['LOCAL_FILES_DIR'],
-            local_file['bucket'], local_file['path']
+            file['bucket'], file['path']
         )
         async with aiofiles.open(source_posi, 'rb') as f:
             body = await f.read()
 
-        _, ext = os.path.splitext(local_file["file_meta"]['name'])
-        file_name = '{}{}'.format(random_string(16), ext)
-        target_posi = os.path.join(target_dir, file_name)
+        _, ext = os.path.splitext(file["file_meta"]['name'])
+        new_file_name = '{}{}'.format(random_string(16), ext)
+        target_posi = os.path.join(target_dir, new_file_name)
         async with aiofiles.open(target_posi, 'wb') as f:
             await f.write(body)
 
-        await storage_service.edit_file(
-            local_file['id'],
+        new_file = await storage_service.create_file(
+            region=StorageRegion.LOCAL.value,
             bucket=target_bucket.value,
-            path=os.path.join(target_path, file_name),
+            path=os.path.join(target_path, new_file_name),
+            file_meta=file["file_meta"],
+            created_by=request['session']['user']['id'],
             updated_by=request['session']['user']['id']
         )
+        return new_file
+    else:
+        raise ServerError("invalid usage of func copy_files!")
 
 
 async def dump_user_info(request, user):
@@ -184,3 +192,29 @@ async def dump_ip_infos(request, ips):
     ]
     ips = [IPSchema(only=visible_field).dump(v) for v in ips]
     return ips
+
+async def dump_animation_info(request, animation):
+    if animation is None:
+        return None
+
+    visible_field = [
+        "id", "ipId","name", "reservedNames", "intros","imageIds",
+        "producedBy","releasedAt","writtenBy","type","episodesNum",
+        "createdBy", "createdAt",
+        "updateBy", "updateAt", "comment"
+    ]
+    animation = AnimationSchema(only=visible_field).dump(animation)
+    return animation
+
+async def dump_animation_infos(request, animations):
+    if not animations :
+        return []
+
+    visible_field = [
+        "id", "ipId", "name", "reservedNames", "intros", "imageIds",
+        "producedBy", "releasedAt", "writtenBy", "type", "episodesNum",
+        "createdBy", "createdAt",
+        "updateBy", "updateAt", "comment"
+    ]
+    animations = [AnimationSchema(only=visible_field).dump(v) for v in animations]
+    return animations

@@ -5,7 +5,7 @@ from ..models import StorageBucket, StorageRegion, UserSchema
 from ..services import StorageService, UserService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, move_files, validate_nullable,sift_dict_by_key,
+                     dump_user_info, copy_file, validate_nullable, sift_dict_by_key,
                      response_json)
 
 account = Blueprint('account', url_prefix='/account')
@@ -48,12 +48,13 @@ async def edit(request):
             return response_json(code=ResponseCode.DIRTY, message='Missing file: ' + data.get("avatar_id"))
         if file['created_by'] != request['session']['user']['id']:
             return response_json(code=ResponseCode.FAILURE, message='Access deny')
-        await move_files(
+        new_file = await copy_file(
             request,
-            files=[file],
+            file=file,
             target_bucket=StorageBucket.USER,
             target_path=str(request['session']['user']['id'])
         )
+        data["avatar_id"] = new_file["id"]
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
     user = await user_service.edit(
