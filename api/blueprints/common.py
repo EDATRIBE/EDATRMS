@@ -185,12 +185,18 @@ async def dump_ip_info(request, ip):
 
     ip["tags"] = tags
 
+    storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
     animations,total = await animation_service.list_animations(ip_id=ip["id"])
     for animation in animations:
+        images = {}
+        for key, value in animation["image_ids"].items():
+            file = await storage_service.info(value)
+            images[key] = file
+        animation["images"] = images
         videos, total = await video_service.list_videos(animation_id=animation["id"])
         captions, total = await caption_service.list_captions(animation_id=animation["id"])
         animation["videos"] = videos
@@ -198,6 +204,12 @@ async def dump_ip_info(request, ip):
     novels,total = await novel_service.list_novels(ip_id=ip["id"])
     ip["animations"] = animations
     ip["novels"] = novels
+    for novel in novels:
+        images = {}
+        for key, value in novel["image_ids"].items():
+            file = await storage_service.info(value)
+            images[key] = file
+        novel["images"] = images
 
     visible_field = [
         "id", "name", "reservedNames", "intros", "createdBy", "createdAt",
@@ -219,6 +231,7 @@ async def dump_ip_infos(request, ips):
         tags = await tag_service.infos(tag_ids)
         ip["tags"] = tags
 
+    storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
@@ -226,11 +239,23 @@ async def dump_ip_infos(request, ips):
     for ip in ips:
         animations, total = await animation_service.list_animations(ip_id=ip["id"])
         for animation in animations:
+            images = {}
+            for key, value in animation["image_ids"].items():
+                file = await storage_service.info(value)
+                images[key] = file
+            animation["images"] = images
             videos, total = await video_service.list_videos(animation_id=animation["id"])
             captions, total = await caption_service.list_captions(animation_id=animation["id"])
             animation["videos"] = videos
             animation["captions"] = captions
         novels, total = await novel_service.list_novels(ip_id=ip["id"])
+        for novel in novels:
+            images = {}
+            for key, value in novel["image_ids"].items():
+                file = await storage_service.info(value)
+                images[key] = file
+            novel["images"] = images
+
         ip["animations"] = animations
         ip["novels"] = novels
 
@@ -246,6 +271,13 @@ async def dump_animation_info(request, animation):
     if animation is None:
         return None
 
+    storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
+    images = {}
+    for key, value in animation["image_ids"].items():
+        file = await storage_service.info(value)
+        images[key] = file
+    animation["images"] = images
+
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     videos,total = await video_service.list_videos(animation_id=animation["id"])
@@ -257,7 +289,7 @@ async def dump_animation_info(request, animation):
         "id", "ipId", "name", "reservedNames", "intros", "imageIds",
         "producedBy", "releasedAt", "writtenBy", "type", "episodesNum",
         "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment","videos","captions"
+        "updateBy", "updateAt", "comment","images","videos","captions"
     ]
     animation = AnimationSchema(only=visible_field).dump(animation)
     return animation
@@ -266,6 +298,14 @@ async def dump_animation_info(request, animation):
 async def dump_animation_infos(request, animations):
     if not animations:
         return []
+
+    storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
+    for animation in animations:
+        images = {}
+        for key, value in animation["image_ids"].items():
+            file = await storage_service.info(value)
+            images[key] = file
+        animation["images"] = images
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
@@ -280,7 +320,7 @@ async def dump_animation_infos(request, animations):
         "id", "ipId", "name", "reservedNames", "intros", "imageIds",
         "producedBy", "releasedAt", "writtenBy", "type", "episodesNum",
         "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment","videos","captions"
+        "updateBy", "updateAt", "comment","images","videos","captions"
     ]
     animations = [AnimationSchema(only=visible_field).dump(v) for v in animations]
     return animations
@@ -361,11 +401,18 @@ async def dump_novel_info(request, novel):
     if novel is None:
         return None
 
+    storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
+    images = {}
+    for key,value in novel["image_ids"].items():
+        file = await storage_service.info(value)
+        images[key] = file
+    novel["images"] = images
+
     visible_field = [
         "id", "ipId", "name", "reservedNames", "intros", "imageIds",
         "writtenBy", "volumesNum", "integrated", "fileUrl", "fileMeta",
         "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment"
+        "updateBy", "updateAt", "comment","images"
     ]
     novel = NovelSchema(only=visible_field).dump(novel)
     return novel
@@ -375,11 +422,19 @@ async def dump_novel_infos(request, novels):
     if not novels:
         return []
 
+    storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
+    for novel in novels:
+        images = {}
+        for key, value in novel["image_ids"].items():
+            file = await storage_service.info(value)
+            images[key] = file
+        novel["images"] = images
+
     visible_field = [
         "id", "ipId", "name", "reservedNames", "intros", "imageIds",
         "writtenBy", "volumesNum", "integrated", "fileUrl", "fileMeta",
         "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment"
+        "updateBy", "updateAt", "comment","images"
     ]
     novels = [NovelSchema(only=visible_field).dump(v) for v in novels]
     return novels

@@ -49,9 +49,9 @@ class AnimationIntrosSchema(Schema):
         ordered = True
 
 class AnimationImageIdsSchema(Schema):
-    horizontalImageId = fields.Integer(attribute='horizontal_image_id')
-    verticalImageId = fields.Integer(attribute='vertical_image_id')
-    reversedImageId = fields.Integer(attribute='reversed_image_id')
+    horizontal = fields.Integer(attribute='horizontal')
+    vertical = fields.Integer(attribute='vertical')
+    reversed = fields.Integer(attribute='reversed')
     class Meta:
         ordered = True
 
@@ -73,6 +73,7 @@ class AnimationSchema(Schema):
     updateAt = fields.DateTime(attribute='updated_at')
     comment = fields.String(validate=validate.Length(0, 300))
 
+    images = fields.Dict(keys=fields.String(),values=fields.Nested('FileSchema'))
     videos = fields.List(fields.Nested('VideoSchema'))
     captions = fields.List(fields.Nested('CaptionSchema'))
     class Meta:
