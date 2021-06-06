@@ -11,7 +11,7 @@ from sanic.exceptions import SanicException, Unauthorized
 
 from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, AnimationSchema, VideoSchema, CaptionSchema, \
     NovelSchema, TagSchema
-from ..services import ServiceException, StorageService, UserService
+from ..services import ServiceException, StorageService, UserService,TagService,IPTagService,CaptionUserService,CaptionService
 from ..utilities import random_string
 
 
@@ -177,9 +177,17 @@ async def dump_ip_info(request, ip):
     if ip is None:
         return None
 
+    ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
+    tag_service = TagService(request.app.config, request.app.db, request.app.cache)
+    ip_tag_items,total = await ip_tag_service.list_ip_tag_items(ip_id=ip['id'])
+    tag_ids = [ip_tag_item["tag_id"] for ip_tag_item in ip_tag_items]
+    tags = await tag_service.infos(tag_ids)
+    ip["tag_ids"] = tag_ids
+    ip["tags"] = tags
+
     visible_field = [
         "id", "name", "reservedNames", "intros", "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment"
+        "updateBy", "updateAt", "comment","tagIds","tags"
     ]
     ip = IPSchema(only=visible_field).dump(ip)
     return ip
@@ -189,9 +197,18 @@ async def dump_ip_infos(request, ips):
     if not ips:
         return []
 
+    ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
+    tag_service = TagService(request.app.config, request.app.db, request.app.cache)
+    for ip in ips:
+        ip_tag_items, total = await ip_tag_service.list_ip_tag_items(ip_id=ip['id'])
+        tag_ids = [i["tag_id"] for i in ip_tag_items]
+        tags = await tag_service.infos(tag_ids)
+        ip["tag_ids"] = tag_ids
+        ip["tags"] = tags
+
     visible_field = [
         "id", "name", "reservedNames", "intros", "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment"
+        "updateBy", "updateAt", "comment","tagIds","tags"
     ]
     ips = [IPSchema(only=visible_field).dump(v) for v in ips]
     return ips
@@ -255,11 +272,19 @@ async def dump_caption_info(request, caption):
     if caption is None:
         return None
 
+    caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
+    user_service = UserService(request.app.config, request.app.db, request.app.cache)
+    caption_user_items,total = await caption_user_service.list_caption_user_items(caption_id=caption["id"])
+    contributor_ids = [caption_user_item["user_id"] for caption_user_item in caption_user_items]
+    contributor = await user_service.infos(contributor_ids)
+    caption["contributor_ids"] = contributor_ids
+    caption["contributors"] = contributor
+
     visible_field = [
         "id", "animationId", "integrated", "state", "releasedAt",
         "fileUrl", "fileMeta",
         "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment"
+        "updateBy", "updateAt", "comment","contributorIds","contributors"
     ]
     caption = CaptionSchema(only=visible_field).dump(caption)
     return caption
@@ -268,12 +293,21 @@ async def dump_caption_info(request, caption):
 async def dump_caption_infos(request, captions):
     if not captions:
         return []
+    caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
+    user_service = UserService(request.app.config, request.app.db, request.app.cache)
+
+    for caption in captions:
+        caption_user_items, total = await caption_user_service.list_caption_user_items(caption_id=caption["id"])
+        contributor_ids = [caption_user_item["user_id"] for caption_user_item in caption_user_items]
+        contributor = await user_service.infos(contributor_ids)
+        caption["contributor_ids"] = contributor_ids
+        caption["contributors"] = contributor
 
     visible_field = [
         "id", "animationId", "integrated", "state", "releasedAt",
         "fileUrl", "fileMeta",
         "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment"
+        "updateBy", "updateAt", "comment","contributorIds","contributors"
     ]
     captions = [CaptionSchema(only=visible_field).dump(v) for v in captions]
     return captions

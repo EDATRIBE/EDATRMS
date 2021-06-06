@@ -11,9 +11,9 @@ from .common import (ResponseCode, authenticated_staff, authenticated_user,
 tag = Blueprint('tag', url_prefix='/tag')
 
 
-@tag.post('/publish')
+@tag.post('/create')
 @authenticated_staff()
-async def publish(request):
+async def create(request):
     data = TagSchema().load(request.json)
     validate_nullable(data=data, not_null_field=["name"])
 
@@ -44,11 +44,15 @@ async def info(request, id):
 async def edit(request):
     data = TagSchema().load(request.json)
     validate_nullable(data=data,not_null_field=["id"])
+
     id = data["id"]
+    tag_service = TagService(request.app.config, request.app.db, request.app.cache)
+    tag = await tag_service.info(id)
+    if tag is None:
+        raise NotFound('')
 
     allowed_data = sift_dict_by_key(data=data,allowed_key=["name","comment"])
 
-    tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     tag = await tag_service.edit(
         id,
         **allowed_data,

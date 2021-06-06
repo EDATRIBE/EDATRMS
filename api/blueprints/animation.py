@@ -11,9 +11,9 @@ from .common import (ResponseCode, authenticated_staff, authenticated_user,
 animation = Blueprint('animation', url_prefix='/animation')
 
 
-@animation.post('/publish')
+@animation.post('/create')
 @authenticated_staff()
-async def publish(request):
+async def create(request):
     data = AnimationSchema().load(request.json)
     validate_nullable(data=data, not_null_field=["ip_id", "name", "released_at", "type", "episodes_num"])
 
@@ -76,7 +76,12 @@ async def info(request, id):
 async def edit(request):
     data = AnimationSchema().load(request.json)
     validate_nullable(data=data, not_null_field=["id"])
+
     id = data["id"]
+    animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
+    animation = await animation_service.info(id)
+    if animation is None:
+        raise NotFound('')
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
     for key, value in data.get("image_ids", {}).items():
@@ -104,7 +109,6 @@ async def edit(request):
             "comment"
         ]
     )
-    animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
     animation = await animation_service.edit(
         id,
         **allowed_data,

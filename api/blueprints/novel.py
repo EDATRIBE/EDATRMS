@@ -11,9 +11,9 @@ from .common import (ResponseCode, authenticated_staff, authenticated_user,
 novel = Blueprint('novel', url_prefix='/novel')
 
 
-@novel.post('/publish')
+@novel.post('/create')
 @authenticated_staff()
-async def publish(request):
+async def create(request):
     data = NovelSchema().load(request.json)
     validate_nullable(
         data=data,
@@ -80,7 +80,12 @@ async def info(request, id):
 async def edit(request):
     data = NovelSchema().load(request.json)
     validate_nullable(data=data, not_null_field=["id"])
+
     id = data["id"]
+    novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
+    novel = await novel_service.info(id)
+    if novel is None:
+        raise NotFound('')
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
     for key, value in data.get("image_ids", {}).items():
@@ -108,7 +113,6 @@ async def edit(request):
             "comment"
         ]
     )
-    novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
     novel = await novel_service.edit(
         id,
         **allowed_data,

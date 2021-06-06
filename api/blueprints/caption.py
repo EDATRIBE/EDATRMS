@@ -70,13 +70,16 @@ async def edit(request):
     data = CaptionSchema().load(request.json)
     validate_nullable(data=data,not_null_field=["id"])
     id = data["id"]
+    caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
+    caption = await caption_service.info(id)
+    if caption is None:
+        raise NotFound('')
 
     allowed_data = sift_dict_by_key(
         data=data,
         allowed_key=["animation_id","integrated","state", "file_url", "file_meta", "comment"]
     )
 
-    caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     caption = await caption_service.edit(
         id,
         **allowed_data,

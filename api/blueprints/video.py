@@ -12,9 +12,9 @@ from .common import (ResponseCode, authenticated_staff, authenticated_user,
 video = Blueprint('video', url_prefix='/video')
 
 
-@video.post('/publish')
+@video.post('/create')
 @authenticated_staff()
-async def publish(request):
+async def create(request):
     data = VideoSchema().load(request.json)
     validate_nullable(data=data, not_null_field=["animation_id", "file_url"])
 
@@ -48,14 +48,18 @@ async def info(request, id):
 async def edit(request):
     data = VideoSchema().load(request.json)
     validate_nullable(data=data,not_null_field=["id"])
+
     id = data["id"]
+    video_service = VideoService(request.app.config, request.app.db, request.app.cache)
+    video = await video_service.info(id)
+    if video is None:
+        raise NotFound('')
 
     allowed_data = sift_dict_by_key(
         data=data,
         allowed_key=["animation_id",  "file_url","file_meta", "comment"]
     )
 
-    video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     video = await video_service.edit(
         id,
         **allowed_data,

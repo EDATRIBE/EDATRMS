@@ -65,18 +65,23 @@ async def edit(request):
     data = IPSchema().load(request.json)
     validate_nullable(data=data,not_null_field=["id"])
     id = data["id"]
+    ip_service = IPService(request.app.config, request.app.db, request.app.cache)
+    ip = await ip_service.info(id)
+    if ip is None:
+        raise NotFound('')
 
     allowed_data = sift_dict_by_key(
         data=data,
         allowed_key=["name", "reserved_names", "intros", "comment"]
     )
 
-    ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = await ip_service.edit(
         id,
         **allowed_data,
         updated_by=request['session']['user']['id']
     )
+    if ip is None:
+        raise NotFound('')
 
     return response_json(ip=await dump_ip_info(request, ip))
 
