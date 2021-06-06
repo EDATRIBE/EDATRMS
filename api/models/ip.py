@@ -50,5 +50,8 @@ class IPSchema(Schema):
     updateAt = fields.DateTime(attribute='updated_at')
     comment = fields.String(validate=validate.Length(0, 300))
 
+    tagIds = fields.List(fields.Integer(),attribute='tag_ids')
+    tags = fields.List(fields.Nested('TagSchema'))
+
     class Meta:
         ordered = True

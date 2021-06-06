@@ -1,7 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.sql as sasql
-from marshmallow import Schema, fields
-
+from marshmallow import Schema, fields,validate
 from ..utilities import LocalDateTime
 from .common import metadata
 
@@ -25,3 +24,16 @@ CaptionUserModel = sa.Table(
     sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='caption_user_fkc_updated_by')
 )
+
+class CaptionUserSchema(Schema):
+    id = fields.Integer()
+    captionId = fields.Integer(attribute="caption_id")
+    contributorId = fields.Integer(attribute="contributor_id")
+    createdBy = fields.Integer(attribute='created_by')
+    createdAt = fields.DateTime(attribute='created_at')
+    updateBy = fields.Integer(attribute='updated_by')
+    updateAt = fields.DateTime(attribute='updated_at')
+    comment = fields.String(validate=validate.Length(0, 300))
+
+    class Meta:
+        ordered = True

@@ -1,6 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.sql as sasql
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields,validate
 
 from ..utilities import LocalDateTime
 from .common import metadata
@@ -25,3 +25,15 @@ IPTagModel = sa.Table(
     sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='ip_tag_fkc_updated_by')
 )
+class IPTagSchema(Schema):
+    id = fields.Integer()
+    ipId = fields.Integer(attribute="ip_id")
+    tagId = fields.Integer(attribute="tag_id")
+    createdBy = fields.Integer(attribute='created_by')
+    createdAt = fields.DateTime(attribute='created_at')
+    updateBy = fields.Integer(attribute='updated_by')
+    updateAt = fields.DateTime(attribute='updated_at')
+    comment = fields.String(validate=validate.Length(0, 300))
+
+    class Meta:
+        ordered = True

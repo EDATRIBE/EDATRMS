@@ -49,5 +49,9 @@ class CaptionSchema(Schema):
     updateAt = fields.DateTime(attribute='updated_at')
     comment = fields.String(validate=validate.Length(0, 300))
 
+
+    contributorIds = fields.List(fields.Integer(), attribute='contributor_ids')
+    contributors = fields.List(fields.Nested('UserSchema'))
+
     class Meta:
         ordered = True
