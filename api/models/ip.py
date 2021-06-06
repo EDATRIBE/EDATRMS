@@ -52,6 +52,8 @@ class IPSchema(Schema):
 
     tagIds = fields.List(fields.Integer(),attribute='tag_ids')
     tags = fields.List(fields.Nested('TagSchema'))
+    animations = fields.List(fields.Nested('AnimationSchema'))
+    novels = fields.List(fields.Nested('NovelSchema'))
 
     class Meta:
         ordered = True

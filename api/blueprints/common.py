@@ -11,7 +11,7 @@ from sanic.exceptions import SanicException, Unauthorized
 
 from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, AnimationSchema, VideoSchema, CaptionSchema, \
     NovelSchema, TagSchema
-from ..services import ServiceException, StorageService, UserService,TagService,IPTagService,CaptionUserService,CaptionService
+from ..services import ServiceException, StorageService, UserService,TagService,IPTagService,CaptionUserService,CaptionService,VideoService,IPService,NovelService,AnimationService
 from ..utilities import random_string
 
 
@@ -182,12 +182,26 @@ async def dump_ip_info(request, ip):
     ip_tag_items,total = await ip_tag_service.list_ip_tag_items(ip_id=ip['id'])
     tag_ids = [ip_tag_item["tag_id"] for ip_tag_item in ip_tag_items]
     tags = await tag_service.infos(tag_ids)
-    ip["tag_ids"] = tag_ids
+
     ip["tags"] = tags
+
+    animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
+    video_service = VideoService(request.app.config, request.app.db, request.app.cache)
+    caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
+    novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
+    animations,total = await animation_service.list_animations(ip_id=ip["id"])
+    for animation in animations:
+        videos, total = await video_service.list_videos(animation_id=animation["id"])
+        captions, total = await caption_service.list_captions(animation_id=animation["id"])
+        animation["videos"] = videos
+        animation["captions"] = captions
+    novels,total = await novel_service.list_novels(ip_id=ip["id"])
+    ip["animations"] = animations
+    ip["novels"] = novels
 
     visible_field = [
         "id", "name", "reservedNames", "intros", "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment","tagIds","tags"
+        "updateBy", "updateAt", "comment","tags","animations","novels"
     ]
     ip = IPSchema(only=visible_field).dump(ip)
     return ip
@@ -203,12 +217,26 @@ async def dump_ip_infos(request, ips):
         ip_tag_items, total = await ip_tag_service.list_ip_tag_items(ip_id=ip['id'])
         tag_ids = [i["tag_id"] for i in ip_tag_items]
         tags = await tag_service.infos(tag_ids)
-        ip["tag_ids"] = tag_ids
         ip["tags"] = tags
+
+    animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
+    video_service = VideoService(request.app.config, request.app.db, request.app.cache)
+    caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
+    novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
+    for ip in ips:
+        animations, total = await animation_service.list_animations(ip_id=ip["id"])
+        for animation in animations:
+            videos, total = await video_service.list_videos(animation_id=animation["id"])
+            captions, total = await caption_service.list_captions(animation_id=animation["id"])
+            animation["videos"] = videos
+            animation["captions"] = captions
+        novels, total = await novel_service.list_novels(ip_id=ip["id"])
+        ip["animations"] = animations
+        ip["novels"] = novels
 
     visible_field = [
         "id", "name", "reservedNames", "intros", "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment","tagIds","tags"
+        "updateBy", "updateAt", "comment","tags","animations","novels"
     ]
     ips = [IPSchema(only=visible_field).dump(v) for v in ips]
     return ips
@@ -218,11 +246,18 @@ async def dump_animation_info(request, animation):
     if animation is None:
         return None
 
+    video_service = VideoService(request.app.config, request.app.db, request.app.cache)
+    caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
+    videos,total = await video_service.list_videos(animation_id=animation["id"])
+    captions,total = await caption_service.list_captions(animation_id=animation["id"])
+    animation["videos"] = videos
+    animation["captions"] = captions
+
     visible_field = [
         "id", "ipId", "name", "reservedNames", "intros", "imageIds",
         "producedBy", "releasedAt", "writtenBy", "type", "episodesNum",
         "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment"
+        "updateBy", "updateAt", "comment","videos","captions"
     ]
     animation = AnimationSchema(only=visible_field).dump(animation)
     return animation
@@ -232,11 +267,20 @@ async def dump_animation_infos(request, animations):
     if not animations:
         return []
 
+    video_service = VideoService(request.app.config, request.app.db, request.app.cache)
+    caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
+
+    for animation in animations:
+        videos, total = await video_service.list_videos(animation_id=animation["id"])
+        captions, total = await caption_service.list_captions(animation_id=animation["id"])
+        animation["videos"] = videos
+        animation["captions"] = captions
+
     visible_field = [
         "id", "ipId", "name", "reservedNames", "intros", "imageIds",
         "producedBy", "releasedAt", "writtenBy", "type", "episodesNum",
         "createdBy", "createdAt",
-        "updateBy", "updateAt", "comment"
+        "updateBy", "updateAt", "comment","videos","captions"
     ]
     animations = [AnimationSchema(only=visible_field).dump(v) for v in animations]
     return animations

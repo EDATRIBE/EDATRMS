@@ -73,5 +73,7 @@ class AnimationSchema(Schema):
     updateAt = fields.DateTime(attribute='updated_at')
     comment = fields.String(validate=validate.Length(0, 300))
 
+    videos = fields.List(fields.Nested('VideoSchema'))
+    captions = fields.List(fields.Nested('CaptionSchema'))
     class Meta:
         ordered = True
