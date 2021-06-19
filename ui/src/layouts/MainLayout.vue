@@ -1,9 +1,9 @@
 <template>
   <q-layout view="hHh lpr fFf">
     <q-header class="bg-dark" reveal>
-      <q-toolbar class="q-px-lg q-py-sm">
+      <q-toolbar style="width: 95%" class="q-py-md q-mx-auto">
         <q-icon name="fas fa-atom" size="2.5rem" />
-        <div class="text-h4 q-mx-sm">EDATRMS</div>
+        <div class="text-h4 q-mx-sm">EDAT-RMS</div>
         <q-space/>
         <div class="text-h5 q-mx-sm">Staffs</div>
         <div class="text-h5 q-mx-sm">About</div>
@@ -15,6 +15,9 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+    <div class="bg-dark-deep q-ma-none q-pa-none" style="width: 100%; height: 300px">
+
+    </div>
   </q-layout>
 </template>
 
