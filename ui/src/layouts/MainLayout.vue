@@ -1,23 +1,12 @@
 <template>
   <q-layout view="hHh lpr fFf">
-    <q-header class="bg-dark">
+    <q-header class="bg-dark" reveal>
       <q-toolbar class="q-px-lg q-py-sm">
         <q-icon name="fas fa-atom" size="2.5rem" />
-        <h class="text-h4 q-mx-sm">EDATRMS</h>
-        <q-input
-          class="q-mx-sm"
-          rounded dense dark outlined
-          v-model="text" color="white"
-          clearable
-          clear-icon="close"
-        >
-          <template v-slot:prepend>
-            <q-icon name="mdi-magnify" color="white"/>
-          </template>
-        </q-input>
+        <div class="text-h4 q-mx-sm">EDATRMS</div>
         <q-space/>
-        <h class="text-h5 q-mx-sm">Staffs</h>
-        <h class="text-h5 q-mx-sm">About</h>
+        <div class="text-h5 q-mx-sm">Staffs</div>
+        <div class="text-h5 q-mx-sm">About</div>
         <q-separator vertical color="grey" inset class="q-mx-sm"></q-separator>
         <q-icon class="q-ml-sm" name="mdi-badge-account-horizontal-outline" size="2em"/>
       </q-toolbar>
