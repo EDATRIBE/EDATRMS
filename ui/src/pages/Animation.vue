@@ -16,8 +16,7 @@
         <div class="column col-md-9 col-xs-12 q-pb-md">
           <!--TITLE-->
           <div style="width: 100%" class="q-pa-md bl">
-            <div class="col-md-10 col-xs-12"><p class="q-my-none text-white  text-h3">{{ this.animation.name }}</p>
-            </div>
+            <p class="q-my-none text-white  text-h3">{{ this.animation.name }}</p>
           </div>
           <!--INFOS-->
           <div style="width: 100%" class="q-pa-md bl">
@@ -106,8 +105,10 @@
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
-              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">URL</p></div>
-              <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ video.fileUrl }}</p></div>
+              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">DOWNLOAD</p></div>
+              <div class="col-md-10 col-xs-12">
+                <a href="baidu.com"><p class="q-my-none text-primary text-body1">2444</p></a>
+              </div>
             </div>
           </div>
           <!--CPATIONS-->
@@ -134,29 +135,31 @@
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
-              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">integrated</p>
+              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">INTEGRATED</p>
               </div>
               <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ caption.integrated }}</p>
               </div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
-              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">state</p>
+              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">STATE</p>
               </div>
               <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ caption.state }}</p>
               </div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
-              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">releasedAt</p>
+              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">RELEASED AT</p>
               </div>
               <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ caption.releasedAt }}</p>
               </div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
-              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">URL</p></div>
-              <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ caption.fileUrl }}</p></div>
+              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">DOWNLOAD</p></div>
+              <div class="col-md-10 col-xs-12">
+                <a href="baidu.com"><p class="q-my-none text-primary text-body1">2444</p></a>
+              </div>
             </div>
           </div>
         </div>
@@ -171,7 +174,7 @@ import {scroll} from 'quasar'
 const {getScrollTarget, setScrollPosition} = scroll
 
 export default {
-  name: "index.vue",
+  name: "Animation",
   data: () => ({
     animation: {},
     tab: 'Animations',

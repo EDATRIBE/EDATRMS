@@ -3,10 +3,11 @@
     <q-scroll-observer @scroll="onScroll" />
     <div class="q-mx-auto" style="width: 95%">
       <div class="column">
+        <!--SEARCH-->
         <q-input
           dense
           dark
-          class="text-h5 bg-dark-light"
+          class="text-h5 bg-dark-light q-mb-sm"
           style="width: 100%"
           v-model="text"
           clear-icon="close"
@@ -16,27 +17,27 @@
             <q-btn dense round color="gery" flat icon="mdi-magnify"/>
           </template>
         </q-input>
+        <!--TABS-->
         <q-tabs
           style="width: 100%"
           v-model="tab"
           class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
           align="justify"
           inline-label
           dense
         >
-          <q-tab ripple name="Animations" label="Animations" icon="movie" style="width: 50%"/>
-          <q-tab ripple name="Novels" label="Novels" icon="import_contacts" style="width: 50%"/>
+          <q-tab ripple class="text-primary" name="Animations" label="Animations" icon="movie" style="width: 50%"/>
+          <q-tab ripple class="text-secondary" name="Novels" label="Novels" icon="import_contacts" style="width: 50%"/>
           <q-tab ripple name="Novelss" label="Novelss" icon="import_contacts" style="width: 50%" v-if="text!==''"/>
         </q-tabs>
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="Animations" class="q-px-none bg-dark">
+<!--            <div style="width: 100%; height: 130px" class="bg-dark-deep"></div>-->
             <div class="row q-px-none q-col-gutter-x-md q-col-gutter-y-lg">
               <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
                 <q-card class="bg-grey-4" square>
                   <img :src="require('../assets/aaa.jpg')">
-                  <q-card-section class="q-pa-xs text-white bg-dark ov">
+                  <q-card-section class="q-pa-xs text-white text-body1 text-weight-bold bg-dark ov">
                     {{ lorem }}
                   </q-card-section>
                 </q-card>
@@ -62,7 +63,7 @@
       </div>
     </div>
 
-    <q-page-sticky expand position="top" class="bg-dark q-px-md" v-show="scrollInfo.position>150">
+    <q-page-sticky expand position="top" class="bg-dark q-px-md q-py-sm" v-show="scrollInfo.position>150">
       <q-toolbar style="width: 95%" class="q-px-none">
         <q-input
           dense
