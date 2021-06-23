@@ -55,7 +55,9 @@
       </q-scroll-area>
     </q-drawer>
     <q-page-container>
-      <router-view />
+      <keep-alive include="Index">
+        <router-view />
+      </keep-alive>
     </q-page-container>
     <div class="bg-dark-deep q-ma-none q-pa-none" style="width: 100%; height: 300px">
     </div>
@@ -63,9 +65,9 @@
 </template>
 
 <script>
-import SignIn from "pages/SignIn";
-import Profile from "pages/Profile";
-import NavItems from "pages/NavItems";
+import SignIn from "layouts/SignIn";
+import Profile from "layouts/Profile";
+import NavItems from "layouts/NavItems";
 export default {
   name: 'MainLayout',
   components: {

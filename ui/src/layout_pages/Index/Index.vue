@@ -5,13 +5,8 @@
       <div class="column">
         <!--SEARCH-->
         <q-input
-          dense
-          dark
-          class="text-h5 bg-dark-light q-mb-sm"
-          style="width: 100%"
+          dense dark class="text-h5 bg-dark-light q-mb-sm" style="width: 100%" standout=""
           v-model="text"
-          clear-icon="close"
-          standout=""
         >
           <template v-slot:append>
             <q-btn dense round color="gery" flat icon="mdi-magnify"/>
@@ -28,33 +23,14 @@
         >
           <q-tab ripple class="text-primary" name="Animations" :label="$t('ui.index.animations')" icon="movie" style="width: 50%"/>
           <q-tab ripple class="text-secondary" name="Novels" :label="$t('ui.index.novels')" icon="import_contacts" style="width: 50%"/>
-          <q-tab ripple name="Novelss" :label="$t('ui.index.ips')" icon="import_contacts" style="width: 50%" v-if="text!==''"/>
+          <q-tab ripple name="Ips" :label="$t('ui.index.ips')" icon="import_contacts" style="width: 50%" v-if="text!==''"/>
         </q-tabs>
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="Animations" class="q-px-none bg-dark">
-<!--            <div style="width: 100%; height: 130px" class="bg-dark-deep"></div>-->
-            <div class="row q-px-none q-col-gutter-x-md q-col-gutter-y-lg">
-              <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
-                <q-card class="bg-grey-4 shadow-8" square >
-                  <img :src="require('assets/aaa.jpg')">
-                  <q-card-section class="q-pa-xs text-white text-body1 text-weight-bold bg-dark ov">
-                    {{ lorem }}
-                  </q-card-section>
-                </q-card>
-              </div>
-            </div>
+            <IndexAnimations></IndexAnimations>
           </q-tab-panel>
           <q-tab-panel name="Novels" class="q-px-none bg-dark">
-            <div class="row q-px-none q-col-gutter-x-md q-col-gutter-y-lg">
-              <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
-                <q-card class="bg-grey-4" square>
-                  <img :src="require('assets/aaa.jpg')">
-                  <q-card-section class="q-pa-xs text-white bg-dark ov">
-                    {{ lorem }}
-                  </q-card-section>
-                </q-card>
-              </div>
-            </div>
+            <IndexNovels></IndexNovels>
           </q-tab-panel>
           <q-tab-panel name="Novelss" class="q-pa-sm" :v-if="text!==''">
           </q-tab-panel>
@@ -65,13 +41,8 @@
     <q-page-sticky expand position="top" class="bg-dark q-px-md q-py-sm" v-show="scrollInfo.position>150">
       <q-toolbar style="width: 95%" class="q-px-none">
         <q-input
-          dense
-          dark
-          class="text-h5 bg-dark-light"
-          style="width: 100%"
+          dense dark class="text-h5 bg-dark-light" style="width: 100%" standout=""
           v-model="text"
-          clear-icon="close"
-          standout
         >
           <template v-slot:append>
             <q-btn dense round color="gery" flat icon="mdi-magnify"/>
@@ -83,9 +54,15 @@
 </template>
 
 <script>
+import IndexAnimations from "src/layout_pages/Index/IndexAnimations";
+import IndexNovels from "src/layout_pages/Index/IndexNovels";
 
 export default {
   name: "Index",
+  components: {
+    IndexNovels,
+    IndexAnimations
+  },
   data: () => ({
     tab: 'Animations',
     text: '',

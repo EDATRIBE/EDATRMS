@@ -4,7 +4,7 @@
     <div v-if="!isEditing">
       <div class="row justify-center">
         <q-avatar size="250px"  v-ripple class="cursor-pointer " v-if="user !== null">
-          <img contain :src="require('../assets/3333.png')">
+          <img contain :src="require('assets/3333.png')">
         </q-avatar>
       </div>
       <div class="row q-pt-md  items-center  text-white text-h5 text-weight-medium">
@@ -187,7 +187,7 @@ import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
-import SignIn from "pages/SignIn";
+import SignIn from "layouts/SignIn";
 
 // Create FilePond component
 const FilePond = vueFilePond(
