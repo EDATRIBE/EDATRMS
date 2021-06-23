@@ -11,21 +11,21 @@
         二仙桥野猪佩奇
       </div>
       <q-separator class="q-mt-sm" color="white"></q-separator>
-      <div class="row q-pt-sm text-white text-justify text-body1">
-        <div style="width: 10%"><q-icon size="1.2em" class="q-mr-sm"  name="email"></q-icon> </div>
-        <div style="width: 90%" class="text-justify">
+      <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
+        <div ><q-icon size="1.2em" class="q-mr-sm"  name="email"></q-icon> </div>
+        <div  class="text-justify">
           amaindex@outlook.com
         </div>
       </div>
-      <div class="row q-pt-sm text-white text-justify text-body1">
-        <div style="width: 10%"><q-icon size="1.2em" class="q-mr-sm"  name="phone"></q-icon> </div>
-        <div style="width: 90%" class="text-justify">
+      <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
+        <div><q-icon size="1.2em" class="q-mr-sm"  name="phone"></q-icon> </div>
+        <div class="text-justify">
           17685472365
         </div>
       </div>
-      <div class="row q-pt-sm text-white text-justify text-body1">
-        <div style="width: 10%"><q-icon size="1em" class="q-mr-sm"  name="fas fa-info"></q-icon> </div>
-        <div style="width: 90%" class="text-justify">
+      <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
+        <div><q-icon size="1.2em" class="q-mr-sm"  name="fas fa-info"></q-icon> </div>
+        <div class="text-justify">
           春江潮水连海平，海上明月共潮生。
           滟滟随波千万里，何处春江无月明！
         </div>

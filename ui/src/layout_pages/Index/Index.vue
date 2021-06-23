@@ -11,7 +11,7 @@
           style="width: 100%"
           v-model="text"
           clear-icon="close"
-          standout
+          standout=""
         >
           <template v-slot:append>
             <q-btn dense round color="gery" flat icon="mdi-magnify"/>
@@ -26,17 +26,17 @@
           inline-label
           dense
         >
-          <q-tab ripple class="text-primary" name="Animations" label="Animations" icon="movie" style="width: 50%"/>
-          <q-tab ripple class="text-secondary" name="Novels" label="Novels" icon="import_contacts" style="width: 50%"/>
-          <q-tab ripple name="Novelss" label="Novelss" icon="import_contacts" style="width: 50%" v-if="text!==''"/>
+          <q-tab ripple class="text-primary" name="Animations" :label="$t('ui.index.animations')" icon="movie" style="width: 50%"/>
+          <q-tab ripple class="text-secondary" name="Novels" :label="$t('ui.index.novels')" icon="import_contacts" style="width: 50%"/>
+          <q-tab ripple name="Novelss" :label="$t('ui.index.ips')" icon="import_contacts" style="width: 50%" v-if="text!==''"/>
         </q-tabs>
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="Animations" class="q-px-none bg-dark">
 <!--            <div style="width: 100%; height: 130px" class="bg-dark-deep"></div>-->
             <div class="row q-px-none q-col-gutter-x-md q-col-gutter-y-lg">
               <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
-                <q-card class="bg-grey-4" square>
-                  <img :src="require('../assets/aaa.jpg')">
+                <q-card class="bg-grey-4 shadow-8" square >
+                  <img :src="require('assets/aaa.jpg')">
                   <q-card-section class="q-pa-xs text-white text-body1 text-weight-bold bg-dark ov">
                     {{ lorem }}
                   </q-card-section>
@@ -44,12 +44,11 @@
               </div>
             </div>
           </q-tab-panel>
-
           <q-tab-panel name="Novels" class="q-px-none bg-dark">
             <div class="row q-px-none q-col-gutter-x-md q-col-gutter-y-lg">
               <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
                 <q-card class="bg-grey-4" square>
-                  <img :src="require('../assets/aaa.jpg')">
+                  <img :src="require('assets/aaa.jpg')">
                   <q-card-section class="q-pa-xs text-white bg-dark ov">
                     {{ lorem }}
                   </q-card-section>
@@ -84,12 +83,9 @@
 </template>
 
 <script>
-import {scroll} from 'quasar'
-
-const {getScrollTarget, setScrollPosition} = scroll
 
 export default {
-  name: "index.vue",
+  name: "Index",
   data: () => ({
     tab: 'Animations',
     text: '',

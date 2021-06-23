@@ -1,8 +1,18 @@
 <template>
   <div>
     <div v-if="this.$q.screen.gt.sm" class="row">
-      <q-btn dense flat  no-caps class="btn-fixed-width text-h6 q-mr-sm">{{$t("ui.navItems.index")}}</q-btn>
-      <q-btn dense flat  no-caps class="btn-fixed-width text-h6 q-mr-sm">{{$t("ui.navItems.contributors")}}</q-btn>
+      <q-btn
+        dense flat  no-caps class="btn-fixed-width text-h6 q-mr-sm"
+        @click="$router.push('/')"
+      >
+        {{$t("ui.navItems.index")}}
+      </q-btn>
+      <q-btn
+        dense flat  no-caps class="btn-fixed-width text-h6 q-mr-sm"
+        @click="$router.push('/con')"
+      >
+        {{$t("ui.navItems.contributors")}}
+      </q-btn>
       <q-btn dense flat  no-caps class="btn-fixed-width text-h6 q-mr-sm" @click="foo">{{$t("ui.navItems.about")}}</q-btn>
     </div>
     <div v-if="!this.$q.screen.gt.sm" class="bg-dark no-border-radius">
