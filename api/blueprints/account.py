@@ -41,7 +41,10 @@ async def edit(request):
     data = UserSchema().load(request.json)
     data = sift_dict_by_key(data=data,allowed_key=["name", "password", "mobile", "email", "intro", "avatar_id"])
 
-    if data.get("avatar_id") is not None:
+    if data.get("avatar_id") is not None and \
+            (request['session']['user'].get('avatar') is None or
+                    request['session']['user'].get('avatar').get('id') != data.get("avatar_id")):
+
         storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
         file = await storage_service.info(data["avatar_id"])
         if file is None:

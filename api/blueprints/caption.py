@@ -16,7 +16,7 @@ caption = Blueprint('caption', url_prefix='/caption')
 @authenticated_staff()
 async def create(request):
     data = CaptionSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["animation_id","integrated","state", "file_url"])
+    validate_nullable(data=data, not_null_field=["animation_id","integrated","state", "file_addresses"])
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
     contributor_ids = data.get('contributor_ids',[])
@@ -31,7 +31,7 @@ async def create(request):
         integrated=data["integrated"],
         state=data["state"],
         released_at=data["released_at"],
-        file_url=data["file_url"],
+        file_addresses=data["file_addresses"],
         file_meta=data.get("file_meta", {}),
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
@@ -77,7 +77,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=["animation_id","integrated","state", "file_url", "file_meta", "comment"]
+        allowed_key=["animation_id","integrated","state", "file_addresses", "file_meta", "comment"]
     )
 
     caption = await caption_service.edit(

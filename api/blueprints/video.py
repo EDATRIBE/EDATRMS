@@ -16,12 +16,12 @@ video = Blueprint('video', url_prefix='/video')
 @authenticated_staff()
 async def create(request):
     data = VideoSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["animation_id", "file_url"])
+    validate_nullable(data=data, not_null_field=["animation_id", "file_addresses"])
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     video = await video_service.create(
         animation_id=data["animation_id"],
-        file_url=data["file_url"],
+        file_addresses=data["file_addresses"],
         file_meta=data.get("file_meta", {}),
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
@@ -57,7 +57,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=["animation_id",  "file_url","file_meta", "comment"]
+        allowed_key=["animation_id",  "file_addresses","file_meta", "comment"]
     )
 
     video = await video_service.edit(

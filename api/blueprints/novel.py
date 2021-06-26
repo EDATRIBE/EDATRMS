@@ -18,7 +18,7 @@ async def create(request):
     validate_nullable(
         data=data,
         not_null_field=["ip_id", "name", "written_by",
-                        "volumes_num","integrated","file_url"]
+                        "volumes_num","integrated","file_addresses"]
     )
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
@@ -37,7 +37,7 @@ async def create(request):
         written_by=data["written_by"],
         volumes_num=data.get("volumes_num"),
         integrated=data.get("integrated"),
-        file_url=data["file_url"],
+        file_addresses=data["file_addresses"],
         file_meta=data.get("file_meta", {}),
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
@@ -94,6 +94,9 @@ async def edit(request):
             return response_json(code=ResponseCode.DIRTY, message='Missing file: ' + key)
     new_image_ids = {}
     for key, value in data.get("image_ids", {}).items():
+        if novel['image_ids'].get(key) == value:
+            new_image_ids[key] = value
+            continue
         file = await storage_service.info(value)
         new_file = await copy_file(
             request,
@@ -109,7 +112,7 @@ async def edit(request):
         data=data,
         allowed_key=[
             "ip_id", "name", "reserved_names", "intros", "image_ids",
-            "written_by", "volumes_num","integrated","file_url","file_meta"
+            "written_by", "volumes_num","integrated","file_addresses","file_meta"
             "comment"
         ]
     )

@@ -90,6 +90,10 @@ async def edit(request):
             return response_json(code=ResponseCode.DIRTY, message='Missing file: ' + key)
     new_image_ids = {}
     for key, value in data.get("image_ids", {}).items():
+        if animation['image_ids'].get(key) == value:
+            new_image_ids[key] = value
+            continue
+        print(animation['image_ids'].get(key) ,value)
         file = await storage_service.info(value)
         new_file = await copy_file(
             request,

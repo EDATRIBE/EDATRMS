@@ -212,7 +212,7 @@ async def dump_ip_info(request, ip):
         novel["images"] = images
 
     visible_field = [
-        "id", "name", "reservedNames", "intros", "createdBy", "createdAt",
+        "id", "name", "reservedNames", "region", "createdBy", "createdAt",
         "updateBy", "updateAt", "comment","tags","animations","novels"
     ]
     ip = IPSchema(only=visible_field).dump(ip)
@@ -260,7 +260,7 @@ async def dump_ip_infos(request, ips):
         ip["novels"] = novels
 
     visible_field = [
-        "id", "name", "reservedNames", "intros", "createdBy", "createdAt",
+        "id", "name", "reservedNames", "region", "createdBy", "createdAt",
         "updateBy", "updateAt", "comment","tags","animations","novels"
     ]
     ips = [IPSchema(only=visible_field).dump(v) for v in ips]
@@ -331,7 +331,7 @@ async def dump_video_info(request, video):
         return None
 
     visible_field = [
-        "id", "animationId", "fileUrl", "fileMeta",
+        "id", "animationId", "fileAddresses", "fileMeta",
         "createdBy", "createdAt",
         "updateBy", "updateAt", "comment"
     ]
@@ -344,7 +344,7 @@ async def dump_video_infos(request, videos):
         return []
 
     visible_field = [
-        "id", "animationId", "fileUrl", "fileMeta",
+        "id", "animationId", "fileAddresses", "fileMeta",
         "createdBy", "createdAt",
         "updateBy", "updateAt", "comment"
     ]
@@ -366,7 +366,7 @@ async def dump_caption_info(request, caption):
 
     visible_field = [
         "id", "animationId", "integrated", "state", "releasedAt",
-        "fileUrl", "fileMeta",
+        "fileAddresses", "fileMeta",
         "createdBy", "createdAt",
         "updateBy", "updateAt", "comment","contributorIds","contributors"
     ]
@@ -389,7 +389,7 @@ async def dump_caption_infos(request, captions):
 
     visible_field = [
         "id", "animationId", "integrated", "state", "releasedAt",
-        "fileUrl", "fileMeta",
+        "fileAddresses", "fileMeta",
         "createdBy", "createdAt",
         "updateBy", "updateAt", "comment","contributorIds","contributors"
     ]
@@ -410,7 +410,7 @@ async def dump_novel_info(request, novel):
 
     visible_field = [
         "id", "ipId", "name", "reservedNames", "intros", "imageIds",
-        "writtenBy", "volumesNum", "integrated", "fileUrl", "fileMeta",
+        "writtenBy", "volumesNum", "integrated", "fileAddresses", "fileMeta",
         "createdBy", "createdAt",
         "updateBy", "updateAt", "comment","images"
     ]
@@ -432,7 +432,7 @@ async def dump_novel_infos(request, novels):
 
     visible_field = [
         "id", "ipId", "name", "reservedNames", "intros", "imageIds",
-        "writtenBy", "volumesNum", "integrated", "fileUrl", "fileMeta",
+        "writtenBy", "volumesNum", "integrated", "fileAddresses", "fileMeta",
         "createdBy", "createdAt",
         "updateBy", "updateAt", "comment","images"
     ]
