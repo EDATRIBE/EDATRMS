@@ -28,7 +28,7 @@ async def create(request):
     ip = await ip_service.create(
         name=data["name"],
         reserved_names=data.get("reserved_names",{}),
-        intros=data.get("intros",{}),
+        region=data.get("region",''),
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
         comment=data.get("comment", '')
@@ -72,7 +72,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=["name", "reserved_names", "intros", "comment"]
+        allowed_key=["name", "reserved_names", "region", "comment"]
     )
 
     ip = await ip_service.edit(
