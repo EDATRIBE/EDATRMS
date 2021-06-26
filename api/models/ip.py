@@ -20,7 +20,8 @@ IPModel = sa.Table(
     sa.ForeignKeyConstraint(('created_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='ip_fkc_created_by'),
     sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
-                            ondelete='CASCADE', onupdate='CASCADE', name='ip_fkc_updated_by')
+                            ondelete='CASCADE', onupdate='CASCADE', name='ip_fkc_updated_by'),
+    sa.UniqueConstraint("name",name='ip_uqc_name')
 )
 
 

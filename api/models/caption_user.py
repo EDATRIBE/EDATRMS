@@ -22,7 +22,8 @@ CaptionUserModel = sa.Table(
     sa.ForeignKeyConstraint(('created_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='caption_user_fkc_created_by'),
     sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
-                            ondelete='CASCADE', onupdate='CASCADE', name='caption_user_fkc_updated_by')
+                            ondelete='CASCADE', onupdate='CASCADE', name='caption_user_fkc_updated_by'),
+    sa.UniqueConstraint("caption_id", "user_id",name='caption_user_uqc')
 )
 
 class CaptionUserSchema(Schema):

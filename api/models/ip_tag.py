@@ -23,7 +23,8 @@ IPTagModel = sa.Table(
     sa.ForeignKeyConstraint(('created_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='ip_tag_fkc_created_by'),
     sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
-                            ondelete='CASCADE', onupdate='CASCADE', name='ip_tag_fkc_updated_by')
+                            ondelete='CASCADE', onupdate='CASCADE', name='ip_tag_fkc_updated_by'),
+    sa.UniqueConstraint("ip_id", "tag_id", name='ip_tag_uqc')
 )
 class IPTagSchema(Schema):
     id = fields.Integer()

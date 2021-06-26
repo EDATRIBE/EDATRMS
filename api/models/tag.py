@@ -19,7 +19,8 @@ TagModel = sa.Table(
     sa.ForeignKeyConstraint(('created_by',), ('user.id',),
                             ondelete='CASCADE', onupdate='CASCADE', name='tag_fkc_created_by'),
     sa.ForeignKeyConstraint(('updated_by',), ('user.id',),
-                            ondelete='CASCADE', onupdate='CASCADE', name='tag_fkc_updated_by')
+                            ondelete='CASCADE', onupdate='CASCADE', name='tag_fkc_updated_by'),
+    sa.UniqueConstraint("name",name='tag_uqc_name')
 )
 
 
