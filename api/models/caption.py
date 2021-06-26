@@ -3,7 +3,7 @@ import sqlalchemy.sql as sasql
 from marshmallow import Schema, fields,validate
 
 from ..utilities import LocalDateTime
-from .common import metadata
+from .common import metadata,BaiduCloudSchema
 
 CaptionModel = sa.Table(
     'caption', metadata,
@@ -12,7 +12,7 @@ CaptionModel = sa.Table(
     sa.Column('integrated', sa.Boolean(), nullable=False),
     sa.Column('state', sa.VARCHAR(300), nullable=False),
     sa.Column("released_at", LocalDateTime(), nullable=True),
-    sa.Column('file_url', sa.VARCHAR(300), nullable=False, server_default=''),
+    sa.Column('file_addresses', sa.JSON(), nullable=False),
     sa.Column('file_meta', sa.JSON(), nullable=False),
     sa.Column('created_by', sa.INTEGER(), nullable=False),
     sa.Column("created_at", LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
@@ -28,6 +28,11 @@ CaptionModel = sa.Table(
                             ondelete='CASCADE', onupdate='CASCADE', name='caption_fkc_updated_by')
 )
 
+class CaptionFileAddressesSchema(Schema):
+    baiduCloud = fields.Nested('BaiduCloudSchema',attribute='baidu_cloud')
+    class Meta:
+        ordered = True
+
 class CaptionFileMetaSchema(Schema):
     name = fields.String()
     type = fields.String(validate=validate.OneOf(['SRT','ASS','VTT','SUP','SSA']))
@@ -41,7 +46,7 @@ class CaptionSchema(Schema):
     integrated = fields.Boolean()
     state = fields.String(validate=validate.OneOf(['TODO','DOING','DONE']))
     releasedAt = fields.DateTime(attribute='released_at')
-    fileUrl = fields.String(validate=validate.Length(0, 300),attribute='file_url')
+    fileAddresses = fields.Nested('CaptionFileAddressesSchema',attribute='file_addresses')
     fileMeta = fields.Nested('CaptionFileMetaSchema',attribute='file_meta')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')

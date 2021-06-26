@@ -136,16 +136,19 @@
 
 * **Column:**
 
-    | Filed                 | Type           | Nullable | Comment           |
-    | --------------------- | -------------- | -------- | ----------------- |
-    | id                    | integer        | PK       |                   |
-    | animation_id          | integer        | False    |                   |
-    | file_url              | varchar(300)   | False    | 视频链接          |
-    | file_meta             | json           | False    | 视频元信息        |
-    | [ file_meta.name ]    | json.attr: str | Optional | 文件原名          |
-    | [ file_meta.type ]    | json.attr: str | Optional | 格式（mp4/        |
-    | [ file_meta.size ]    | json.attr: int | Optional | 视频大小          |
-    | [ file_meta.quality ] | json.attr: str | Optional | 分辨率（720/原画/ |
+    | Filed                                   | Type            | Nullable  | Comment           |
+    | --------------------------------------- | --------------- | --------- | ----------------- |
+    | id                                      | integer         | PK        |                   |
+    | animation_id                            | integer         | False     |                   |
+    | file_address                            | json            | False     | 存储地址          |
+    | [ file_addresses.baidu_cloud ]          | json.attr: dict | Optional  |                   |
+    | [ file_addresses.baidu_cloud.url ]      | json.attr: str  | Necessary |                   |
+    | [ file_addresses.baidu_cloud .password] | json.attr: str  | Optional  |                   |
+    | file_meta                               | json            | False     | 视频元信息        |
+    | [ file_meta.name ]                      | json.attr: str  | Optional  | 文件原名          |
+    | [ file_meta.type ]                      | json.attr: str  | Optional  | 格式（mp4/        |
+    | [ file_meta.size ]                      | json.attr: int  | Optional  | 视频大小          |
+    | [ file_meta.quality ]                   | json.attr: str  | Optional  | 分辨率（720/原画/ |
     
 * **Enum:**
 
@@ -168,7 +171,10 @@
     | integrated | bool | False | 完整1，不完整0 |
     | state | varchar(300) | False | doing/todo/done |
     | released_at | datetime | True | 完成于     |
-    | file_url | varchar(300) | False | 字幕文件链接 |
+    | file_address                    | json            | False     | 存储地址          |
+    | [ file_addresses.baidu_cloud ] | json.attr: dict | Optional  |                   |
+    | [ file_addresses.baidu_cloud.url ] | json.attr: str  | Necessary |                   |
+    | [ file_addresses .baidu_cloud.password] | json.attr: str  | Optional  |                   |
     | file_meta    | json  | False | 文件元信息 |
     | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
     | [ file_meta.type ] | json.attr: str | Optional | 格式/txt/pdf   |
@@ -211,12 +217,15 @@
     | written_by   | varchar(300) | False | 作者       |
     | volumes_num  | integer | False | 卷数       |
     | integrated | bool | False | 完整性 |
-    | file_url     | varchar(300) | False | 文件链接   |
-    | file_meta    | json  | False | 文件元信息 |
-    | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
-    | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
-    | [ file_meta.size ] | json.attr: int | Optional | 文件大小       |
-    
+   | file_address                    | json            | False     | 存储地址          |
+   | [ file_addresses.baidu_cloud ] | json.attr: dict | Optional  |                   |
+   | [ file_addresses.baidu_cloud.url ] | json.attr: str  | Necessary |                   |
+   | [ file_addresses.baidu_cloud .password] | json.attr: str  | Optional  |                   |
+   | file_meta    | json  | False | 文件元信息 |
+   | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
+   | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
+   | [ file_meta.size ] | json.attr: int | Optional | 文件大小       |
+   
 * **Enum:**
 
     - file_meta.format: (TXT, PDF, EPUB)
@@ -241,7 +250,6 @@
     | [ file_meta.name ] | json.attr: str | Optional | 文件名 |
     | [ file_meta.type ] | json.attr: str | Optional | 文件类型 |
     | [ file_meta.size ] | json.attr: int | Optional | 文件大小 |
-    
 
 #### tag
 
@@ -252,7 +260,6 @@
     | ----- | ------------ | -------- | ------- |
     | id    | integer      | PK       |         |
     | name  | varchar(300) | False    |         |
-    
 
 #### ip_tag
 
@@ -264,7 +271,6 @@
     | id     | integer | PK       |         |
     | ip_id  | integer | False    |         |
     | tag_id | integer | False    |         |
-    
 
 #### user
 
@@ -284,7 +290,6 @@
     |            |      |          |          |
     | created_at          | datetime | False | 创建日期     |
     | comment             | varchar(300) | False | 备注         |
-    
 
 #### caption_user
 
@@ -296,7 +301,6 @@
     | id         | intger | PK       |         |
     | caption_id | intger | False    |         |
     | user_id    | intger | False    |         |
-    
 
 #### staff
 

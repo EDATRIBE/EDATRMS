@@ -3,7 +3,7 @@ import sqlalchemy.sql as sasql
 from marshmallow import Schema, fields, validate
 
 from ..utilities import LocalDateTime
-from .common import metadata
+from .common import metadata,BaiduCloudSchema
 
 NovelModel = sa.Table(
     'novel', metadata,
@@ -16,7 +16,7 @@ NovelModel = sa.Table(
     sa.Column('written_by', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.Column('volumes_num', sa.INTEGER(), nullable=False),
     sa.Column('integrated', sa.Boolean(), nullable=False),
-    sa.Column('file_url', sa.VARCHAR(300), nullable=False, server_default=''),
+    sa.Column('file_addresses', sa.JSON(), nullable=False),
     sa.Column('file_meta', sa.JSON(), nullable=False),
     sa.Column('created_by', sa.INTEGER(), nullable=False),
     sa.Column("created_at", LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
@@ -32,6 +32,11 @@ NovelModel = sa.Table(
                             ondelete='CASCADE', onupdate='CASCADE', name='novel_fkc_updated_by')
 )
 
+
+class NovelFileAddressesSchema(Schema):
+    baiduCloud = fields.Nested('BaiduCloudSchema',attribute='baidu_cloud')
+    class Meta:
+        ordered = True
 
 class NovelReservedNamesSchema(Schema):
     jpName = fields.String(attribute='jp_name')
@@ -73,7 +78,7 @@ class NovelSchema(Schema):
     writtenBy = fields.String(validate=validate.Length(0,300),attribute='written_by')
     volumesNum = fields.Integer(attribute='volumes_num')
     integrated = fields.Boolean()
-    fileUrl = fields.String(validate=validate.Length(0, 300), attribute='file_url')
+    fileAddresses = fields.Nested('NovelFileAddressesSchema',attribute='file_addresses')
     fileMeta = fields.Nested('NovelFileMetaSchema', attribute='file_meta')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')

@@ -3,13 +3,14 @@ import sqlalchemy.sql as sasql
 from marshmallow import Schema, fields, validate
 
 from ..utilities import LocalDateTime
-from .common import metadata
+from .common import metadata, BaiduCloudSchema
+
 
 VideoModel = sa.Table(
     'video', metadata,
     sa.Column('id', sa.INTEGER(), primary_key=True),
     sa.Column('animation_id', sa.INTEGER(), nullable=False),
-    sa.Column('file_url', sa.VARCHAR(300), nullable=False, server_default=''),
+    sa.Column('file_addresses', sa.JSON(), nullable=False),
     sa.Column('file_meta', sa.JSON(), nullable=False),
     sa.Column('created_by', sa.INTEGER(), nullable=False),
     sa.Column("created_at", LocalDateTime(), nullable=False,
@@ -26,6 +27,15 @@ VideoModel = sa.Table(
                             ondelete='CASCADE', onupdate='CASCADE', name='video_fkc_updated_by')
 )
 
+
+
+
+class VideoFileAddressesSchema(Schema):
+    baiduCloud = fields.Nested('BaiduCloudSchema',attribute='baidu_cloud')
+    class Meta:
+        ordered = True
+
+
 class VideoFileMetaSchema(Schema):
     name = fields.String()
     type = fields.String(validate=validate.OneOf(['MP4','MKV','AV1','OGG']))
@@ -34,10 +44,11 @@ class VideoFileMetaSchema(Schema):
     class Meta:
         ordered = True
 
+
 class VideoSchema(Schema):
     id = fields.Integer()
     animationId = fields.Integer(attribute='animation_id')
-    fileUrl = fields.String(validate=validate.Length(0, 300),attribute='file_url')
+    fileAddresses = fields.Nested('VideoFileAddressesSchema',attribute='file_addresses')
     fileMeta = fields.Nested('VideoFileMetaSchema',attribute='file_meta')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
