@@ -25,7 +25,7 @@ UserModel = sa.Table(
 
 class UserSchema(Schema):
     id = fields.Integer()
-    name = fields.String(validate=validate.Regexp(r"^[a-zA-Z][a-zA-Z0-9_]{0,29}$"))
+    name = fields.String(validate=validate.Length(0,300))
     password = fields.String(validate=validate.Regexp(r"[a-zA-Z0-9_]{6,18}$"))
     email = fields.String(validate=validate.Email())
     mobile = fields.String(validate=validate.Length(11,11))
