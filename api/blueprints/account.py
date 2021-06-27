@@ -71,7 +71,7 @@ async def edit(request):
     else:
         request['session']['user'] = await dump_user_info(request, user)
 
-    return response_json(user=request['session']['user'])
+    return response_json(user=request['session'].get('user',{}))
 
 
 @account.get('/logout')
