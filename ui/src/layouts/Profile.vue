@@ -4,30 +4,29 @@
     <div v-if="!isEditing">
       <div class="row justify-center">
         <q-avatar size="250px"  v-ripple class="cursor-pointer " v-if="user !== null">
-          <img contain :src="require('assets/3333.png')">
+          <img contain :src="user.avatar.url">
         </q-avatar>
       </div>
       <div class="row q-pt-md  items-center  text-white text-h5 text-weight-medium">
-        二仙桥野猪佩奇
+        {{ user.name }}
       </div>
       <q-separator class="q-mt-sm" color="white"></q-separator>
       <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
         <div ><q-icon size="1.2em" class="q-mr-sm"  name="email"></q-icon> </div>
         <div  class="text-justify">
-          amaindex@outlook.com
+          {{user.email}}
         </div>
       </div>
       <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
         <div><q-icon size="1.2em" class="q-mr-sm"  name="phone"></q-icon> </div>
         <div class="text-justify">
-          17685472365
+          {{user.mobile}}
         </div>
       </div>
       <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
         <div><q-icon size="1.2em" class="q-mr-sm"  name="fas fa-info"></q-icon> </div>
         <div class="text-justify">
-          春江潮水连海平，海上明月共潮生。
-          滟滟随波千万里，何处春江无月明！
+          {{user.intro}}
         </div>
       </div>
       <q-separator class="q-mt-sm" color="white"></q-separator>
@@ -40,7 +39,10 @@
         </q-btn>
       </div>
       <div class="row q-mt-md justify-center">
-        <q-btn  class="full-width text-weight-bold" color="white" text-color="dark">
+        <q-btn
+          class="full-width text-weight-bold" color="white" text-color="dark"
+          @click="signOut"
+        >
           SIGN OUT
         </q-btn>
       </div>
@@ -221,8 +223,19 @@ export default {
       // example of instance method call on pond reference
       this.$refs.pond.getFiles();
     },
-    edit(){
-
+    signOut(){
+      this.$axios.get('api/account/logout').then((response) => {
+        const rd = response.data
+        console.log('return data:')
+        console.log(rd)
+        if (rd.code === 'success') {
+          this.$store.commit('setUser',null)
+          console.log('user:')
+          console.log(this.user)
+        }
+      }).catch(function (error) {
+        console.log(error)
+      })
     }
   },
   computed: {

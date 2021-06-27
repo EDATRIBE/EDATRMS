@@ -30,8 +30,11 @@
           v-if="user === null"
           @click="drawer = !drawer"
         />
-        <q-avatar size="2.35em"  v-ripple class="cursor-pointer q-ml-sm" v-if="user !== null">
-          <img  @click="drawer = !drawer" :src="require('../assets/3333.png')">
+        <q-avatar
+          size="2.35em"  v-ripple class="cursor-pointer q-ml-sm"
+          v-if="user !== null"
+        >
+          <img  @click="drawer = !drawer" :src="user.avatar.url">
         </q-avatar>
       </q-toolbar>
     </q-header>
@@ -44,7 +47,7 @@
       overlay
       content-class="bg-dark"
       bordered
-      class="q-pa-none"
+      class="q-pa-none full-height"
       :breakpoint="10000"
     >
       <q-scroll-area class="fit q-px-lg">
@@ -68,6 +71,7 @@
 import SignIn from "layouts/SignIn";
 import Profile from "layouts/Profile";
 import NavItems from "layouts/NavItems";
+
 export default {
   name: 'MainLayout',
   components: {

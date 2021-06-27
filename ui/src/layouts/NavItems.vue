@@ -13,7 +13,12 @@
       >
         {{$t("ui.navItems.contributors")}}
       </q-btn>
-      <q-btn dense flat  no-caps class="btn-fixed-width text-h6 q-mr-sm" @click="foo">{{$t("ui.navItems.about")}}</q-btn>
+      <q-btn
+        dense flat  no-caps class="btn-fixed-width text-h6 q-mr-sm"
+        @click="foo"
+      >
+        {{$t("ui.navItems.about")}}
+      </q-btn>
     </div>
     <div v-if="!this.$q.screen.gt.sm" class="bg-dark no-border-radius">
       <q-btn-dropdown   flat dense no-caps class="text-body1 q-mx-sm" dropdown-icon="menu" no-icon-animation content-class="bg-dark-light">

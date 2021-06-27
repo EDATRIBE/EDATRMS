@@ -1,20 +1,20 @@
 <template>
-  <div class="q-py-xl" style="width: 100%;">
+  <div class="q-py-xl" style="width: 100%; padding-top: 7.5em">
     <div class="row justify-center">
       <q-icon name="fas fa-users-cog" size="8em" color="white"></q-icon>
     </div>
     <div class="row justify-center text-white text-h3 text-weight-medium">
-      STAFFS
+      ACCESS
     </div>
     <div class="row justify-center text-white text-h3 text-weight-medium">
-      ENTRANCE
+      VALIDATION
     </div>
     <div class="row justify-center q-mt-sm">
       <q-input
         dark
         dense
         class="text-h5 bg-dark-light q-mb-sm"
-        v-model="text"
+        v-model="signInData.name"
         clear-icon="close"
         standout=""
         color="white"
@@ -27,7 +27,7 @@
         dark
         dense
         class="text-h5 bg-dark-light q-mb-sm"
-        v-model="text"
+        v-model="signInData.password"
         clear-icon="close"
         color="white"
         standout=""
@@ -38,7 +38,10 @@
       </q-input>
     </div>
     <div class="row justify-center ">
-      <q-btn class="full-width text-weight-bold" color="white" text-color="dark">
+      <q-btn
+        class="full-width text-weight-bold" color="white" text-color="dark"
+        @click="signIn"
+      >
         SIGN IN
       </q-btn>
     </div>
@@ -51,8 +54,26 @@ export default {
   data() {
     return {
       drawer: false,
-      myFiles: [],
-      text: 'textoo'
+      signInData: {
+        name: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    signIn(){
+      this.$axios.post('api/account/login', this.signInData).then((response) => {
+        let rd = response.data
+        if (rd.code === 'success') {
+          console.log('rd.data.user')
+          console.log(rd.data.user)
+          this.$store.commit('setUser',rd.data.user)
+        }else {
+          console.log(response)
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }
