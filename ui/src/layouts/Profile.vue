@@ -52,18 +52,17 @@
       <div class="row justify-center">
         <file-pond
           style="width: 250px"
-          name="test"
+          name="file_pond_file"
           ref="pond"
           class="cursor-pointer"
-          label-idle="Drop files here..."
+          label-idle="Drop avatar here..."
           accepted-file-types="image/jpeg, image/png"
-          v-bind:files="myFiles"
-          v-on:init="handleFilePondInit"
+          :files="myFiles"
+          :server="myServer"
+          @init="handleFilePondInit"
           allowImageCrop="true"
-          imagePreviewHeight="170px"
           imageCropAspectRatio="1:1"
           stylePanelLayout="compact circle"
-          styleButtonRemoveItemPosition= "center bottom"
         />
       </div>
       <div class="row q-pt-xs  items-center  text-white text-h5 text-weight-medium">
@@ -72,7 +71,7 @@
           dark
           class="bg-dark-light"
           style="width: 100%"
-          v-model="text"
+          v-model="EditInfo.name"
           clear-icon="close"
           standout=""
           label="User Name"
@@ -89,7 +88,7 @@
           dark
           class="bg-dark-light"
           style="width: 100%"
-          v-model="text"
+          v-model="EditInfo.password"
           clear-icon="close"
           standout=""
           label="New Password"
@@ -103,7 +102,7 @@
           dark
           class="bg-dark-light q-mt-sm"
           style="width: 100%"
-          v-model="text"
+          v-model="EditInfo.confirmPassword"
           clear-icon="close"
           standout=""
           label="Confirm Password"
@@ -120,7 +119,7 @@
           dark
           class="bg-dark-light"
           style="width: 100%"
-          v-model="text"
+          v-model="EditInfo.email"
           clear-icon="close"
           standout=""
           label="Email"
@@ -134,7 +133,7 @@
           dark
           class="bg-dark-light q-mt-sm"
           style="width: 100%"
-          v-model="text"
+          v-model="EditInfo.mobile"
           clear-icon="close"
           standout=""
           label="Phone"
@@ -149,7 +148,7 @@
           autogrow
           class="bg-dark-light q-mt-sm"
           style="width: 100%"
-          v-model="text"
+          v-model="EditInfo.intro"
           clear-icon="close"
           standout=""
           color="white"
@@ -205,12 +204,39 @@ export default {
   components: {
     FilePond,
   },
+  mounted() {
+    this.EditInfo = {
+      name: this.user.name,
+      password: '',
+      confirmPassword: '',
+      email: this.user.email,
+      mobile: this.user.mobile,
+      intro: this.user.intro,
+      avatarId: this.user.avatar.id
+    }
+    this.myFiles.push({
+      source: this.user.avatar.id,
+      options: {
+        type: 'local'
+      }
+    })
+    console.log(this.myFiles)
+  },
   data () {
     return {
       drawer: false,
       myFiles: [],
       text: 'sdf',
       isEditing: false,
+      EditInfo:{},
+      myServer: {
+        url: '/api',
+        process: '/storage/file/filepond/upload',
+        revert: null,
+        restore: null,
+        load: '/storage/file/filepond/load/',
+        fetch: null
+      },
     }
   },
   methods: {
