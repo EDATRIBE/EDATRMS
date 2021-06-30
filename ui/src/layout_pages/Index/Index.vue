@@ -23,23 +23,24 @@
         >
           <q-tab ripple class="text-primary" name="Animations" :label="$t('ui.index.animations')" icon="movie" style="width: 50%"/>
           <q-tab ripple class="text-secondary" name="Novels" :label="$t('ui.index.novels')" icon="import_contacts" style="width: 50%"/>
-          <q-tab ripple name="Ips" :label="$t('ui.index.ips')" icon="import_contacts" style="width: 50%" v-if="text!==''"/>
+          <q-tab ripple class="text-accent" name="IPs" :label="$t('ui.index.ips')" icon="source" style="width: 50%" v-if="user&&user.staff"/>
         </q-tabs>
-        <q-tab-panels v-model="tab" animated>
+        <q-tab-panels keep-alive v-model="tab" animated>
           <q-tab-panel name="Animations" class="q-px-none bg-dark">
             <IndexAnimations></IndexAnimations>
           </q-tab-panel>
           <q-tab-panel name="Novels" class="q-px-none bg-dark">
             <IndexNovels></IndexNovels>
           </q-tab-panel>
-          <q-tab-panel name="Novelss" class="q-pa-sm" :v-if="text!==''">
+          <q-tab-panel name="IPs" class="q-px-none bg-dark" v-if="user&&user.staff">
+            <index-i-ps></index-i-ps>
           </q-tab-panel>
         </q-tab-panels>
       </div>
     </div>
 
     <q-page-sticky expand position="top" class="bg-dark q-px-md q-py-sm" v-show="scrollInfo.position>150">
-      <q-toolbar style="width: 95%" class="q-px-none">
+      <q-toolbar style="width: 95.2%" class="q-px-none">
         <q-input
           dense dark class="text-h5 bg-dark-light" style="width: 100%" standout=""
           v-model="text"
@@ -56,10 +57,12 @@
 <script>
 import IndexAnimations from "src/layout_pages/Index/IndexAnimations";
 import IndexNovels from "src/layout_pages/Index/IndexNovels";
+import IndexIPs from "src/layout_pages/Index/IndexIPs";
 
 export default {
   name: "Index",
   components: {
+    IndexIPs,
     IndexNovels,
     IndexAnimations
   },
@@ -116,6 +119,9 @@ export default {
         }
       }
       return novels
+    },
+    user() {
+      return this.$store.state.user
     }
   }
 }
