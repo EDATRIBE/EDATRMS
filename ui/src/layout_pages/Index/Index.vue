@@ -5,7 +5,7 @@
       <div class="column">
         <!--SEARCH-->
         <q-input
-          dense dark class="text-h5 bg-dark-light q-mb-sm" style="width: 100%" standout=""
+          dense dark class="text-h5 bg-dark-light q-mb-md" style="width: 100%" standout=""
           v-model="text"
         >
           <template v-slot:append>

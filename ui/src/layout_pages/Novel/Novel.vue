@@ -91,7 +91,7 @@
             <div class="row q-py-md">
               <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">DOWNLOAD</p></div>
               <div class="col-md-10 col-xs-12">
-                <a href="baidu.com"><p class="q-my-none text-secondary text-body1">2444</p></a>
+                <a :href="novel.fileAddresses.baiduCloud.url"><p class="q-my-none text-secondary text-body1">{{novel.fileAddresses.baiduCloud.password}}</p></a>
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default {
     }
   },
   mounted() {
-    this.$axios.get('api/novel/info/5').then((response) => {
+    this.$axios.get('api/novel/info/1').then((response) => {
       const rd = response.data
       console.log('return data:')
       console.log(rd)

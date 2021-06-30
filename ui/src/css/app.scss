@@ -1,13 +1,14 @@
 // app global css in SCSS form
 
-.myborder{
+.default-border{
   border: solid;
-  border-color: $accent;
+  border-color: $grey-2;
   border-width: 1px;
+  border-radius: 0px;
 }
 
 .bg-dark-light{
-  background-color: #41464B;
+  background-color: #282D33;
 }
 
 .bg-dark-deep{

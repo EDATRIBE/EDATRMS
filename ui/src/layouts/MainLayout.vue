@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh lpr fFf">
-    <q-header class="bg-dark" reveal>
-      <q-toolbar style="width: 95%" class="q-py-md q-mx-auto">
+    <q-header class="bg-dark q-px-md" reveal>
+      <q-toolbar style="width: 95%" class="q-py-md q-px-none q-mx-auto items-center">
         <q-icon name="fas fa-atom" size="2.35em" />
         <div class="text-h4 q-ml-sm" v-if="this.$q.screen.gt.sm">EDATRMS</div>
         <q-space/>
@@ -119,3 +119,73 @@ export default {
   }
 }
 </script>
+
+<style >
+.filepond--drop-label {
+  color: white;
+}
+
+.filepond--panel-root {
+  background-color: #373C41;
+}
+
+
+.q-markdown--link {
+  font-weight: 500;
+  text-decoration: none;
+  outline: 0;
+  border-bottom: 1px dotted currentColor;
+  text-align: center;
+  transition: opacity 0.2s;
+  color: white;
+}
+
+.q-markdown--code-wrapper {
+  width: 100%;
+  min-width: 0;
+  background: #282D33;
+}
+
+.q-markdown code, .q-markdown pre {
+  font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+  background: #282D33;
+  color: white;
+}
+
+.token.operator {
+  color: white;
+}
+
+.q-markdown--line-numbers {
+  padding: 5px;
+  text-align: right;
+  background: #282D33;
+  color: white;
+}
+
+.q-markdown--table {
+  border-color: #282D33;
+  background: #282D33;
+}
+.q-markdown--table thead {
+  background: #282D33;
+}
+.q-markdown--table thead tr th {
+  padding: 8px;
+  border-width: 1px;
+  border-style: solid;
+  background: #282D33;
+}
+.q-markdown--table tbody {
+  background: #282D33;
+}
+.q-markdown--table tbody td, .q-markdown--table tbody th {
+  padding: 8px;
+  border-width: 1px;
+  border-style: solid;
+}
+.q-markdown--table tbody tr:nth-child(odd) {
+  background: #282D33;
+}
+
+</style>
