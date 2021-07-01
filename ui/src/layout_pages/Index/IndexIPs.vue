@@ -1,10 +1,38 @@
 <template>
   <div class="q-col-gutter-y-sm">
-    <q-item dense dark class=" q-pa-none q-mt-sm" style="padding-right: 39.5px">
-      <div class="row q-pl-md items-center justify-center text-h6 full-width text-accent">
-        <q-icon  class="cursor-pointer" name="add" color="accent" size="1.3em"></q-icon>
-      </div>
-    </q-item>
+    <!--Tools-->
+    <q-expansion-item
+      dense
+      dark
+      expand-icon-toggle
+      header-class="bl q-pa-none "
+      expand-icon-class="q-pr-sm text-accent"
+      expand-icon="filter_alt"
+      expanded-icon="filter_alt"
+    >
+      <!--IPHeader-->
+      <template v-slot:header>
+        <div class="row  items-center text-body1 full-width ">
+          <q-btn-toggle
+            text-color="grey-7"
+            dense
+            size="0.75em"
+            flat
+            class="no-border-radius"
+            v-model="model"
+            toggle-color="accent"
+            :options="[
+              {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'one'},
+              {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'two'}
+            ]"
+          />
+          <q-space></q-space>
+          <q-icon name="fas fa-plus" color="accent" size="1.25em" class="q-mx-sm"></q-icon>
+        </div>
+      </template>
+
+    </q-expansion-item>
+    <!--Content-->
     <div v-for="i in 10" :key="i">
       <!--IPS-->
       <q-expansion-item
@@ -13,7 +41,7 @@
         expand-icon-toggle
         class="bg-dark-light bl"
         header-class="bl q-pa-none bg-dark-light"
-        expand-icon-class="q-px-sm q-ml-auto text-accent"
+        expand-icon-class="q-px-sm text-accent"
       >
         <!--IPHeader-->
         <template v-slot:header>
@@ -38,7 +66,7 @@
             expand-icon-toggle
             class="bg-dark-light bl1 q-mt-sm"
             header-class="bl q-pa-none bg-dark-light"
-            expand-icon-class="q-px-sm q-ml-auto text-primary"
+            expand-icon-class="q-px-sm text-primary"
           >
             <!--AnimationsHeader-->
             <template v-slot:header>
@@ -84,7 +112,7 @@
             expand-icon-toggle
             class="bg-dark-light bl1 q-mt-sm"
             header-class="bl q-pa-none bg-dark-light"
-            expand-icon-class="q-px-sm q-ml-auto text-primary"
+            expand-icon-class="q-px-sm text-primary"
           >
             <!--AnimationsHeader-->
             <template v-slot:header>
@@ -130,7 +158,7 @@
             expand-icon-toggle
             class="bg-dark-light bl1 q-mt-sm"
             header-class="bl q-pa-none bg-dark-light"
-            expand-icon-class="q-px-sm q-ml-auto text-primary"
+            expand-icon-class="q-px-sm text-primary"
           >
             <!--AnimationsHeader-->
             <template v-slot:header>
@@ -190,7 +218,10 @@
 
 <script>
 export default {
-  name: "IndexIPs"
+  name: "IndexIPs",
+  data: () => ({
+    model:'',
+  }),
 }
 </script>
 
@@ -198,22 +229,22 @@ export default {
 .bl
   border-left: solid
   border-left-color: $accent
-  border-width: 3px
+  border-width: 2px
 
 .bl1
   border-left: solid
   border-left-color: $primary
-  border-width: 3px
+  border-width: 2px
 
 .bl2
   border-left: solid
   border-left-color: $secondary
-  border-width: 3px
+  border-width: 2px
 
 .bl3
   border-left: solid
   border-left-color: white
-  border-width: 3px
+  border-width: 2px
 
 .bl4
   border: solid
