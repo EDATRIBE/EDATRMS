@@ -25,7 +25,7 @@
           <q-tab ripple class="text-secondary" name="Novels" :label="$t('ui.index.novels')" icon="import_contacts" style="width: 50%"/>
           <q-tab ripple class="text-accent" name="IPs" :label="$t('ui.index.ips')" icon="source" style="width: 50%" v-if="user&&user.staff"/>
         </q-tabs>
-        <q-tab-panels keep-alive v-model="tab" animated>
+        <q-tab-panels keep-alive v-model="tab" animated class="bg-dark">
           <q-tab-panel name="Animations" class="q-px-none bg-dark">
             <IndexAnimations></IndexAnimations>
           </q-tab-panel>

@@ -11,7 +11,7 @@
       expand-icon="filter_alt"
       expanded-icon="filter_alt"
     >
-      <!--IPHeader-->
+      <!--Header-->
       <template v-slot:header>
         <div class="row  items-center text-body1 full-width ">
           <q-btn-toggle

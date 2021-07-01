@@ -37,7 +37,10 @@ export default {
   name: "NavItems",
   methods: {
     foo(){
-      this.$store.commit('setUser',null)
+      this.$q.notify({
+        type: 'success',
+        message: `New profile was submitted successfully.`
+      })
     },
     handleFilePondInit: function () {
       console.log('FilePond has initialized');

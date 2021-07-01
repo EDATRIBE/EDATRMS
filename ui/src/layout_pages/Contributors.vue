@@ -2,7 +2,7 @@
   <q-page class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em" v-if="!LD">
     <div class="q-mx-auto" style="width: 95%">
       <div
-        class="row q-mb-md q-pa-lg bg-dark-light" :class="{'no-wrap': $q.screen.gt.sm}"
+        class="row q-mb-md q-px-lg q-py-md bg-dark-light" :class="{'no-wrap': $q.screen.gt.sm}"
         v-for="j in 10" :key="j"
       >
         <div>
