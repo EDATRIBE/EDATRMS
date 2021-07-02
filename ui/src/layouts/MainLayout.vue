@@ -5,9 +5,11 @@
         <q-icon name="fas fa-atom" size="2.35em" />
         <div class="text-h4 q-ml-sm" v-if="this.$q.screen.gt.sm">EDATRMS</div>
         <q-space/>
-        <nav-items></nav-items>
-        <q-separator vertical color="grey" inset="true" class="q-mx-sm"></q-separator>
-        <q-btn-dropdown dense  flat  no-caps class="text-body1 q-mx-sm" dropdown-icon="translate" no-icon-animation content-class="bg-dark-light">
+
+        <nav-items v-if="this.$q.screen.gt.sm"/>
+        <q-separator vertical color="grey" inset="true" class="q-ml-md" v-if="this.$q.screen.gt.sm"/>
+
+        <q-btn-dropdown dense  flat  no-caps class="text-body1 q-ml-md" dropdown-icon="translate" no-icon-animation content-class="bg-dark-light">
           <div class="column q-pa-sm">
             <q-btn
               align="left" flat dense no-caps class="text-body1 text-white"
@@ -23,19 +25,25 @@
             </q-btn>
           </div>
         </q-btn-dropdown>
-        <q-separator vertical color="grey" inset="true" class="q-mx-sm"></q-separator>
-        <q-btn
-          round outline class="q-ml-sm"
-          size="0.78em"  icon="mdi-badge-account-horizontal-outline"
-          v-if="user === null"
-          @click="drawer = !drawer"
-        />
-        <q-avatar
-          size="2.35em"  v-ripple class="cursor-pointer q-ml-sm"
-          v-if="user !== null"
-        >
-          <img  @click="drawer = !drawer" :src="user.avatar.url">
-        </q-avatar>
+
+        <q-separator vertical color="grey" inset="true" class="q-ml-md" v-if="!this.$q.screen.gt.sm"/>
+        <nav-items v-if="!this.$q.screen.gt.sm" />
+
+        <q-separator vertical color="grey" inset="true" class="q-ml-md" v-if="this.$q.screen.gt.sm" />
+        <div v-if="this.$q.screen.gt.sm">
+          <q-btn
+            round outline class="q-ml-md"
+            size="0.78em"  icon="mdi-badge-account-horizontal-outline"
+            v-if="user === null"
+            @click="drawer = !drawer"
+          />
+          <q-avatar
+            size="2.35em"  v-ripple class="cursor-pointer q-ml-md"
+            v-if="user !== null"
+          >
+            <img  @click="drawer = !drawer" :src="user.avatar.url">
+          </q-avatar>
+        </div>
       </q-toolbar>
     </q-header>
     <!--UserLoginAndProfile-->
