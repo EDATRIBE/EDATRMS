@@ -7,7 +7,7 @@
       >
         <div>
           <q-avatar size="130px"  v-ripple class="cursor-pointer q-mr-md q-mt-md" v-if="user !== null">
-            <img contain :src="require('../assets/3333.png')">
+            <img contain :src="require('assets/3333.png')">
           </q-avatar>
         </div>
         <div style="width: 100%">
