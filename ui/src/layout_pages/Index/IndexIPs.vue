@@ -85,7 +85,7 @@
             <!--AnimationsContent-->
             <div class="q-pl-md ">
               <!--AnimationsVideo-->
-              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.5px">
+              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
                 <div class="row q-pl-md items-center text-body1 full-width ">
                   <q-icon name="fas fa-film" color="primary" size="1.3em" class="q-mr-md"></q-icon>
                   VideoXXXXXXXX
@@ -95,7 +95,7 @@
                 </div>
               </q-item>
               <!--AnimationsCaption-->
-              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.5px">
+              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
                 <div class="row q-pl-md items-center text-body1 full-width ">
                   <q-icon name="fas fa-closed-captioning" color="primary" size="1.3em" class="q-mr-md"></q-icon>
                   CaptionXXXXXXXX
@@ -131,7 +131,7 @@
             <!--AnimationsContent-->
             <div class="q-pl-md ">
               <!--AnimationsVideo-->
-              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.5px">
+              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
                 <div class="row q-pl-md items-center text-body1 full-width ">
                   <q-icon name="fas fa-film" color="primary" size="1.3em" class="q-mr-md"></q-icon>
                   VideoXXXXXXXX
@@ -141,7 +141,7 @@
                 </div>
               </q-item>
               <!--AnimationsCaption-->
-              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.5px">
+              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
                 <div class="row q-pl-md items-center text-body1 full-width ">
                   <q-icon name="fas fa-closed-captioning" color="primary" size="1.3em" class="q-mr-md"></q-icon>
                   CaptionXXXXXXXX
@@ -177,7 +177,7 @@
             <!--AnimationsContent-->
             <div class="q-pl-md ">
               <!--AnimationsVideo-->
-              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.5px">
+              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
                 <div class="row q-pl-md items-center text-body1 full-width ">
                   <q-icon name="fas fa-film" color="primary" size="1.3em" class="q-mr-md"></q-icon>
                   VideoXXXXXXXX
@@ -187,7 +187,7 @@
                 </div>
               </q-item>
               <!--AnimationsCaption-->
-              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.5px">
+              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
                 <div class="row q-pl-md items-center text-body1 full-width ">
                   <q-icon name="fas fa-closed-captioning" color="primary" size="1.3em" class="q-mr-md"></q-icon>
                   CaptionXXXXXXXX
@@ -200,7 +200,7 @@
           </q-expansion-item>
 
           <!--Novel-->
-          <q-item dense dark class="bg-dark-light q-pa-none bl2 q-mt-sm" style="padding-right: 39.5px">
+          <q-item dense dark class="bg-dark-light q-pa-none bl2 q-mt-sm" style="padding-right: 39.3px">
             <div class="row q-pl-md items-center text-body1 full-width ">
               <q-icon name="import_contacts" color="secondary" size="1.3em" class="q-mr-md"></q-icon>
               NovelPXXXXXXXX

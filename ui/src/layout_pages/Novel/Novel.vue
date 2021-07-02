@@ -15,8 +15,8 @@
         <!--RIGHT-->
         <div class="column col-md-9 col-xs-12 q-pb-md">
           <!--TITLE-->
-          <div style="width: 100%" class="q-pa-md bl">
-            <p class="q-my-none text-white  text-h3">{{ this.novel.name }}</p>
+          <div style="width: 100%" class="q-px-md q-pb-md bl">
+            <p class="q-my-none text-white  text-h2">{{ this.novel.name }}</p>
           </div>
           <!--INFOS-->
           <div style="width: 100%" class="q-pa-md bl">

@@ -25,14 +25,14 @@
           <q-tab ripple class="text-secondary" name="Novels" :label="$t('ui.index.novels')" icon="import_contacts" style="width: 50%"/>
           <q-tab ripple class="text-accent" name="IPs" :label="$t('ui.index.ips')" icon="source" style="width: 50%" v-if="user&&user.staff"/>
         </q-tabs>
-        <q-tab-panels keep-alive v-model="tab" animated class="bg-dark">
-          <q-tab-panel name="Animations" class="q-px-none bg-dark">
+        <q-tab-panels keep-alive v-model="tab" class="bg-dark">
+          <q-tab-panel name="Animations" class="q-px-none bg-dark q-pt-xs">
             <IndexAnimations></IndexAnimations>
           </q-tab-panel>
-          <q-tab-panel name="Novels" class="q-px-none bg-dark">
+          <q-tab-panel name="Novels" class="q-px-none bg-dark q-pt-xs">
             <IndexNovels></IndexNovels>
           </q-tab-panel>
-          <q-tab-panel name="IPs" class="q-px-none bg-dark" v-if="user&&user.staff">
+          <q-tab-panel name="IPs" class="q-px-none bg-dark q-pt-xs" v-if="user&&user.staff">
             <index-i-ps></index-i-ps>
           </q-tab-panel>
         </q-tab-panels>
