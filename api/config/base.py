@@ -1,16 +1,8 @@
 import os
 
+
 NAME = 'EDATRMS'
 PREFIX = 'EDATRMS_'
-
-# Directory of runtime data, like logs and uploaded files etc
-DATA_PATH = os.path.expanduser('~/Workshop/ArchiveAlpha/EDATRMS/api_data')
-# Subdirectory of files
-LOCAL_FILES_DIR = 'local'
-# Endpoint of uploaded files
-LOCAL_FILES_URL_BASE = 'http://localhost:7000/local/'
-# Subdirectory of logs
-LOGS_DIR = 'logs'
 
 
 # Listen host and port of server
@@ -28,10 +20,6 @@ WORKERS = 1
 SESSION_EXPIRY = 30 * 24 * 3600
 # Max size of request in bytes
 REQUEST_MAX_SIZE = 100 * 1024 * 1024
-# Max allowed size of uploaded file in bytes
-UPLOAD_FILE_MAX_SIZE = 50 * 1024 * 1024
-# Max allowed number of uploaded files
-UPLOAD_FILE_MAX_NUMBER = 10
 
 
 # MySQL connection parameters
@@ -43,6 +31,7 @@ MYSQL_PASSWORD = '123456'
 MYSQL_TIMEOUT = 1
 MYSQL_POOL_MIN_SIZE = 1
 MYSQL_POOL_MAX_SIZE = 100
+
 
 # Redis connection parameters
 REDIS_URI = 'redis://@localhost:6379/1'

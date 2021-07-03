@@ -16,6 +16,8 @@ app.error_handler.add(Exception, handle_exception)
 
 app.static('/local', os.path.join(config['DATA_PATH'], config['LOCAL_FILES_DIR']),
            stream_large_files=True)
+app.static('/semi_static', os.path.join(config['DATA_PATH'], config['SEMI_STATIC_DIR']),
+           stream_large_files=True)
 
 app.blueprint(account)
 app.blueprint(storage)
