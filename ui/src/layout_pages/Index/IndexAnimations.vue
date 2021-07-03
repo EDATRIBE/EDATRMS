@@ -5,92 +5,143 @@
       dense
       dark
       expand-icon-toggle
-      class="q-mb-md"
+      class=" q-mb-sm"
       header-class="bl q-pa-none "
       expand-icon-class="q-pr-sm text-primary"
       expand-icon="filter_alt"
       expanded-icon="filter_alt"
     >
-      <!--Header-->
+      <!--ToolsHeader-->
       <template v-slot:header>
-        <div class="row  items-center text-body1 full-width ">
+        <div class="row items-center text-body1 full-width ">
           <q-btn-toggle
-            text-color="grey-7"
-            dense
-            size="0.75em"
-            flat
-            class="no-border-radius"
-            v-model="model"
-            toggle-color="primary"
+            text-color="grey-7"  size="0.75em" flat dense
+            class="no-border-radius" toggle-color="primary"
+            v-model="order"
             :options="[
-              {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'one'},
-              {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'two'}
+              {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'date'},
+              {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'alphabet'}
             ]"
           />
         </div>
       </template>
-      <q-item dense dark class="q-pa-none bl1 q-mt-sm" style="padding-right: 39.5px">
-        <div class="row items-center text-body1 full-width ">
-          <q-btn-toggle
-            unelevated
-            size="0.75em"
-            text-color="grey-7"
-            class="no-border-radius bg-dark-light"
-            v-model="model1"
-            toggle-color="primary"
+      <!--ToolsContent-->
+      <div class="q-pt-xs q-pb-sm bb">
+        <!--region-->
+        <q-item dense dark class="q-pa-none bl1">
+          <multiple-choice
+            class="text-body1"
             :options="[
-              {label:'ALL',value: '0'},
-              {label:'TV',value: 'one'},
-              {label:'EPS',  value: 'two'}
-            ]"
+                {label:'All', value: 'all'},
+                {label:'CN', value: 'cn'},
+                {label:'JP', value: 'jp'},
+                {label:'OTHER', value: 'other'},
+              ]"
+            v-model="region"
+            text-class="text-grey-7"
+            b-g-class="bg-dark-light"
+            active-text-class="text-white"
+            active-b-g-class="bg-primary"
           />
-        </div>
-      </q-item>
-      <q-item dense dark class="q-pa-none bl1 q-mt-sm" style="padding-right: 39.5px">
-        <div class="row items-center text-body1 full-width ">
-          <q-btn-toggle
-            unelevated
-            size="0.75em"
-            text-color="grey-7"
-            class="no-border-radius bg-dark-light"
-            v-model="model2"
-            toggle-color="primary"
+        </q-item>
+
+        <!--type-->
+        <q-item dense dark class="q-pa-none bl1 q-mt-sm">
+          <multiple-choice
+            class="text-body1"
             :options="[
-              {label:'ALL',value: '0'},
-              {label:'1960s',value: 'one'},
-              {label:'1970s',  value: 'two'},
-              {label:'1960s',value: '3'},
-              {label:'1980s',  value: '4'},
-              {label:'1990s',value: '5'},
-              {label:'2000s',  value: '6'},
-              {label:'2010s',value: '7'},
-              {label:'2020s',  value: '8'}
-            ]"
+                {label:'ALL',value: 'all'},
+                {label:'TV',value: 'tv'},
+                {label:'EPS',  value: 'eps'}
+              ]"
+            v-model="type"
+            text-class="text-grey-7"
+            b-g-class="bg-dark-light"
+            active-text-class="text-white"
+            active-b-g-class="bg-primary"
           />
-        </div>
-      </q-item>
-      <q-item dense dark class="q-pa-none bl1 q-mt-sm" style="padding-right: 39.5px">
-        <div class="row items-center text-body1 full-width ">
-          <q-btn-toggle
-            unelevated
-            text-color="grey-7"
-            class="no-border-radius bg-dark-light"
-            v-model="model3"
-            size="0.75em"
-            toggle-color="primary"
+        </q-item>
+
+        <!--date-->
+        <q-item dense dark class="q-pa-none bl1 q-mt-sm">
+          <multiple-choice
+            class="text-body1"
             :options="[
-              {label:'ALL',value: '0'},
-              {label:'360P',value: 'one'},
-              {label:'480P',  value: 'two'},
-              {label:'620P',value: '3'},
-              {label:'720P',  value: '4'},
-              {label:'920P',value: '5'},
-              {label:'1080P',  value: '6'}
-            ]"
+                {label:'ALL',value: 'all'},
+                {label:'1960s', value: '1960s'},
+                {label:'1970s', value: '1970s'},
+                {label:'1980s', value: '1980s'},
+                {label:'1990s', value: '1990s'},
+                {label:'2000s', value: '2000s'},
+                {label:'2010s', value: '2010s'},
+                {label:'2020s', value: '2020s'}
+              ]"
+            v-model="date"
+            text-class="text-grey-7"
+            b-g-class="bg-dark-light"
+            active-text-class="text-white"
+            active-b-g-class="bg-primary"
           />
-        </div>
-      </q-item>
+        </q-item>
+
+        <!--quality-->
+        <q-item dense dark class="q-pa-none bl1 q-mt-sm">
+          <multiple-choice
+            class="text-body1"
+            :options="[
+                {label:'ALL',value: 'all'},
+                {label:'360P', value: '360P'},
+                {label:'640P', value: '640P'},
+                {label:'720P', value: '720P'},
+                {label:'960P', value: '960P'},
+                {label:'1080P', value: '1080P'}
+              ]"
+            v-model="quality"
+            text-class="text-grey-7"
+            b-g-class="bg-dark-light"
+            active-text-class="text-white"
+            active-b-g-class="bg-primary"
+          />
+        </q-item>
+
+        <!--videoType-->
+        <q-item dense dark class="q-pa-none bl1 q-mt-sm">
+          <multiple-choice
+            class="text-body1"
+            :options="[
+                {label:'ALL',value: 'all'},
+                {label:'MP4', value: '360P'},
+                {label:'MKV', value: '640P'},
+                {label:'AV1', value: '720P'},
+                {label:'OGG', value: '960P'}
+              ]"
+            v-model="videoType"
+            text-class="text-grey-7"
+            b-g-class="bg-dark-light"
+            active-text-class="text-white"
+            active-b-g-class="bg-primary"
+          />
+        </q-item>
+
+        <!--captions-->
+        <q-item dense dark class="q-pa-none bl1 q-mt-sm">
+          <multiple-choice
+            class="text-body1"
+            :options="[
+                {label:'ALL',value: 'all'},
+                {label:'CLOSED CAPTION', value: 'true'},
+                {label:'NO CAPTION', value: 'false'},
+              ]"
+            v-model="hasCaption"
+            text-class="text-grey-7"
+            b-g-class="bg-dark-light"
+            active-text-class="text-white"
+            active-b-g-class="bg-primary"
+          />
+        </q-item>
+      </div>
     </q-expansion-item>
+
     <!--Content-->
     <div class="row q-col-gutter-x-md q-col-gutter-y-lg">
       <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
@@ -106,15 +157,25 @@
 </template>
 
 <script>
+import MultipleChoice from "components/MultipleChoice";
+
 export default {
   name: "IndexAnimations",
+  components: {MultipleChoice},
   data: () => ({
     tab: 'Animations',
     text: '',
     LD: true,
     expanded: [],
     scrollInfo: {},
-    model: '',model1: '',model2: '',model3: '',
+    soo: false,
+    order: 'date',
+    region: 'all',
+    type: 'all',
+    date: 'all',
+    quality: 'all',
+    videoType: 'all',
+    hasCaption: 'all',
     ips: [],
     lorem: 'Kazuto "Kirito" Kirigaya enters a virtual-reality, massively multiplayer online role playing game called Sword Art Online. There is no escape from this world unless the player clears the game; however getting a "game over" results in the death of the player.'
   }),
@@ -135,4 +196,9 @@ a
   text-overflow: ellipsis
   display: -webkit-box
   -webkit-box-orient: vertical
+
+.bb
+  border-bottom: solid
+  border-bottom-color: $primary
+  border-width: 2px
 </style>
