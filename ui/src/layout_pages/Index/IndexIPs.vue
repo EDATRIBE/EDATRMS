@@ -9,6 +9,7 @@
       expand-icon-class="q-pr-sm text-accent"
       expand-icon="filter_alt"
       expanded-icon="filter_alt"
+      :duration="60"
     >
       <!--Header-->
       <template v-slot:header>
@@ -34,7 +35,7 @@
     </q-expansion-item>
 
     <!--Content-->
-    <div v-for="i in 10" :key="i">
+    <div v-for="i in 10" :key="'ip'+i">
       <!--IPS-->
       <q-expansion-item
         dense
@@ -43,12 +44,24 @@
         class="bg-dark-light bl"
         header-class="bl q-pa-none bg-dark-light"
         expand-icon-class="q-px-sm text-accent"
+        :duration="60"
       >
         <!--IPHeader-->
         <template v-slot:header>
-          <div class="row q-pl-md  items-center text-body1 full-width ">
+          <div class="row no-wrap q-pl-md  items-center text-body1 full-width ">
             <q-icon name="source" color="accent" size="1.3em" class="q-mr-md"></q-icon>
-            IPXXXXXXXX
+            Sword Art Online
+            <div class="row q-mx-md">
+              <q-chip size="0.7em" square dense text-color="dark"  color="accent" class="q-py-none">
+                后宫
+              </q-chip>
+              <q-chip size="0.7em" square dense text-color="dark"  color="accent" class="q-py-none">
+                world
+              </q-chip>
+              <q-chip size="0.7em" square dense text-color="dark"  color="accent" class="q-py-none">
+                异世界
+              </q-chip>
+            </div>
             <q-space></q-space>
             <q-btn flat color="accent" icon="add">animation</q-btn>
             <q-btn flat color="accent" icon="add">novel</q-btn>
@@ -68,6 +81,7 @@
             class="bg-dark-light bl1 q-mt-sm"
             header-class="bl q-pa-none bg-dark-light"
             expand-icon-class="q-px-sm text-primary"
+            :duration="60"
           >
             <!--AnimationsHeader-->
             <template v-slot:header>
@@ -114,6 +128,7 @@
             class="bg-dark-light bl1 q-mt-sm"
             header-class="bl q-pa-none bg-dark-light"
             expand-icon-class="q-px-sm text-primary"
+            :duration="60"
           >
             <!--AnimationsHeader-->
             <template v-slot:header>
@@ -160,6 +175,7 @@
             class="bg-dark-light bl1 q-mt-sm"
             header-class="bl q-pa-none bg-dark-light"
             expand-icon-class="q-px-sm text-primary"
+            :duration="60"
           >
             <!--AnimationsHeader-->
             <template v-slot:header>
@@ -213,6 +229,44 @@
 
       </q-expansion-item>
     </div>
+
+    <div class="full-width row justify-center">
+      <q-pagination
+        v-model="current"
+        :max="100"
+        color="accent"
+        input
+        input-class="text-accent"
+      />
+    </div>
+    <div>
+      <div class="row q-pt-md q-pb-sm q-px-md bg-dark-light bt" >
+        <q-chip
+          class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
+          dense
+          square
+          color="accent" v-for="i in 20" :key="i"
+          removable
+          :value="v"
+          @remove="foo(i)"
+        >
+          <q-icon class="q-mx-xs" name="fas fa-tags" color="dark"></q-icon>
+          testtes
+        </q-chip>
+        <q-chip
+          class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
+          text-color="dark"
+          dense
+          square
+          color="accent"
+          clickable
+          outline
+        >
+          <q-icon size="1.1em" class="q-mr-xs"  name="fas fa-plus" color="accent"></q-icon>
+          new
+        </q-chip>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -221,7 +275,14 @@ export default {
   name: "IndexIPs",
   data: () => ({
     model:'',
+    current: 3,
+    v:true
   }),
+  methods: {
+    foo(i){
+      console.log(i)
+    }
+  }
 }
 </script>
 
@@ -246,8 +307,12 @@ export default {
   border-left-color: white
   border-width: 2px
 
-.bl4
-  border: solid
-  border-color: $accent
-  border-width: 1px
+.bt
+  border-top: solid
+  border-top-color: $accent
+  border-top-width: 2px
+
+  //border-bottom: solid
+  //border-bottom-color: $accent
+  //border-bottom-width: 2px
 </style>
