@@ -1,6 +1,6 @@
 # EDATRMS
 
-<div align=center><img width="500" src="api/api_doc/readme.assets/logo.png"/></div>
+<div align=center><img width="500" src="readme.assets/placeholder.png"/></div>
 
 <p align="center">
     <img src="https://img.shields.io/badge/progress-60%25-orange">
