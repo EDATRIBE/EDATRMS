@@ -7,3 +7,4 @@ from .video import video
 from .caption import caption
 from .novel import novel
 from .tag import tag
+from .semi_static import semi_static

@@ -12,7 +12,7 @@ from .storage import FileModel, FileSchema, StorageBucket, StorageRegion
 from .tag import TagModel,TagSchema
 from .user import StaffModel, UserModel, UserSchema
 from .video import VideoModel,VideoSchema
-
+from .semi_static import AnnouncementSchema,AnnouncementModel
 
 async def init_db(config):
     db = await create_engine(

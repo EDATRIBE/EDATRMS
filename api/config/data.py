@@ -10,9 +10,9 @@ LOGS_DIR = 'logs'
 
 # Subdirectory of semi-static files like .md etc
 # (Must be created manually before the first boot)
-SEMI_STATIC_DIR = 'semi_static'
 ANNOUNCEMENTS_DIR = 'announcements'
-SEMI_STATIC_URL_BASE = 'http://localhost:7000/semi_static/'
+ANNOUNCEMENTS_ORDER_PREFIX = '@'
+
 
 
 # Max allowed size of uploaded file in bytes

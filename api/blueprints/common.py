@@ -10,7 +10,7 @@ from sanic import response
 from sanic.exceptions import SanicException, Unauthorized
 
 from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, AnimationSchema, VideoSchema, CaptionSchema, \
-    NovelSchema, TagSchema
+    NovelSchema, TagSchema,AnnouncementSchema
 from ..services import ServiceException, StorageService, UserService,TagService,IPTagService,CaptionUserService,CaptionService,VideoService,IPService,NovelService,AnimationService
 from ..utilities import random_string
 
@@ -458,3 +458,16 @@ async def dump_tag_infos(request, tags):
                      "updateBy", "updateAt", "comment"]
     tags = [TagSchema(only=visible_field).dump(v) for v in tags]
     return tags
+
+async def dump_announcement_infos(request,announcements):
+    if not announcements:
+        return []
+
+    visible_field = ["title", "uri", "createdAt","updateAt"]
+
+    announcements =  [AnnouncementSchema(only=visible_field).dump(v) for v in announcements]
+    return announcements
+
+
+
+

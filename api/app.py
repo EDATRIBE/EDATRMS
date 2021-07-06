@@ -3,7 +3,7 @@ import os
 from sanic import Sanic
 from sanic_session import AIORedisSessionInterface, Session
 
-from .blueprints import account, handle_exception, storage,ip,animation,video,caption,novel,tag
+from .blueprints import account, handle_exception, storage,ip,animation,video,caption,novel,tag,semi_static
 from .config import config, log_config
 from .models import close_cache, close_db, init_cache, init_db
 
@@ -16,7 +16,7 @@ app.error_handler.add(Exception, handle_exception)
 
 app.static('/local', os.path.join(config['DATA_PATH'], config['LOCAL_FILES_DIR']),
            stream_large_files=True)
-app.static('/semi_static', os.path.join(config['DATA_PATH'], config['SEMI_STATIC_DIR']),
+app.static('/announcements', os.path.join(config['DATA_PATH'], config['ANNOUNCEMENTS_DIR']),
            stream_large_files=True)
 
 app.blueprint(account)
@@ -27,6 +27,7 @@ app.blueprint(video)
 app.blueprint(caption)
 app.blueprint(novel)
 app.blueprint(tag)
+app.blueprint(semi_static)
 
 @app.listener('before_server_start')
 async def server_init(app, loop):
