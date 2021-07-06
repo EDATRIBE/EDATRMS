@@ -88,7 +88,7 @@ async def list_all(request):
     )
 
 @tag.get('/list/<limit:int>/<offset:int>')
-async def list(request, offset, limit):
+async def list_(request, offset, limit):
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     tags, total = await tag_service.list_tags(limit=limit, offset=offset)

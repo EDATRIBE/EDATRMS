@@ -94,7 +94,7 @@ async def list_all(request):
     )
 
 @video.get('/list/<limit:int>/<offset:int>')
-async def list(request, offset, limit):
+async def list_(request, offset, limit):
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     videos, total = await video_service.list_videos(limit=limit, offset=offset)

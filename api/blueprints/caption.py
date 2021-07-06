@@ -114,7 +114,7 @@ async def list_all(request):
     )
 
 @caption.get('/list/<limit:int>/<offset:int>')
-async def list(request, offset, limit):
+async def list_(request, offset, limit):
 
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     captions, total = await caption_service.list_captions(limit=limit, offset=offset)

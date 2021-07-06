@@ -150,7 +150,7 @@ async def list_all(request):
 
 
 @animation.get('/list/<limit:int>/<offset:int>')
-async def list(request, offset, limit):
+async def list_(request, offset, limit):
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
     animations, total = await animation_service.list_animations(limit=limit, offset=offset)
 

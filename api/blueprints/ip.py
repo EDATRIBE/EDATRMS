@@ -112,7 +112,7 @@ async def list_all(request):
     )
 
 @ip.get('/list/<limit:int>/<offset:int>')
-async def list(request, offset, limit):
+async def list_(request, offset, limit):
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ips, total = await ip_service.list_ips(limit=limit, offset=offset)

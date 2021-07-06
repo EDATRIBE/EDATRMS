@@ -153,7 +153,7 @@ async def list_all(request):
 
 
 @novel.get('/list/<limit:int>/<offset:int>')
-async def list(request, offset, limit):
+async def list_(request, offset, limit):
     novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
     novels, total = await novel_service.list_novels(limit=limit, offset=offset)
 
