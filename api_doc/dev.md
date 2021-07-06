@@ -256,10 +256,13 @@
 
 * **Column:**
 
-    | Filed | Type         | Nullable | Comment |
-    | ----- | ------------ | -------- | ------- |
-    | id    | integer      | PK       |         |
-    | name  | varchar(300) | False    |         |
+    | Filed                      | Type           | Nullable | Comment |
+    | -------------------------- | -------------- | -------- | ------- |
+    | id                         | integer        | PK       |         |
+    | name                       | varchar(300)   | False    |         |
+    | reserved_names             | json           | False    | 别名    |
+    | [ reserved_names.cn_name ] | json.attr: str | Optional | 中文名  |
+    | [ reserved_names.en_name ] | json.attr: str | Optional | 英文名  |
 
 #### ip_tag
 
@@ -302,20 +305,36 @@
     | caption_id | intger | False    |         |
     | user_id    | intger | False    |         |
 
-#### staff
+#### role
 
 
 * **Column:**
 
-    | Filed       | Type    | Nullable | Comment |
-    | ----------- | ------- | -------- | ------- |
-    | id      | intger | PK |         |
-    | user_id | intger | False |         |
-    |            |      |          |          |
-    | created_at          | date  | False | 创建日期     |
-    | comment             | varchar(300) | False | 备注         |
-    
-      
+    | Filed                      | Type           | Nullable | Comment      |
+    | -------------------------- | -------------- | -------- | ------------ |
+    | id                         | intger         | PK       |              |
+    | name                       | varchar(300)   | False    | 角色名       |
+    | reserved_names             | json           | False    | 别名         |
+    | [ reserved_names.cn_name ] | json.attr: str | Optional | 中文名       |
+    | [ reserved_names.en_name ] | json.attr: str | Optional | 英文名       |
+    | style                      | json           | False    | 样式         |
+    | [ style.icon ]             | json.attr: str | Optional | 角色徽章图标 |
+    | [ style.color ]            | json.attr: str | Optional | 角色徽章颜色 |
+    |                            |                |          |              |
+    | created_at                 | date           | False    | 创建日期     |
+    | comment                    | varchar(300)   | False    | 备注         |
+#### user_role
+
+
+* **Column:**
+
+    | Filed   | Type   | Nullable | Comment |
+    | ------- | ------ | -------- | ------- |
+    | id      | intger | PK       |         |
+    | user_id | intger | False    |         |
+    | role_id | intger | False    |         |
+
+
 
 ### 业务功能
 
