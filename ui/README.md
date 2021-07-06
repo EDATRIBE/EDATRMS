@@ -1,8 +1,9 @@
-# Quasar App (ui)
+# EDATRMS UI
 
 A Quasar Framework app
 
 ## Install the dependencies
+
 ```bash
 yarn
 ```
@@ -13,11 +14,13 @@ quasar dev
 ```
 
 ### Lint the files
+
 ```bash
 yarn run lint
 ```
 
 ### Build the app for production
+
 ```bash
 quasar build
 ```
