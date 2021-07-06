@@ -1,7 +1,7 @@
 import os
 
 # Directory of runtime data, like logs and uploaded files etc
-DATA_PATH = os.path.expanduser('~/Workshop/ArchiveAlpha/EDATRMS/api_data')
+DATA_PATH = os.path.expanduser('~/Workshop/ArchiveAlpha/EDATRMS/api/api_data')
 
 
 # Subdirectory of logs
