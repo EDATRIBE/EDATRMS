@@ -5,7 +5,7 @@ from ..models import StorageBucket, StorageRegion, UserSchema
 from ..services import StorageService, UserService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, validate_nullable, sift_dict_by_key,
+                     dump_user_info,dump_user_infos, copy_file, required_field_validation, sift_dict_by_key,
                      response_json)
 
 account = Blueprint('account', url_prefix='/account')
@@ -14,7 +14,7 @@ account = Blueprint('account', url_prefix='/account')
 @account.post('/login')
 async def login(request):
     data = UserSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["name", "password"])
+    required_field_validation(data=data, required_field=["name", "password"])
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
     user = await user_service.info_by_name(data['name'])
@@ -79,3 +79,13 @@ async def logout(request):
     user_repr = request['session'].pop('user', None)
 
     return response_json(user=user_repr)
+
+@account.get('/list')
+async def list_(request):
+    user_service = UserService(request.app.config, request.app.db, request.app.cache)
+    users, total = await user_service.list_users()
+
+    return response_json(
+        users=await dump_user_infos(request, users),
+        total=total
+    )

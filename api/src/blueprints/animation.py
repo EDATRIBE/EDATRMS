@@ -5,7 +5,7 @@ from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, Animati
 from ..services import StorageService, UserService, IPService, AnimationService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, validate_nullable, sift_dict_by_key,
+                     dump_user_info, copy_file, required_field_validation, sift_dict_by_key,
                      response_json, dump_ip_info, dump_ip_infos, dump_animation_info, dump_animation_infos)
 
 animation = Blueprint('animation', url_prefix='/animation')
@@ -15,7 +15,7 @@ animation = Blueprint('animation', url_prefix='/animation')
 @authenticated_staff()
 async def create(request):
     data = AnimationSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["ip_id", "name", "released_at", "type", "episodes_num"])
+    required_field_validation(data=data, required_field=["ip_id", "name", "released_at", "type", "episodes_num"])
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
     for key, value in data.get("image_ids", {}).items():
@@ -75,7 +75,7 @@ async def info(request, id):
 @authenticated_staff()
 async def edit(request):
     data = AnimationSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
 
     id = data["id"]
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
@@ -126,7 +126,7 @@ async def edit(request):
 @authenticated_staff()
 async def delete(request):
     data = AnimationSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
 
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
     animation = await animation_service.info(data["id"])

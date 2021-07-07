@@ -106,8 +106,6 @@ class UserService:
         count_sm = sasql.select([sasql.func.count()]). \
             select_from(UserModel)
 
-        # select_sm = select_sm.order_by(UserModel.c.id.desc())
-
         if limit is not None:
             select_sm = select_sm.limit(limit)
         if offset is not None:

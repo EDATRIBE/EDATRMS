@@ -5,9 +5,9 @@ from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, Animati
 from ..services import StorageService, UserService, IPService, AnimationService,VideoService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, validate_nullable, sift_dict_by_key,
+                     dump_user_info, copy_file, required_field_validation, sift_dict_by_key,
                      response_json, dump_ip_info, dump_ip_infos, dump_animation_info, dump_animation_infos,
-                     dump_video_info,dump_video_infos)
+                     dump_video_info, dump_video_infos)
 
 video = Blueprint('video', url_prefix='/video')
 
@@ -16,7 +16,7 @@ video = Blueprint('video', url_prefix='/video')
 @authenticated_staff()
 async def create(request):
     data = VideoSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["animation_id", "file_addresses"])
+    required_field_validation(data=data, required_field=["animation_id", "file_addresses"])
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     video = await video_service.create(
@@ -47,7 +47,7 @@ async def info(request, id):
 @authenticated_staff()
 async def edit(request):
     data = VideoSchema().load(request.json)
-    validate_nullable(data=data,not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
 
     id = data["id"]
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
@@ -72,7 +72,7 @@ async def edit(request):
 @authenticated_staff()
 async def delete(request):
     data = VideoSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     video = await video_service.info(data["id"])

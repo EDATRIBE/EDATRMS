@@ -66,7 +66,6 @@ class AnimationService:
         count_sm = sasql.select([sasql.func.count()]). \
             select_from(AnimationModel)
 
-        # select_sm = select_sm.order_by(UserModel.c.id.desc())
         if ip_id is not None:
             clause = AnimationModel.c.ip_id == ip_id
             select_sm = select_sm.where(clause)

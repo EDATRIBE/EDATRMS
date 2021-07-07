@@ -5,7 +5,7 @@ from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, NovelSc
 from ..services import StorageService, UserService, IPService, NovelService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, validate_nullable, sift_dict_by_key,
+                     dump_user_info, copy_file, required_field_validation, sift_dict_by_key,
                      response_json, dump_ip_info, dump_ip_infos, dump_novel_info, dump_novel_infos)
 
 novel = Blueprint('novel', url_prefix='/novel')
@@ -15,9 +15,9 @@ novel = Blueprint('novel', url_prefix='/novel')
 @authenticated_staff()
 async def create(request):
     data = NovelSchema().load(request.json)
-    validate_nullable(
+    required_field_validation(
         data=data,
-        not_null_field=["ip_id", "name", "written_by",
+        required_field=["ip_id", "name", "written_by",
                         "volumes_num","integrated","file_addresses"]
     )
 
@@ -79,7 +79,7 @@ async def info(request, id):
 @authenticated_staff()
 async def edit(request):
     data = NovelSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
 
     id = data["id"]
     novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
@@ -129,7 +129,7 @@ async def edit(request):
 @authenticated_staff()
 async def delete(request):
     data = NovelSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
 
     novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
     novel = await novel_service.info(data["id"])

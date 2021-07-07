@@ -5,9 +5,9 @@ from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, Animati
 from ..services import StorageService, UserService, IPService, AnimationService,VideoService,CaptionService,CaptionUserService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, validate_nullable, sift_dict_by_key,
+                     dump_user_info, copy_file, required_field_validation, sift_dict_by_key,
                      response_json, dump_ip_info, dump_ip_infos, dump_animation_info, dump_animation_infos,
-                     dump_caption_info,dump_caption_infos)
+                     dump_caption_info, dump_caption_infos)
 
 caption = Blueprint('caption', url_prefix='/caption')
 
@@ -16,7 +16,7 @@ caption = Blueprint('caption', url_prefix='/caption')
 @authenticated_staff()
 async def create(request):
     data = CaptionSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["animation_id","integrated","state", "file_addresses"])
+    required_field_validation(data=data, required_field=["animation_id", "integrated", "state", "file_addresses"])
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
     contributor_ids = data.get('contributor_ids',[])
@@ -68,7 +68,7 @@ async def info(request, id):
 @authenticated_staff()
 async def edit(request):
     data = CaptionSchema().load(request.json)
-    validate_nullable(data=data,not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
     id = data["id"]
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     caption = await caption_service.info(id)
@@ -92,7 +92,7 @@ async def edit(request):
 @authenticated_staff()
 async def delete(request):
     data = CaptionSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
 
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     caption = await caption_service.info(data["id"])
@@ -127,7 +127,7 @@ async def list_(request, offset, limit):
 @caption.post('/contributor/create')
 async def caption_contributor_create(request):
     data = CaptionUserSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["caption_id","contributor_id"])
+    required_field_validation(data=data, required_field=["caption_id", "contributor_id"])
 
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     caption = caption_service.info(data["caption_id"])
@@ -154,7 +154,7 @@ async def caption_contributor_create(request):
 @caption.post('/contributor/delete')
 async def caption_contributor_delete(request):
     data = CaptionUserSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["caption_id", "contributor_id"])
+    required_field_validation(data=data, required_field=["caption_id", "contributor_id"])
 
     caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
     caption_user_items,total = await caption_user_service.list_caption_user_items(

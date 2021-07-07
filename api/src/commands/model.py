@@ -22,7 +22,7 @@ class Model:
         )
 
         self.theme = Theme({
-            "info": "green_yellow",
+            "info": "turquoise2",
             "warning": "orange1",
             "danger": "red"
         })

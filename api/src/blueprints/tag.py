@@ -5,7 +5,7 @@ from ..models import StorageBucket, StorageRegion, UserSchema, TagSchema
 from ..services import StorageService, UserService, TagService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, validate_nullable, sift_dict_by_key,
+                     dump_user_info, copy_file, required_field_validation, sift_dict_by_key,
                      response_json, dump_tag_info, dump_tag_infos)
 
 tag = Blueprint('tag', url_prefix='/tag')
@@ -15,7 +15,7 @@ tag = Blueprint('tag', url_prefix='/tag')
 @authenticated_staff()
 async def create(request):
     data = TagSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["name"])
+    required_field_validation(data=data, required_field=["name"])
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     tag = await tag_service.create(
@@ -44,7 +44,7 @@ async def info(request, id):
 @authenticated_staff()
 async def edit(request):
     data = TagSchema().load(request.json)
-    validate_nullable(data=data,not_null_field=['id'])
+    required_field_validation(data=data, required_field=['id'])
 
     id = data['id']
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
@@ -66,7 +66,7 @@ async def edit(request):
 @authenticated_staff()
 async def delete(request):
     data = TagSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     tag = await tag_service.info(data["id"])

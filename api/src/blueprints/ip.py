@@ -5,7 +5,7 @@ from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema,IPTagSch
 from ..services import StorageService, UserService, IPService,TagService,IPTagService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, validate_nullable, sift_dict_by_key,
+                     dump_user_info, copy_file, required_field_validation, sift_dict_by_key,
                      response_json, dump_ip_info, dump_ip_infos)
 
 ip = Blueprint('ip', url_prefix='/ip')
@@ -15,7 +15,7 @@ ip = Blueprint('ip', url_prefix='/ip')
 @authenticated_staff()
 async def create(request):
     data = IPSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["name"])
+    required_field_validation(data=data, required_field=["name"])
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     tag_ids = data.get('tag_ids',[])
@@ -63,7 +63,7 @@ async def info(request, id):
 @authenticated_staff()
 async def edit(request):
     data = IPSchema().load(request.json)
-    validate_nullable(data=data,not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
     id = data["id"]
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = await ip_service.info(id)
@@ -89,7 +89,7 @@ async def edit(request):
 @authenticated_staff()
 async def delete(request):
     data = IPSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["id"])
+    required_field_validation(data=data, required_field=["id"])
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = await ip_service.info(data["id"])
@@ -125,7 +125,7 @@ async def list_(request, offset, limit):
 @ip.post('/tag/create')
 async def ip_tag_create(request):
     data = IPTagSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["ip_id","tag_id"])
+    required_field_validation(data=data, required_field=["ip_id", "tag_id"])
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = ip_service.info(data["ip_id"])
@@ -152,7 +152,7 @@ async def ip_tag_create(request):
 @ip.post('/tag/delete')
 async def ip_tag_delete(request):
     data = IPTagSchema().load(request.json)
-    validate_nullable(data=data, not_null_field=["ip_id", "tag_id"])
+    required_field_validation(data=data, required_field=["ip_id", "tag_id"])
 
     ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
     ip_tag_items,total = await ip_tag_service.list_ip_tag_items(
