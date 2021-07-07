@@ -8,4 +8,6 @@ from .novel import NovelService
 from .storage import StorageService
 from .tag import TagService
 from .user import UserService
+from .role import RoleService
+from .user_role import UserRoleService
 from .video import VideoService

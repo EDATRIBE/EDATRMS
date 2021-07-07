@@ -10,8 +10,8 @@ from sanic import response
 from sanic.exceptions import SanicException, Unauthorized
 
 from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, AnimationSchema, VideoSchema, CaptionSchema, \
-    NovelSchema, TagSchema,AnnouncementSchema
-from ..services import ServiceException, StorageService, UserService,TagService,IPTagService,CaptionUserService,CaptionService,VideoService,IPService,NovelService,AnimationService
+    NovelSchema, TagSchema,AnnouncementSchema,RoleSchema,UserRoleSchema
+from ..services import ServiceException, StorageService, UserService,TagService,IPTagService,CaptionUserService,CaptionService,VideoService,IPService,NovelService,AnimationService,UserRoleService,RoleService
 from ..utilities import random_string
 
 
@@ -86,8 +86,8 @@ def authenticated_staff():
     return decorator
 
 
-def validate_nullable(*, data, not_null_field):
-    for key in not_null_field:
+def required_field_validation(*, data, required_field):
+    for key in required_field:
         if data.get(key) is None:
             raise ValidationError(message='Missing field: ' + key)
 
@@ -149,7 +149,14 @@ async def dump_user_info(request, user):
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
     user["staff"] = await user_service.is_staff_by_id(user['id'])
 
-    visible_field = ["id", "name", "email", "mobile", "intro", "avatar", "createdAt", "staff"]
+    user_role_service = UserRoleService(request.app.config, request.app.db, request.app.cache)
+    role_service = RoleService(request.app.config, request.app.db, request.app.cache)
+    user_role_items, total = await user_role_service.list_user_role_items(user_id=user['id'])
+    role_ids = [user_role_item["role_id"] for user_role_item in user_role_items]
+    roles = await role_service.infos(role_ids)
+    user['roles'] = roles
+
+    visible_field = ["id", "name", "email", "mobile", "intro", "avatar", "createdAt", "staff",'roles']
     user = UserSchema(only=visible_field).dump(user)
     return user
 
@@ -168,7 +175,15 @@ async def dump_user_infos(request, users):
     for user, is_staff in zip(users, is_staff_list):
         user['staff'] = is_staff
 
-    visible_field = ["id", "name", "email", "mobile", "intro", "avatar", "createdAt", "staff"]
+    user_role_service = UserRoleService(request.app.config, request.app.db, request.app.cache)
+    role_service = RoleService(request.app.config, request.app.db, request.app.cache)
+    for user in users:
+        user_role_items, total = await user_role_service.list_user_role_items(user_id=user['id'])
+        role_ids = [user_role_item["role_id"] for user_role_item in user_role_items]
+        roles = await role_service.infos(role_ids)
+        user['roles'] = roles
+
+    visible_field = ["id", "name", "email", "mobile", "intro", "avatar", "createdAt", "staff",'roles']
     users = [UserSchema(only=visible_field).dump(v) for v in users]
     return users
 

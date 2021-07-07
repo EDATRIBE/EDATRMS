@@ -11,6 +11,8 @@ from .novel import NovelModel,NovelSchema
 from .storage import FileModel, FileSchema, StorageBucket, StorageRegion
 from .tag import TagModel,TagSchema
 from .user import StaffModel, UserModel, UserSchema
+from .role import RoleModel,RoleSchema
+from .user_role import UserRoleModel,UserRoleSchema
 from .video import VideoModel,VideoSchema
 from .semi_static import AnnouncementSchema,AnnouncementModel
 
