@@ -20,6 +20,7 @@ async def create(request):
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     tag = await tag_service.create(
         name=data["name"],
+        reserved_names=data.get('reserved_names',{}),
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
         comment=data.get("comment", '')
@@ -43,15 +44,15 @@ async def info(request, id):
 @authenticated_staff()
 async def edit(request):
     data = TagSchema().load(request.json)
-    validate_nullable(data=data,not_null_field=["id"])
+    validate_nullable(data=data,not_null_field=['id'])
 
-    id = data["id"]
+    id = data['id']
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     tag = await tag_service.info(id)
     if tag is None:
         raise NotFound('')
 
-    allowed_data = sift_dict_by_key(data=data,allowed_key=["name","comment"])
+    allowed_data = sift_dict_by_key(data=data,allowed_key=['name','reserved_names','comment'])
 
     tag = await tag_service.edit(
         id,

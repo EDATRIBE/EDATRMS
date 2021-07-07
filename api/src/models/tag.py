@@ -9,6 +9,7 @@ TagModel = sa.Table(
     'tag', metadata,
     sa.Column('id', sa.INTEGER(), primary_key=True),
     sa.Column('name', sa.VARCHAR(300), nullable=False),
+    sa.Column('reserved_names', sa.JSON(),nullable=False),
     sa.Column('created_by', sa.INTEGER(), nullable=False),
     sa.Column("created_at", LocalDateTime(), nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP')),
@@ -23,10 +24,16 @@ TagModel = sa.Table(
     sa.UniqueConstraint("name",name='tag_uqc_name')
 )
 
+class TagReservedNamesSchema(Schema):
+    cnName = fields.String(attribute='cn_name')
+    enName = fields.String(attribute='en_name')
+    class Meta:
+        ordered = True
 
 class TagSchema(Schema):
     id = fields.Integer()
     name = fields.String(validate=validate.Length(0,300))
+    reservedNames = fields.Nested('TagReservedNamesSchema', attribute='reserved_names')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
     updateBy = fields.Integer(attribute='updated_by')
