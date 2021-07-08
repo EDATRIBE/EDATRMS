@@ -26,6 +26,8 @@ IPTagModel = sa.Table(
                             ondelete='CASCADE', onupdate='CASCADE', name='ip_tag_fkc_updated_by'),
     sa.UniqueConstraint("ip_id", "tag_id", name='ip_tag_uqc')
 )
+
+
 class IPTagSchema(Schema):
     id = fields.Integer()
     ipId = fields.Integer(attribute="ip_id")
@@ -35,6 +37,13 @@ class IPTagSchema(Schema):
     updateBy = fields.Integer(attribute='updated_by')
     updateAt = fields.DateTime(attribute='updated_at')
     comment = fields.String(validate=validate.Length(0, 300))
+
+    class Meta:
+        ordered = True
+
+class IPTagsSchema(Schema):
+    ipId = fields.Integer(attribute="ip_id")
+    tagIds = fields.List(fields.Integer(),attribute="tag_ids")
 
     class Meta:
         ordered = True

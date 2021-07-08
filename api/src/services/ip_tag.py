@@ -35,6 +35,11 @@ class IPTagService:
             await conn.execute(
                 sasql.delete(IPTagModel).where(IPTagModel.c.id == id))
 
+    async def delete_by_ip_id(self, ip_id):
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                sasql.delete(IPTagModel).where(IPTagModel.c.ip_id == ip_id))
+
     async def info(self, id):
         if id is None:
             return None

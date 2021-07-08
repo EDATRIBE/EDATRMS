@@ -6,7 +6,7 @@ from .caption import CaptionModel,CaptionSchema
 from .caption_user import CaptionUserModel,CaptionUserSchema
 from .common import metadata
 from .ip import IPModel,IPSchema
-from .ip_tag import IPTagModel,IPTagSchema
+from .ip_tag import IPTagModel,IPTagSchema,IPTagsSchema
 from .novel import NovelModel,NovelSchema
 from .storage import FileModel, FileSchema, StorageBucket, StorageRegion
 from .tag import TagModel,TagSchema

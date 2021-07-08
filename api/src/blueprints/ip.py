@@ -122,10 +122,10 @@ async def list_(request, offset, limit):
         total=total
     )
 
-@ip.post('/tag/create')
+@ip.post('/set/tags')
 async def ip_tag_create(request):
-    data = IPTagSchema().load(request.json)
-    required_field_validation(data=data, required_field=["ip_id", "tag_id"])
+    data = IPTagsSchema().load(request.json)
+    required_field_validation(data=data, required_field=["ip_id", "tag_ids"])
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = ip_service.info(data["ip_id"])
@@ -133,35 +133,25 @@ async def ip_tag_create(request):
         raise NotFound('')
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
-    tag = tag_service.info(data["tag_id"])
+    for tag_id in data["tag_ids"]:
+        tag = tag_service.info(tag_id)
     if tag is None:
         raise NotFound('')
 
     ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
+    await ip_tag_service.delete_by_ip_id(data["ip_id"])
+    ip_tag_items = []
+    for tag_id in data["tag_ids"]:
     ip_tag_item = await ip_tag_service.create(
         ip_id=data["ip_id"],
-        tag_id=data["tag_id"],
+            tag_id=tag_id,
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
         comment=data.get("comment", '')
     )
+        ip_tag_items.append(ip_tag_item)
 
-    return response_json(ip_tag_item=IPTagSchema().dump(ip_tag_item))
-
-
-@ip.post('/tag/delete')
-async def ip_tag_delete(request):
-    data = IPTagSchema().load(request.json)
-    required_field_validation(data=data, required_field=["ip_id", "tag_id"])
-
-    ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
-    ip_tag_items,total = await ip_tag_service.list_ip_tag_items(
-        ip_id=data['ip_id'],
-        tag_id=data['tag_id']
+    return response_json(
+        ip_tag_items=await dump_ip_tag_infos(request, ip_tag_items),
     )
-    if total < 1:
-        raise NotFound('')
 
-    await ip_tag_service.delete(ip_tag_items[0]["id"])
-
-    return response_json(ip_tag_item=IPTagSchema().dump(ip_tag_items[0]))
