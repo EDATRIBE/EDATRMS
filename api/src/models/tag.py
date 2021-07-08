@@ -32,7 +32,7 @@ class TagReservedNamesSchema(Schema):
 
 class TagSchema(Schema):
     id = fields.Integer()
-    name = fields.String(validate=validate.Length(0,300))
+    name = fields.String(validate=validate.Length(1,300))
     reservedNames = fields.Nested('TagReservedNamesSchema', attribute='reserved_names')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')

@@ -145,3 +145,4 @@ ui/src/pages/Index2.vue
 ui/src/pages/Index_backup.vue
 ui/src/pages/flab.vue
 ui/dev_proxy.js
+api/api_doc/test
