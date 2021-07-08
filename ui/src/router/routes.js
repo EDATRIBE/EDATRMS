@@ -1,15 +1,35 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/MainLayout'),
     children: [
       {
         path: '',
-        component: () => import('pages/Index.vue')
+        component: () => import('src/layout_pages/Index'),
+      },
+      {
+        path: 'ip/create',
+        component: () => import('src/layout_pages/IP/IPCreate'),
+      },
+      {
+        path: 'ann',
+        component: () => import('src/layout_pages/Announcement/Announcements')
+      },
+      {
+        path: 'ani',
+        component: () => import('src/layout_pages/Animation/Animation')
+      },
+      {
+        path: 'nov',
+        component: () => import('src/layout_pages/Novel/Novel')
       },
       {
         path: 'flab',
-        component: () => import('pages/flab.vue')
+        component: () => import('pages/flab')
+      },
+      {
+        path: 'con',
+        component: () => import('src/layout_pages/Contributor/Contributors')
       }
     ]
   },

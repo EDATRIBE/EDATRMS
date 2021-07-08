@@ -13,8 +13,8 @@
       <q-input
         dark
         dense
-        class="text-h5 bg-dark-light q-mb-sm"
-        v-model="signInData.name"
+        class="text-h6 bg-dark-light q-mb-sm full-width"
+        v-model="signInData.email"
         clear-icon="close"
         standout=""
         color="white"
@@ -26,7 +26,7 @@
       <q-input
         dark
         dense
-        class="text-h5 bg-dark-light q-mb-sm"
+        class="text-h6 bg-dark-light q-mb-sm full-width"
         v-model="signInData.password"
         clear-icon="close"
         color="white"
@@ -55,7 +55,7 @@ export default {
     return {
       drawer: false,
       signInData: {
-        name: '',
+        email: '',
         password: ''
       }
     }
