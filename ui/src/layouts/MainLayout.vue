@@ -41,7 +41,7 @@
             size="2.35em"  v-ripple class="cursor-pointer q-ml-md"
             v-if="user !== null"
           >
-            <img  @click="drawer = !drawer" :src="user.avatar.url">
+            <img  @click="drawer = !drawer" :src="user.avatar?user.avatar.url:this.genAvatar(user.name)">
           </q-avatar>
         </div>
       </q-toolbar>
@@ -148,28 +148,28 @@ export default {
   color: white;
 }
 
-.q-markdown--code-wrapper {
-  width: 100%;
-  min-width: 0;
-  background: #282D33;
-}
+/*.q-markdown--code-wrapper {*/
+/*  width: 100%;*/
+/*  min-width: 0;*/
+/*  background: #282D33;*/
+/*}*/
 
-.q-markdown code, .q-markdown pre {
-  font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
-  background: #282D33;
-  color: white;
-}
+/*.q-markdown code, .q-markdown pre {*/
+/*  font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;*/
+/*  background: #282D33;*/
+/*  color: white;*/
+/*}*/
 
-.token.operator {
-  color: white;
-}
+/*.token.operator {*/
+/*  color: white;*/
+/*}*/
 
-.q-markdown--line-numbers {
-  padding: 5px;
-  text-align: right;
-  background: #282D33;
-  color: white;
-}
+/*.q-markdown--line-numbers {*/
+/*  padding: 5px;*/
+/*  text-align: right;*/
+/*  background: #282D33;*/
+/*  color: white;*/
+/*}*/
 
 .q-markdown--table {
   border-color: #282D33;

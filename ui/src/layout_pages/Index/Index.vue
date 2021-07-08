@@ -6,7 +6,7 @@
         <!--SEARCH-->
         <q-input
           dense dark class="text-h5 bg-dark-light q-mb-md" style="width: 100%" standout=""
-          v-model="text"
+          v-model="searchBuffer"
         >
           <template v-slot:append>
             <q-btn dense round color="gery" flat icon="mdi-magnify"/>
@@ -28,10 +28,10 @@
           <q-tab ripple class="text-secondary text-weight-medium" name="Novels"  style="width: 50%">
             <q-icon class="q-mr-xs" size="1.7em" name="import_contacts"></q-icon>{{$t('ui.index.novels')}}
           </q-tab>
-          <q-tab ripple class="text-accent text-weight-medium" name="IPs"  style="width: 50%" v-if="user&&user.staff">
+          <q-tab ripple class="text-accent text-weight-medium" name="IPsAndTags"  style="width: 50%" v-if="user&&user.staff">
             <q-icon class="q-mr-xs" size="1.7em" name="source"></q-icon>{{$t('ui.index.ips')}}
             <span class="q-mx-sm">|</span>
-            <q-icon class="q-mr-xs" size="1.2em" name="fas fa-hashtag"></q-icon>tags
+            <q-icon class="q-mr-xs" size="1.2em" name="fas fa-hashtag"></q-icon>{{$t('ui.index.tags')}}
           </q-tab>
         </q-tabs>
         <q-tab-panels keep-alive v-model="tab" class="bg-dark">
@@ -41,8 +41,9 @@
           <q-tab-panel name="Novels" class="q-px-none bg-dark q-pt-xs">
             <IndexNovels></IndexNovels>
           </q-tab-panel>
-          <q-tab-panel name="IPs" class="q-px-none bg-dark q-pt-xs" v-if="user&&user.staff">
+          <q-tab-panel name="IPsAndTags" class="q-px-none bg-dark q-pt-xs" v-if="user&&user.staff">
             <index-i-ps></index-i-ps>
+            <index-tags></index-tags>
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -52,7 +53,7 @@
       <q-toolbar style="width: 95.2%" class="q-px-none">
         <q-input
           dense dark class="text-h5 bg-dark-light" style="width: 100%" standout=""
-          v-model="text"
+          v-model="searchBuffer"
         >
           <template v-slot:append>
             <q-btn dense round color="gery" flat icon="mdi-magnify"/>
@@ -67,22 +68,30 @@
 import IndexAnimations from "src/layout_pages/Index/IndexAnimations";
 import IndexNovels from "src/layout_pages/Index/IndexNovels";
 import IndexIPs from "src/layout_pages/Index/IndexIPs";
+import IndexTags from "src/layout_pages/Index/IndexTags";
 
 export default {
   name: "Index",
   components: {
+    IndexTags,
     IndexIPs,
     IndexNovels,
     IndexAnimations
   },
+  activated() {
+    if(this.$route.query.tab){
+      this.tab=this.$route.query.tab
+    }
+    if(this.$route.query.search){
+      this.searchBuffer=this.$route.query.search
+    }
+  },
   data: () => ({
-    tab: 'Animations',
-    text: '',
     LD: true,
-    expanded: [],
     scrollInfo: {},
+    searchBuffer: '',
+    tab: 'Animations',
     ips: [],
-    lorem: 'Kazuto "Kirito" Kirigaya enters a virtual-reality, massively multiplayer online role playing game called Sword Art Online. There is no escape from this world unless the player clears the game; however getting a "game over" results in the death of the player.'
   }),
   methods: {
     foo() {
