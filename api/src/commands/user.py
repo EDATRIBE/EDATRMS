@@ -56,10 +56,7 @@ class User:
         table.add_column("value", overflow="fold")
 
         for key, value in row.items():
-            table.add_row(
-                str(key),
-                str(value)
-            )
+            table.add_row(str(key), str(value))
 
         self.console.print(table)
 
@@ -81,7 +78,7 @@ class User:
         if kwargs.get("staff_only") is True:
             rows = list(filter(lambda x: x.get("staff"), rows))
 
-        visible_field = ["id", "name", "email", "mobile","createdAt", "staff","comment"]
+        visible_field = ["id", "name", "email", "qq","createdAt", "staff","comment"]
         users = []
         for row in rows:
             user_role_items, total = asyncio.get_event_loop().run_until_complete(
@@ -141,7 +138,7 @@ class User:
     def create_user(self, **kwargs):
         try:
             data = UserSchema().load(kwargs)
-            required_field_validation(data=data,required_field=['name','password'])
+            required_field_validation(data=data,required_field=['name','password','email'])
         except ValidationError as err:
             self.console.print(err.messages, style="danger")
             return
@@ -151,6 +148,7 @@ class User:
                 self.user_service.create(
                     name=data["name"],
                     password=data['password'],
+                    email=data['email'],
                     comment=data.get("comment", '')
                 )
             )
@@ -160,6 +158,7 @@ class User:
             return
 
         self.inspect_user(id=id)
+
 
     def set_staff(self, **kwargs):
         try:
@@ -182,6 +181,7 @@ class User:
             return
 
         self.inspect_user(id=id)
+
 
     def unset_staff(self, **kwargs):
         try:
@@ -286,6 +286,7 @@ class User:
 
         self.list_roles()
 
+
     def assign_role(self,**kwargs):
         try:
             data = UserRoleSchema().load(kwargs)
@@ -307,6 +308,7 @@ class User:
 
         self.inspect_user(id=data['user_id'])
 
+
     def cancel_role(self,**kwargs):
         try:
             data = UserRoleSchema().load(kwargs)
@@ -322,7 +324,7 @@ class User:
                     role_id=data['role_id']
                 )
             )
-            if total>0 :
+            if len(user_role_items)>0 :
                 asyncio.get_event_loop().run_until_complete(
                     self.user_role_service.delete(
                         id=user_role_items[0]['id']

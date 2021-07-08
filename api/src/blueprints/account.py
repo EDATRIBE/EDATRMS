@@ -14,10 +14,10 @@ account = Blueprint('account', url_prefix='/account')
 @account.post('/login')
 async def login(request):
     data = UserSchema().load(request.json)
-    required_field_validation(data=data, required_field=["name", "password"])
+    required_field_validation(data=data, required_field=["email", "password"])
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    user = await user_service.info_by_name(data['name'])
+    user = await user_service.info_by_email(data['email'])
 
     if user is None or sha256_hash(data['password'], user['salt']) != user['password']:
         return response_json(code=ResponseCode.FAILURE, message='Incorrect name or password')
@@ -39,7 +39,7 @@ async def info(request):
 @authenticated_user()
 async def edit(request):
     data = UserSchema().load(request.json)
-    data = sift_dict_by_key(data=data,allowed_key=["name", "password", "mobile", "email", "intro", "avatar_id"])
+    data = sift_dict_by_key(data=data,allowed_key=["password", "qq", "email", "intro", "avatar_id"])
 
     cond1 = data.get("avatar_id") is not None
     cond2 = (request['session']['user'].get('avatar') is None or

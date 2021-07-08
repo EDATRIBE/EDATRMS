@@ -88,13 +88,13 @@ class UserService:
 
         return None if row is None else dict(row)
 
-    async def info_by_mobile(self, mobile):
-        if mobile is None:
+    async def info_by_email(self, email):
+        if email is None:
             return None
 
         async with self.db.acquire() as conn:
             result = await conn.execute(
-                UserModel.select().where(UserModel.c.mobile == mobile)
+                UserModel.select().where(UserModel.c.email == email)
             )
             row = await result.first()
 

@@ -11,24 +11,25 @@ UserModel = sa.Table(
     sa.Column('name', sa.VARCHAR(300), nullable=False),
     sa.Column('password', sa.CHAR(64), nullable=False),
     sa.Column('salt', sa.CHAR(64), nullable=False),
-    sa.Column('email', sa.VARCHAR(300), nullable=False, server_default=''),
-    sa.Column('mobile', sa.CHAR(20), nullable=False, server_default=''),
+    sa.Column('email', sa.VARCHAR(300), nullable=False),
+    sa.Column('qq', sa.CHAR(20), nullable=False, server_default=''),
     sa.Column('intro', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.Column('avatar_id', sa.INTEGER(), nullable=True),
     sa.Column('created_at', LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
     sa.Column('comment', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.ForeignKeyConstraint(('avatar_id',), ('file.id',),
                             ondelete='SET NULL', onupdate='CASCADE', name='user_fkc_avatar_id'),
-    sa.Index('idx_username', 'name', unique=True)
+    sa.Index('user_idx_name', 'name', unique=True),
+    sa.Index('user_idx_email', 'email', unique=True)
 )
 
 
 class UserSchema(Schema):
     id = fields.Integer()
-    name = fields.String(validate=validate.Length(0,300))
+    name = fields.String(validate=validate.Length(1,300))
     password = fields.String(validate=validate.Regexp(r"[a-zA-Z0-9_]{6,18}$"))
     email = fields.String(validate=validate.Email())
-    mobile = fields.String(validate=validate.Length(11,11))
+    qq = fields.String(validate=validate.Length(1,20))
     intro = fields.String(validate=validate.Length(0,300))
     avatarId = fields.Integer(attribute='avatar_id')
     createdAt = fields.DateTime(attribute='created_at')
