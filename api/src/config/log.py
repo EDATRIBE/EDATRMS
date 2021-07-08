@@ -52,7 +52,7 @@ def get_log_config(config):
             'access_file': {
                 'class': 'logging.handlers.RotatingFileHandler',
                 'formatter': 'access',
-                'filename': '{}'.format(os.path.join(config['DATA_PATH'],config['LOGS_DIR'],"access.log")),
+                'filename': '{}'.format(os.path.join(config['DATA_PATH'],config['LOGS_DIR'],'access.log')),
                 'maxBytes': 10 * 1024 * 1024,
             },
             'app_console': {
@@ -63,7 +63,7 @@ def get_log_config(config):
             'app_file': {
                 'class': 'logging.handlers.RotatingFileHandler',
                 'formatter': 'generic',
-                'filename': '{}'.format(os.path.join(config['DATA_PATH'],config['LOGS_DIR'],"app.log")),
+                'filename': '{}'.format(os.path.join(config['DATA_PATH'],config['LOGS_DIR'],'app.log')),
                 'maxBytes': 10 * 1024 * 1024,
             },
         },

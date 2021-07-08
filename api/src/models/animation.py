@@ -1,6 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.sql as sasql
-from marshmallow import Schema, fields,validate
+from marshmallow import Schema, fields, validate
 
 from ..utilities import LocalDateTime
 from .common import metadata
@@ -14,14 +14,14 @@ AnimationModel = sa.Table(
     sa.Column('intros', sa.JSON(), nullable=False),
     sa.Column('image_ids', sa.JSON(), nullable=False),
     sa.Column('produced_by', sa.VARCHAR(300), nullable=False, server_default=''),
-    sa.Column("released_at", LocalDateTime(), nullable=False),
+    sa.Column('released_at', LocalDateTime(), nullable=False),
     sa.Column('written_by', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.Column('type', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.Column('episodes_num', sa.INTEGER(), nullable=False),
     sa.Column('created_by', sa.INTEGER(), nullable=False),
-    sa.Column("created_at", LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column('created_at', LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
     sa.Column('updated_by', sa.INTEGER(), nullable=False),
-    sa.Column("updated_at", LocalDateTime(), nullable=False,
+    sa.Column('updated_at', LocalDateTime(), nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')),
     sa.Column('comment', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.ForeignKeyConstraint(('ip_id',), ('ip.id',),
@@ -57,7 +57,7 @@ class AnimationImageIdsSchema(Schema):
 
 class AnimationSchema(Schema):
     id = fields.Integer()
-    ipId = fields.Integer(attribute="ip_id")
+    ipId = fields.Integer(attribute='ip_id')
     name = fields.String(validate=validate.Length(0,300))
     reservedNames = fields.Nested('AnimationReservedNamesSchema',attribute='reserved_names')
     intros = fields.Nested('AnimationIntrosSchema')

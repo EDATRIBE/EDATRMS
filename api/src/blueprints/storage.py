@@ -7,8 +7,8 @@ from sanic.exceptions import NotFound
 from ..models import FileSchema, StorageBucket, StorageRegion
 from ..services import StorageService
 from ..utilities import random_string
-from .common import (ResponseCode, authenticated_user, required_field_validation,
-                     response_json)
+from .common import (ResponseCode, authenticated_user,
+                     required_field_validation, response_json)
 
 storage = Blueprint('storage', url_prefix='/storage')
 
@@ -17,9 +17,9 @@ storage = Blueprint('storage', url_prefix='/storage')
 @authenticated_user()
 async def upload(request):
     data = FileSchema().load(request.form)
-    region = data.get("region",StorageRegion.LOCAL.value)
-    bucket = data.get("bucket",StorageBucket.LIMBO.value)
-    path = data.get("path",'')
+    region = data.get('region',StorageRegion.LOCAL.value)
+    bucket = data.get('bucket',StorageBucket.LIMBO.value)
+    path = data.get('path','')
 
     uploaded_files = []
     for i in range(request.app.config['UPLOAD_FILE_MAX_NUMBER']):
@@ -35,7 +35,7 @@ async def upload(request):
         if file_meta['size'] > request.app.config['UPLOAD_FILE_MAX_SIZE']:
             return response_json(
                 code=ResponseCode.FAILURE,
-                message='The size of \"{}\" exceeds the limit'.format(file_meta['name'])
+                message='The size of \'{}\' exceeds the limit'.format(file_meta['name'])
             )
 
         _, ext = os.path.splitext(file_meta['name'])
@@ -104,7 +104,7 @@ async def filepond_upload(request):
     if file_meta['size'] > request.app.config['UPLOAD_FILE_MAX_SIZE']:
         return response_json(
             code=ResponseCode.FAILURE,
-            message='The size of \"{}\" exceeds the limit'.format(file_meta['name'])
+            message='The size of \'{}\' exceeds the limit'.format(file_meta['name'])
         )
 
     _, ext = os.path.splitext(file_meta['name'])
@@ -128,7 +128,7 @@ async def filepond_upload(request):
         updated_by=request['session']['user']['id']
     )
 
-    return response.text(file["id"])
+    return response.text(file['id'])
 
 
 @storage.get('/file/filepond/load/<id:int>')
@@ -148,4 +148,4 @@ async def filepond_load(request, id):
         file['path']
     )
 
-    return await response.file(file_posi, filename=file.get("file_meta",{}).get("name", ''))
+    return await response.file(file_posi, filename=file.get('file_meta',{}).get('name', ''))

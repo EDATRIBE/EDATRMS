@@ -1,9 +1,9 @@
 import sqlalchemy as sa
 import sqlalchemy.sql as sasql
-from marshmallow import Schema, fields,validate
+from marshmallow import Schema, fields, validate
 
 from ..utilities import LocalDateTime
-from .common import metadata,BaiduCloudSchema
+from .common import BaiduCloudSchema, metadata
 
 CaptionModel = sa.Table(
     'caption', metadata,
@@ -11,13 +11,13 @@ CaptionModel = sa.Table(
     sa.Column('animation_id', sa.INTEGER(), nullable=False),
     sa.Column('integrated', sa.Boolean(), nullable=False),
     sa.Column('state', sa.VARCHAR(300), nullable=False),
-    sa.Column("released_at", LocalDateTime(), nullable=True),
+    sa.Column('released_at', LocalDateTime(), nullable=True),
     sa.Column('file_addresses', sa.JSON(), nullable=False),
     sa.Column('file_meta', sa.JSON(), nullable=False),
     sa.Column('created_by', sa.INTEGER(), nullable=False),
-    sa.Column("created_at", LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column('created_at', LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
     sa.Column('updated_by', sa.INTEGER(), nullable=False),
-    sa.Column("updated_at", LocalDateTime(), nullable=False,
+    sa.Column('updated_at', LocalDateTime(), nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')),
     sa.Column('comment', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.ForeignKeyConstraint(('animation_id',), ('animation.id',),

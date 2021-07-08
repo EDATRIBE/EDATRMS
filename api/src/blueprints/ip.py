@@ -1,12 +1,16 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
-from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema,IPTagSchema
-from ..services import StorageService, UserService, IPService,TagService,IPTagService
+from ..models import (IPSchema, IPTagSchema, IPTagsSchema, StorageBucket,
+                      StorageRegion, UserSchema)
+from ..services import (IPService, IPTagService, StorageService, TagService,
+                        UserService)
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, required_field_validation, sift_dict_by_key,
-                     response_json, dump_ip_info, dump_ip_infos)
+                     copy_file, required_field_validation, response_json,
+                     sift_dict_by_key)
+from .common_dumper import (dump_ip_info, dump_ip_infos, dump_ip_tag_infos,
+                            dump_user_info)
 
 ip = Blueprint('ip', url_prefix='/ip')
 
@@ -15,7 +19,7 @@ ip = Blueprint('ip', url_prefix='/ip')
 @authenticated_staff()
 async def create(request):
     data = IPSchema().load(request.json)
-    required_field_validation(data=data, required_field=["name"])
+    required_field_validation(data=data, required_field=['name'])
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     tag_ids = data.get('tag_ids',[])
@@ -26,12 +30,12 @@ async def create(request):
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = await ip_service.create(
-        name=data["name"],
-        reserved_names=data.get("reserved_names",{}),
-        region=data.get("region",''),
+        name=data['name'],
+        reserved_names=data.get('reserved_names',{}),
+        region=data.get('region',''),
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
-        comment=data.get("comment", '')
+        comment=data.get('comment', '')
     )
 
     ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
@@ -41,7 +45,7 @@ async def create(request):
             tag_id=tag_id,
             created_by=request['session']['user']['id'],
             updated_by=request['session']['user']['id'],
-            comment=data.get("comment", '')
+            comment=data.get('comment', '')
         )
 
     return response_json(ip=await dump_ip_info(request, ip))
@@ -63,8 +67,8 @@ async def info(request, id):
 @authenticated_staff()
 async def edit(request):
     data = IPSchema().load(request.json)
-    required_field_validation(data=data, required_field=["id"])
-    id = data["id"]
+    required_field_validation(data=data, required_field=['id'])
+    id = data['id']
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = await ip_service.info(id)
     if ip is None:
@@ -72,7 +76,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=["name", "reserved_names", "region", "comment"]
+        allowed_key=['name', 'reserved_names', 'region', 'comment']
     )
 
     ip = await ip_service.edit(
@@ -89,14 +93,14 @@ async def edit(request):
 @authenticated_staff()
 async def delete(request):
     data = IPSchema().load(request.json)
-    required_field_validation(data=data, required_field=["id"])
+    required_field_validation(data=data, required_field=['id'])
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
-    ip = await ip_service.info(data["id"])
+    ip = await ip_service.info(data['id'])
     if ip is None:
         raise NotFound('')
 
-    await ip_service.delete(data["id"])
+    await ip_service.delete(data['id'])
 
     return response_json(ip=await dump_ip_info(request, ip))
 
@@ -125,30 +129,30 @@ async def list_(request, offset, limit):
 @ip.post('/set/tags')
 async def ip_tag_create(request):
     data = IPTagsSchema().load(request.json)
-    required_field_validation(data=data, required_field=["ip_id", "tag_ids"])
+    required_field_validation(data=data, required_field=['ip_id', 'tag_ids'])
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
-    ip = ip_service.info(data["ip_id"])
+    ip = ip_service.info(data['ip_id'])
     if ip is None:
         raise NotFound('')
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
-    for tag_id in data["tag_ids"]:
+    for tag_id in data['tag_ids']:
         tag = tag_service.info(tag_id)
-    if tag is None:
-        raise NotFound('')
+        if tag is None:
+            raise NotFound('')
 
     ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
-    await ip_tag_service.delete_by_ip_id(data["ip_id"])
+    await ip_tag_service.delete_by_ip_id(data['ip_id'])
     ip_tag_items = []
-    for tag_id in data["tag_ids"]:
-    ip_tag_item = await ip_tag_service.create(
-        ip_id=data["ip_id"],
+    for tag_id in data['tag_ids']:
+        ip_tag_item = await ip_tag_service.create(
+            ip_id=data['ip_id'],
             tag_id=tag_id,
-        created_by=request['session']['user']['id'],
-        updated_by=request['session']['user']['id'],
-        comment=data.get("comment", '')
-    )
+            created_by=request['session']['user']['id'],
+            updated_by=request['session']['user']['id'],
+            comment=data.get('comment', '')
+        )
         ip_tag_items.append(ip_tag_item)
 
     return response_json(

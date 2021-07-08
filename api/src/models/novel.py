@@ -3,7 +3,7 @@ import sqlalchemy.sql as sasql
 from marshmallow import Schema, fields, validate
 
 from ..utilities import LocalDateTime
-from .common import metadata,BaiduCloudSchema
+from .common import BaiduCloudSchema, metadata
 
 NovelModel = sa.Table(
     'novel', metadata,
@@ -19,9 +19,9 @@ NovelModel = sa.Table(
     sa.Column('file_addresses', sa.JSON(), nullable=False),
     sa.Column('file_meta', sa.JSON(), nullable=False),
     sa.Column('created_by', sa.INTEGER(), nullable=False),
-    sa.Column("created_at", LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
+    sa.Column('created_at', LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
     sa.Column('updated_by', sa.INTEGER(), nullable=False),
-    sa.Column("updated_at", LocalDateTime(), nullable=False,
+    sa.Column('updated_at', LocalDateTime(), nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')),
     sa.Column('comment', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.ForeignKeyConstraint(('ip_id',), ('ip.id',),
@@ -70,7 +70,7 @@ class NovelFileMetaSchema(Schema):
 
 class NovelSchema(Schema):
     id = fields.Integer()
-    ipId = fields.Integer(attribute="ip_id")
+    ipId = fields.Integer(attribute='ip_id')
     name = fields.String(validate=validate.Length(0,300))
     reservedNames = fields.Nested('NovelReservedNamesSchema',attribute='reserved_names')
     intros = fields.Nested('NovelIntrosSchema')

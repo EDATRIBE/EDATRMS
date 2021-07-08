@@ -1,13 +1,18 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
-from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, AnimationSchema,VideoSchema,CaptionSchema,CaptionUserSchema
-from ..services import StorageService, UserService, IPService, AnimationService,VideoService,CaptionService,CaptionUserService
+from ..models import (AnimationSchema, CaptionSchema, CaptionUserSchema,
+                      IPSchema, StorageBucket, StorageRegion, UserSchema,
+                      VideoSchema)
+from ..services import (AnimationService, CaptionService, CaptionUserService,
+                        IPService, StorageService, UserService, VideoService)
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, required_field_validation, sift_dict_by_key,
-                     response_json, dump_ip_info, dump_ip_infos, dump_animation_info, dump_animation_infos,
-                     dump_caption_info, dump_caption_infos)
+                     copy_file, required_field_validation, response_json,
+                     sift_dict_by_key)
+from .common_dumper import (dump_animation_info, dump_animation_infos,
+                            dump_caption_info, dump_caption_infos,
+                            dump_ip_info, dump_ip_infos, dump_user_info)
 
 caption = Blueprint('caption', url_prefix='/caption')
 
@@ -16,7 +21,7 @@ caption = Blueprint('caption', url_prefix='/caption')
 @authenticated_staff()
 async def create(request):
     data = CaptionSchema().load(request.json)
-    required_field_validation(data=data, required_field=["animation_id", "integrated", "state", "file_addresses"])
+    required_field_validation(data=data, required_field=['animation_id', 'integrated', 'state', 'file_addresses'])
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
     contributor_ids = data.get('contributor_ids',[])
@@ -27,25 +32,25 @@ async def create(request):
 
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     caption = await caption_service.create(
-        animation_id=data["animation_id"],
-        integrated=data["integrated"],
-        state=data["state"],
-        released_at=data["released_at"],
-        file_addresses=data["file_addresses"],
-        file_meta=data.get("file_meta", {}),
+        animation_id=data['animation_id'],
+        integrated=data['integrated'],
+        state=data['state'],
+        released_at=data['released_at'],
+        file_addresses=data['file_addresses'],
+        file_meta=data.get('file_meta', {}),
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
-        comment=data.get("comment", '')
+        comment=data.get('comment', '')
     )
 
     caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
     for contributor_id in contributor_ids:
         await caption_user_service.create(
-            caption_id=caption["id"],
+            caption_id=caption['id'],
             user_id=contributor_id,
             created_by=request['session']['user']['id'],
             updated_by=request['session']['user']['id'],
-            comment=data.get("comment", '')
+            comment=data.get('comment', '')
         )
 
 
@@ -68,8 +73,8 @@ async def info(request, id):
 @authenticated_staff()
 async def edit(request):
     data = CaptionSchema().load(request.json)
-    required_field_validation(data=data, required_field=["id"])
-    id = data["id"]
+    required_field_validation(data=data, required_field=['id'])
+    id = data['id']
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     caption = await caption_service.info(id)
     if caption is None:
@@ -77,7 +82,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=["animation_id","integrated","state", "file_addresses", "file_meta", "comment"]
+        allowed_key=['animation_id','integrated','state', 'file_addresses', 'file_meta', 'comment']
     )
 
     caption = await caption_service.edit(
@@ -92,14 +97,14 @@ async def edit(request):
 @authenticated_staff()
 async def delete(request):
     data = CaptionSchema().load(request.json)
-    required_field_validation(data=data, required_field=["id"])
+    required_field_validation(data=data, required_field=['id'])
 
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
-    caption = await caption_service.info(data["id"])
+    caption = await caption_service.info(data['id'])
     if caption is None:
         raise NotFound('')
 
-    await caption_service.delete(data["id"])
+    await caption_service.delete(data['id'])
 
     return response_json(caption=await dump_caption_info(request, caption))
 
@@ -127,25 +132,25 @@ async def list_(request, offset, limit):
 @caption.post('/contributor/create')
 async def caption_contributor_create(request):
     data = CaptionUserSchema().load(request.json)
-    required_field_validation(data=data, required_field=["caption_id", "contributor_id"])
+    required_field_validation(data=data, required_field=['caption_id', 'contributor_id'])
 
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
-    caption = caption_service.info(data["caption_id"])
+    caption = caption_service.info(data['caption_id'])
     if caption is None:
         raise NotFound('')
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    contributor = user_service.info(data["contributor_id"])
+    contributor = user_service.info(data['contributor_id'])
     if contributor is None:
         raise NotFound('')
 
     caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
     caption_user_item = await caption_user_service.create(
-        caption_id=data["caption_id"],
-        user_id=data["contributor_id"],
+        caption_id=data['caption_id'],
+        user_id=data['contributor_id'],
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
-        comment=data.get("comment", '')
+        comment=data.get('comment', '')
     )
 
     return response_json(ip_tag_item=CaptionUserSchema().dump(caption_user_item))
@@ -154,16 +159,16 @@ async def caption_contributor_create(request):
 @caption.post('/contributor/delete')
 async def caption_contributor_delete(request):
     data = CaptionUserSchema().load(request.json)
-    required_field_validation(data=data, required_field=["caption_id", "contributor_id"])
+    required_field_validation(data=data, required_field=['caption_id', 'contributor_id'])
 
     caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
     caption_user_items,total = await caption_user_service.list_caption_user_items(
-        caption_id=data["caption_id"],
-        user_id=data["contributor_id"]
+        caption_id=data['caption_id'],
+        user_id=data['contributor_id']
     )
     if total < 1:
         raise NotFound('')
 
-    await caption_user_service.delete(caption_user_items[0]["id"])
+    await caption_user_service.delete(caption_user_items[0]['id'])
 
     return response_json(ip_tag_item=CaptionUserSchema().dump(caption_user_items[0]))

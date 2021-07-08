@@ -1,20 +1,21 @@
 import aioredis
 from aiomysql.sa import create_engine
 
-from .animation import AnimationModel,AnimationSchema
-from .caption import CaptionModel,CaptionSchema
-from .caption_user import CaptionUserModel,CaptionUserSchema
+from .animation import AnimationModel, AnimationSchema
+from .caption import CaptionModel, CaptionSchema
+from .caption_user import CaptionUserModel, CaptionUserSchema
 from .common import metadata
-from .ip import IPModel,IPSchema
-from .ip_tag import IPTagModel,IPTagSchema,IPTagsSchema
-from .novel import NovelModel,NovelSchema
+from .ip import IPModel, IPSchema
+from .ip_tag import IPTagModel, IPTagSchema, IPTagsSchema
+from .novel import NovelModel, NovelSchema
+from .role import RoleModel, RoleSchema
+from .semi_static import AnnouncementModel, AnnouncementSchema
 from .storage import FileModel, FileSchema, StorageBucket, StorageRegion
-from .tag import TagModel,TagSchema
+from .tag import TagModel, TagSchema
 from .user import StaffModel, UserModel, UserSchema
-from .role import RoleModel,RoleSchema
-from .user_role import UserRoleModel,UserRoleSchema
-from .video import VideoModel,VideoSchema
-from .semi_static import AnnouncementSchema,AnnouncementModel
+from .user_role import UserRoleModel, UserRoleSchema
+from .video import VideoModel, VideoSchema
+
 
 async def init_db(config):
     db = await create_engine(

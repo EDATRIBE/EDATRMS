@@ -1,8 +1,11 @@
-from sanic import Blueprint
-import os
 import datetime
+import os
+
+from sanic import Blueprint
+
 from ..models import AnnouncementModel
-from .common import response_json, dump_announcement_infos
+from .common import response_json
+from .common_dumper import dump_announcement_infos
 
 semi_static = Blueprint('semi_static', url_prefix='/semi_static')
 

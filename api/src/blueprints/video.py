@@ -1,13 +1,17 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
-from ..models import StorageBucket, StorageRegion, UserSchema, IPSchema, AnimationSchema,VideoSchema
-from ..services import StorageService, UserService, IPService, AnimationService,VideoService
+from ..models import (AnimationSchema, IPSchema, StorageBucket, StorageRegion,
+                      UserSchema, VideoSchema)
+from ..services import (AnimationService, IPService, StorageService,
+                        UserService, VideoService)
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, required_field_validation, sift_dict_by_key,
-                     response_json, dump_ip_info, dump_ip_infos, dump_animation_info, dump_animation_infos,
-                     dump_video_info, dump_video_infos)
+                     copy_file, required_field_validation, response_json,
+                     sift_dict_by_key)
+from .common_dumper import (dump_animation_info, dump_animation_infos,
+                            dump_ip_info, dump_ip_infos, dump_user_info,
+                            dump_video_info, dump_video_infos)
 
 video = Blueprint('video', url_prefix='/video')
 
@@ -16,16 +20,16 @@ video = Blueprint('video', url_prefix='/video')
 @authenticated_staff()
 async def create(request):
     data = VideoSchema().load(request.json)
-    required_field_validation(data=data, required_field=["animation_id", "file_addresses"])
+    required_field_validation(data=data, required_field=['animation_id', 'file_addresses'])
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     video = await video_service.create(
-        animation_id=data["animation_id"],
-        file_addresses=data["file_addresses"],
-        file_meta=data.get("file_meta", {}),
+        animation_id=data['animation_id'],
+        file_addresses=data['file_addresses'],
+        file_meta=data.get('file_meta', {}),
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
-        comment=data.get("comment", '')
+        comment=data.get('comment', '')
     )
 
     return response_json(video=await dump_video_info(request, video))
@@ -47,9 +51,9 @@ async def info(request, id):
 @authenticated_staff()
 async def edit(request):
     data = VideoSchema().load(request.json)
-    required_field_validation(data=data, required_field=["id"])
+    required_field_validation(data=data, required_field=['id'])
 
-    id = data["id"]
+    id = data['id']
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     video = await video_service.info(id)
     if video is None:
@@ -57,7 +61,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=["animation_id",  "file_addresses","file_meta", "comment"]
+        allowed_key=['animation_id',  'file_addresses','file_meta', 'comment']
     )
 
     video = await video_service.edit(
@@ -72,14 +76,14 @@ async def edit(request):
 @authenticated_staff()
 async def delete(request):
     data = VideoSchema().load(request.json)
-    required_field_validation(data=data, required_field=["id"])
+    required_field_validation(data=data, required_field=['id'])
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
-    video = await video_service.info(data["id"])
+    video = await video_service.info(data['id'])
     if video is None:
         raise NotFound('')
 
-    await video_service.delete(data["id"])
+    await video_service.delete(data['id'])
 
     return response_json(video=await dump_video_info(request, video))
 

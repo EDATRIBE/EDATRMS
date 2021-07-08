@@ -1,6 +1,5 @@
 import os
 
-
 NAME = 'EDATRMS'
 PREFIX = 'EDATRMS_'
 

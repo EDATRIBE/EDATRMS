@@ -1,6 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.sql as sasql
-from marshmallow import Schema, fields,validate
+from marshmallow import Schema, fields, validate
 
 from ..utilities import LocalDateTime
 from .common import metadata
@@ -11,10 +11,10 @@ RoleModel = sa.Table(
     sa.Column('name', sa.VARCHAR(300), nullable=False),
     sa.Column('reserved_names', sa.JSON(),nullable=False),
     sa.Column('style', sa.JSON(),nullable=False),
-    sa.Column("created_at", LocalDateTime(), nullable=False,
+    sa.Column('created_at', LocalDateTime(), nullable=False,
               server_default=sasql.text('CURRENT_TIMESTAMP')),
     sa.Column('comment', sa.VARCHAR(300), nullable=False, server_default=''),
-    sa.UniqueConstraint("name",name='role_uqc_name')
+    sa.UniqueConstraint('name',name='role_uqc_name')
 )
 
 class RoleReservedNamesSchema(Schema):

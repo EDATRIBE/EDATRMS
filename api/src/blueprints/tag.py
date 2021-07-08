@@ -1,12 +1,13 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
-from ..models import StorageBucket, StorageRegion, UserSchema, TagSchema
-from ..services import StorageService, UserService, TagService
+from ..models import StorageBucket, StorageRegion, TagSchema, UserSchema
+from ..services import StorageService, TagService, UserService
 from ..utilities import sha256_hash
 from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     dump_user_info, copy_file, required_field_validation, sift_dict_by_key,
-                     response_json, dump_tag_info, dump_tag_infos)
+                     copy_file, required_field_validation, response_json,
+                     sift_dict_by_key)
+from .common_dumper import dump_tag_info, dump_tag_infos, dump_user_info
 
 tag = Blueprint('tag', url_prefix='/tag')
 
@@ -15,15 +16,15 @@ tag = Blueprint('tag', url_prefix='/tag')
 @authenticated_staff()
 async def create(request):
     data = TagSchema().load(request.json)
-    required_field_validation(data=data, required_field=["name"])
+    required_field_validation(data=data, required_field=['name'])
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     tag = await tag_service.create(
-        name=data["name"],
+        name=data['name'],
         reserved_names=data.get('reserved_names',{}),
         created_by=request['session']['user']['id'],
         updated_by=request['session']['user']['id'],
-        comment=data.get("comment", '')
+        comment=data.get('comment', '')
     )
     return response_json(tag=await dump_tag_info(request, tag))
 
@@ -66,14 +67,14 @@ async def edit(request):
 @authenticated_staff()
 async def delete(request):
     data = TagSchema().load(request.json)
-    required_field_validation(data=data, required_field=["id"])
+    required_field_validation(data=data, required_field=['id'])
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
-    tag = await tag_service.info(data["id"])
+    tag = await tag_service.info(data['id'])
     if tag is None:
         raise NotFound('')
 
-    await tag_service.delete(data["id"])
+    await tag_service.delete(data['id'])
 
     return response_json(tag=await dump_tag_info(request, tag))
 

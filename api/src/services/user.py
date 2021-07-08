@@ -15,15 +15,15 @@ class UserService:
         self.cache = cache
 
     async def force_logout(self,id):
-        keys = await self.cache.keys(pattern=self.config.get("PREFIX")+'*')
+        keys = await self.cache.keys(pattern=self.config.get('PREFIX')+'*')
         for key in keys:
             bytes_value = await self.cache.get(key)
             try:
                 value = json.loads(bytes_value.decode())
             except json.decoder.JSONDecodeError:
                 continue
-            if type(value) is dict and value.get("user") is not None and value.get("user").get("id") == id:
-                await self.cache.set(key, json.dumps({}), expire=self.config.get("SESSION_EXPIRY"))
+            if type(value) is dict and value.get('user') is not None and value.get('user').get('id') == id:
+                await self.cache.set(key, json.dumps({}), expire=self.config.get('SESSION_EXPIRY'))
 
     async def create(self, **data):
         data['salt'] = random_string(64)

@@ -11,7 +11,7 @@ from .commands import Model, User
 from .config import config, get_log_config
 from .models import close_cache, close_db, init_cache, init_db
 
-warnings.filterwarnings("ignore",category=DeprecationWarning)
+warnings.filterwarnings('ignore',category=DeprecationWarning)
 
 class Manage:
     def __init__(self, config):
@@ -38,8 +38,8 @@ if __name__ == '__main__':
     )
 
     fire.Fire({
-        "model": manage.model,
-        "user": manage.user
+        'model': manage.model,
+        'user': manage.user
     })
 
     asyncio.get_event_loop().run_until_complete(

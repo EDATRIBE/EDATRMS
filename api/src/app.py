@@ -3,7 +3,8 @@ import os
 from sanic import Sanic
 from sanic_session import AIORedisSessionInterface, Session
 
-from .blueprints import account, handle_exception, storage,ip,animation,video,caption,novel,tag,semi_static
+from .blueprints import (account, animation, caption, handle_exception, ip,
+                         novel, semi_static, storage, tag, video)
 from .config import config, log_config
 from .models import close_cache, close_db, init_cache, init_db
 
@@ -37,7 +38,7 @@ async def server_init(app, loop):
     Session(
         app,
         AIORedisSessionInterface(
-            app.cache, expiry=config['SESSION_EXPIRY'],prefix= config.get("PREFIX")
+            app.cache, expiry=config['SESSION_EXPIRY'],prefix= config.get('PREFIX')
         )
     )
 

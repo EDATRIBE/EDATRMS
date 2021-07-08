@@ -22,19 +22,19 @@ class Model:
         )
 
         self.theme = Theme({
-            "info": "turquoise2",
-            "warning": "orange1",
-            "danger": "red"
+            'info': 'turquoise2',
+            'warning': 'orange1',
+            'danger': 'red'
         })
         self.console = Console(theme=self.theme)
 
     def list_models(self):
         tables = metadata.tables
         if not tables :
-            self.console.print("[ NULL! ]", style="info")
+            self.console.print('[ NULL! ]', style='info')
             return
         for t in tables:
-            self.console.print(t, style="info")
+            self.console.print(t, style='info')
 
     def list_tables(self):
         try:
@@ -43,23 +43,23 @@ class Model:
             temp_metadata.drop_all(self.engine)
             tables = temp_metadata.tables
         except SQLAlchemyError as err:
-            self.console.print(err, style="danger")
+            self.console.print(err, style='danger')
             return
 
         if not tables:
-            self.console.print("[ NULL! ]", style="info")
+            self.console.print('[ NULL! ]', style='info')
             return
         for t in tables:
-            self.console.print(t, style="info")
+            self.console.print(t, style='info')
 
     def create_tables(self):
         try:
             metadata.create_all(self.engine)
         except SQLAlchemyError as err:
-            self.console.print(err, style="danger")
+            self.console.print(err, style='danger')
             return
 
-        self.console.print("[ Done! ]", style="info")
+        self.console.print('[ Done! ]', style='info')
 
     def drop_tables(self):
         try:
@@ -67,7 +67,7 @@ class Model:
             temp_metadata.reflect(self.engine)
             temp_metadata.drop_all(self.engine)
         except SQLAlchemyError as err:
-            self.console.print(err, style="danger")
+            self.console.print(err, style='danger')
             return
 
-        self.console.print("[ Done! ]", style="info")
+        self.console.print('[ Done! ]', style='info')
