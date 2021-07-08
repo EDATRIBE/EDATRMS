@@ -1,9 +1,9 @@
 <template>
   <q-page padding class=" bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em">
     <div class="q-mx-auto" style="width: 95%">
-      <div class="row q-col-gutter-x-lg"><!--do not set padding-->
+      <div class="row q-col-gutter-x-lg"><!--do not set margin-->
         <!--LEFT-->
-        <div class="col-md-3 col-xs-12 q-pb-md"><!--do not set padding-->
+        <div class="col-md-3 col-xs-12 q-pb-md"><!--do not set margin-->
           <div class="bg-dark-light text-white" style="border-radius: 5px">
             <q-list bordered separator v-if="!LD">
               <q-item
@@ -17,9 +17,8 @@
         </div>
 
         <!--RIGHT-->
-        <div class="col-md-9 col-xs-12 q-pb-md "><!--do not set padding-->
-          <!--TITLE-->
-          <div style="width: 100%; border-radius: 5px" class="q-py-md q-px-lg bg-dark-light ">
+        <div class="col-md-9 col-xs-12 q-pb-md "><!--do not set margin-->
+          <div style="width: 100%; border-radius: 5px" class="q-py-md q-px-lg bg-dark-light " v-if="!LD">
             <q-markdown
               content-class="text-white" :src="currentText"
               no-heading-anchor-links
@@ -34,7 +33,6 @@
 
 <script>
 
-import devv from '../../docc/dev.md'
 
 export default {
   name: 'Announcements',
@@ -50,7 +48,6 @@ export default {
           this.loadCurrentText(this.announcements[0].uri)
         }
       }
-      this.LD = false
     }).catch(function (error) {
       console.log(error)
     })
@@ -64,6 +61,7 @@ export default {
     loadCurrentText(uri){
       this.$axios.get('api/'+uri).then((response) => {
         this.currentText = response.data
+        this.LD = false
       }).catch(function (error) {
         console.log(error)
       })

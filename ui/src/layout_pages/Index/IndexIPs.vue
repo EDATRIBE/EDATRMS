@@ -50,16 +50,16 @@
         <template v-slot:header>
           <div class="row no-wrap q-pl-md  items-center text-body1 full-width ">
             <q-icon name="source" color="accent" size="1.3em" class="q-mr-md"></q-icon>
-            Sword Art Online
+            IP XXX XXX
             <div class="row q-mx-md">
               <q-chip size="0.7em" square dense text-color="dark"  color="accent" class="q-py-none">
-                后宫
+                Adventure
               </q-chip>
               <q-chip size="0.7em" square dense text-color="dark"  color="accent" class="q-py-none">
-                world
+                Comedy
               </q-chip>
               <q-chip size="0.7em" square dense text-color="dark"  color="accent" class="q-py-none">
-                异世界
+                Drama
               </q-chip>
             </div>
             <q-space></q-space>
@@ -82,12 +82,13 @@
             header-class="bl q-pa-none bg-dark-light"
             expand-icon-class="q-px-sm text-primary"
             :duration="60"
+            v-for="i in 3" :key="'ani'+i"
           >
             <!--AnimationsHeader-->
             <template v-slot:header>
               <div class="row q-pl-md  items-center text-body1 full-width ">
                 <q-icon name="movie" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                AnimationPXXXXXXXX
+                Animation XXX XXX
                 <q-space></q-space>
                 <q-btn icon="add" flat color="primary">video</q-btn>
                 <q-btn icon="add" flat color="primary">caption</q-btn>
@@ -102,7 +103,7 @@
               <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
                 <div class="row q-pl-md items-center text-body1 full-width ">
                   <q-icon name="fas fa-film" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                  VideoXXXXXXXX
+                  Video XXX XXX
                   <q-space></q-space>
                   <q-btn flat color="primary">edit</q-btn>
                   <q-btn flat color="red">delete</q-btn>
@@ -112,7 +113,7 @@
               <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
                 <div class="row q-pl-md items-center text-body1 full-width ">
                   <q-icon name="fas fa-closed-captioning" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                  CaptionXXXXXXXX
+                  Caption XXX XXX
                   <q-space></q-space>
                   <q-btn flat color="primary">edit</q-btn>
                   <q-btn flat color="red">delete</q-btn>
@@ -120,106 +121,13 @@
               </q-item>
             </div>
           </q-expansion-item>
-          <!--Animations-->
-          <q-expansion-item
-            dense
-            dark
-            expand-icon-toggle
-            class="bg-dark-light bl1 q-mt-sm"
-            header-class="bl q-pa-none bg-dark-light"
-            expand-icon-class="q-px-sm text-primary"
-            :duration="60"
-          >
-            <!--AnimationsHeader-->
-            <template v-slot:header>
-              <div class="row q-pl-md  items-center text-body1 full-width ">
-                <q-icon name="movie" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                AnimationPXXXXXXXX
-                <q-space></q-space>
-                <q-btn icon="add" flat color="primary">video</q-btn>
-                <q-btn icon="add" flat color="primary">caption</q-btn>
-                <q-btn flat color="primary">edit</q-btn>
-                <q-btn flat color="red">delete</q-btn>
-              </div>
-            </template>
 
-            <!--AnimationsContent-->
-            <div class="q-pl-md ">
-              <!--AnimationsVideo-->
-              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
-                <div class="row q-pl-md items-center text-body1 full-width ">
-                  <q-icon name="fas fa-film" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                  VideoXXXXXXXX
-                  <q-space></q-space>
-                  <q-btn flat color="primary">edit</q-btn>
-                  <q-btn flat color="red">delete</q-btn>
-                </div>
-              </q-item>
-              <!--AnimationsCaption-->
-              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
-                <div class="row q-pl-md items-center text-body1 full-width ">
-                  <q-icon name="fas fa-closed-captioning" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                  CaptionXXXXXXXX
-                  <q-space></q-space>
-                  <q-btn flat color="primary">edit</q-btn>
-                  <q-btn flat color="red">delete</q-btn>
-                </div>
-              </q-item>
-            </div>
-          </q-expansion-item>
-          <!--Animations-->
-          <q-expansion-item
-            dense
-            dark
-            expand-icon-toggle
-            class="bg-dark-light bl1 q-mt-sm"
-            header-class="bl q-pa-none bg-dark-light"
-            expand-icon-class="q-px-sm text-primary"
-            :duration="60"
-          >
-            <!--AnimationsHeader-->
-            <template v-slot:header>
-              <div class="row q-pl-md  items-center text-body1 full-width ">
-                <q-icon name="movie" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                AnimationPXXXXXXXX
-                <q-space></q-space>
-                <q-btn icon="add" flat color="primary">video</q-btn>
-                <q-btn icon="add" flat color="primary">caption</q-btn>
-                <q-btn flat color="primary">edit</q-btn>
-                <q-btn flat color="red">delete</q-btn>
-              </div>
-            </template>
-
-            <!--AnimationsContent-->
-            <div class="q-pl-md ">
-              <!--AnimationsVideo-->
-              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
-                <div class="row q-pl-md items-center text-body1 full-width ">
-                  <q-icon name="fas fa-film" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                  VideoXXXXXXXX
-                  <q-space></q-space>
-                  <q-btn flat color="primary">edit</q-btn>
-                  <q-btn flat color="red">delete</q-btn>
-                </div>
-              </q-item>
-              <!--AnimationsCaption-->
-              <q-item dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px">
-                <div class="row q-pl-md items-center text-body1 full-width ">
-                  <q-icon name="fas fa-closed-captioning" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                  CaptionXXXXXXXX
-                  <q-space></q-space>
-                  <q-btn flat color="primary">edit</q-btn>
-                  <q-btn flat color="red">delete</q-btn>
-                </div>
-              </q-item>
-            </div>
-          </q-expansion-item>
 
           <!--Novel-->
           <q-item dense dark class="bg-dark-light q-pa-none bl2 q-mt-sm" style="padding-right: 39.3px">
             <div class="row q-pl-md items-center text-body1 full-width ">
               <q-icon name="import_contacts" color="secondary" size="1.3em" class="q-mr-md"></q-icon>
-              NovelPXXXXXXXX
+              NovelP XXX XXX
               <q-space></q-space>
               <q-btn flat color="secondary">edit</q-btn>
               <q-btn flat color="red">delete</q-btn>
@@ -238,34 +146,6 @@
         input
         input-class="text-accent"
       />
-    </div>
-    <div>
-      <div class="row q-pt-md q-pb-sm q-px-md bg-dark-light bt" >
-        <q-chip
-          class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
-          dense
-          square
-          color="accent" v-for="i in 20" :key="i"
-          removable
-          :value="v"
-          @remove="foo(i)"
-        >
-          <q-icon class="q-mx-xs" name="fas fa-tags" color="dark"></q-icon>
-          testtes
-        </q-chip>
-        <q-chip
-          class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
-          text-color="dark"
-          dense
-          square
-          color="accent"
-          clickable
-          outline
-        >
-          <q-icon size="1.1em" class="q-mr-xs"  name="fas fa-plus" color="accent"></q-icon>
-          new
-        </q-chip>
-      </div>
     </div>
   </div>
 </template>

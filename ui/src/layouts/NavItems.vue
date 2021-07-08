@@ -9,23 +9,23 @@
       </q-btn>
       <q-btn
         dense flat  no-caps class="btn-fixed-width text-h6 q-ml-sm"
-        @click="$router.push('/con')"
-      >
-        {{$t("ui.navItems.contributors")}}
-      </q-btn>
-      <q-btn
-        dense flat  no-caps class="btn-fixed-width text-h6 q-ml-sm"
         @click="$router.push('/ann')"
       >
         {{$t("ui.navItems.announcements")}}
+      </q-btn>
+      <q-btn
+        dense flat  no-caps class="btn-fixed-width text-h6 q-ml-sm"
+        @click="$router.push('/con')"
+      >
+        {{$t("ui.navItems.contributors")}}
       </q-btn>
     </div>
     <div v-if="!this.$q.screen.gt.sm" class="bg-dark no-border-radius">
       <q-btn-dropdown   flat dense no-caps class="text-body1 q-ml-sm" dropdown-icon="menu" no-icon-animation content-class="bg-dark-light">
         <div class="column q-pa-sm">
           <q-btn align="left" flat dense no-caps class="text-body1 text-white">{{$t("ui.navItems.index")}}</q-btn>
-          <q-btn align="left" flat dense no-caps class="text-body1 text-white">{{$t("ui.navItems.contributors")}}</q-btn>
           <q-btn align="left" flat dense no-caps class="text-body1 text-white">{{$t("ui.navItems.announcements")}}</q-btn>
+          <q-btn align="left" flat dense no-caps class="text-body1 text-white">{{$t("ui.navItems.contributors")}}</q-btn>
         </div>
       </q-btn-dropdown>
     </div>

@@ -16,7 +16,7 @@
         <div class="column col-md-9 col-xs-12 q-pb-md">
           <!--TITLE-->
           <div style="width: 100%" class="q-px-md q-pb-md bl">
-            <p class="q-my-none text-white  text-h2">{{ this.animation.name }}</p>
+            <p class="q-my-none text-white  text-h4">{{ this.animation.name }}</p>
           </div>
           <!--INFOS-->
           <div style="width: 100%" class="q-pa-md bl">

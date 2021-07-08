@@ -1,16 +1,14 @@
 <template>
   <div class="q-py-xl" style="width: 100%;" >
     <!--Common-->
-    <div v-if="!editing.isEditing">
+    <div v-if="!userEditBuffer.isEditing">
       <div class="row justify-center">
-        <q-avatar size="250px"  v-ripple class="cursor-pointer " v-if="user !== null">
-          <img contain :src="user.avatar.url">
+        <q-avatar size="250px"  class="cursor-pointer " v-if="user !== null">
+          <img contain :src="user.avatar?user.avatar.url:this.genAvatar(user.name)" >
         </q-avatar>
       </div>
       <div
         class="row q-pt-md  items-center  text-h5 text-weight-medium"
-        @click="foo"
-        :class="{'text-accent':this.user.staff}"
       >
         {{ user.name }}
       </div>
@@ -22,13 +20,13 @@
         </div>
       </div>
       <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
-        <div><q-icon size="1.2em" class="q-mr-sm"  name="phone"></q-icon> </div>
+        <div><q-icon size="1.1em" class="q-mr-sm"  name="fab fa-qq"></q-icon> </div>
         <div class="text-justify">
-          {{user.mobile}}
+          {{user.qq}}
         </div>
       </div>
       <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
-        <div><q-icon size="1.2em" class="q-mr-sm"  name="fas fa-info"></q-icon> </div>
+        <div><q-icon size="1.1em" class="q-mr-sm"  name="fas fa-info"></q-icon> </div>
         <div class="text-justify">
           {{user.intro}}
         </div>
@@ -37,7 +35,7 @@
       <div class="row q-mt-md justify-center">
         <q-btn
           class="full-width text-weight-bold" color="white" text-color="dark"
-          @click="editing.isEditing=true"
+          @click="userEditBuffer.isEditing=true;readonly=true"
         >
           EDIT PROFILE
         </q-btn>
@@ -52,7 +50,7 @@
       </div>
     </div>
     <!--Editing-->
-    <div v-if="editing.isEditing">
+    <div v-if="userEditBuffer.isEditing">
       <div class="row justify-center">
         <file-pond
           style="width: 250px"
@@ -61,8 +59,8 @@
           class="cursor-pointer"
           label-idle="DROP OR CLICK"
           accepted-file-types="image/jpeg, image/png"
-          :files="editing.avatarFile"
-          :server="editing.server"
+          :files="userEditBuffer.avatarFile"
+          :server="userEditBuffer.server"
           @init="handleFilePondInit"
           allowImageCrop="true"
           imageCropAspectRatio="1:1"
@@ -74,20 +72,24 @@
         />
       </div>
       <div class="row q-pt-xs  items-center  text-white text-h5 text-weight-medium">
-        <q-input
+        <q-field
           dense
           dark
           class="bg-dark-light"
           style="width: 100%"
-          v-model="editing.data.name"
+          :value="userEditBuffer.data.name"
           clear-icon="close"
           standout=""
-          label="User Name"
+          label="Name"
+          readonly
         >
+          <template v-slot:control>
+            <div class="self-center full-width no-outline" tabindex="0">{{userEditBuffer.data.name}}</div>
+          </template>
           <template v-slot:prepend>
             <q-icon name="fas fa-user"/>
           </template>
-        </q-input>
+        </q-field>
       </div>
       <q-separator class="q-mt-sm" color="white"></q-separator>
       <div class="row q-pt-sm text-white text-justify text-body1">
@@ -96,7 +98,7 @@
           dark
           class="bg-dark-light"
           style="width: 100%"
-          v-model="editing.data.password"
+          v-model="userEditBuffer.data.password"
           clear-icon="close"
           standout=""
           label="New Password"
@@ -110,7 +112,7 @@
           dark
           class="bg-dark-light q-mt-sm"
           style="width: 100%"
-          v-model="editing.data.confirmPassword"
+          v-model="userEditBuffer.data.confirmPassword"
           clear-icon="close"
           standout=""
           label="Confirm Password"
@@ -127,7 +129,7 @@
           dark
           class="bg-dark-light"
           style="width: 100%"
-          v-model="editing.data.email"
+          v-model="userEditBuffer.data.email"
           clear-icon="close"
           standout=""
           label="Email"
@@ -141,13 +143,13 @@
           dark
           class="bg-dark-light q-mt-sm"
           style="width: 100%"
-          v-model="editing.data.mobile"
+          v-model="userEditBuffer.data.qq"
           clear-icon="close"
           standout=""
-          label="Phone"
+          label="QQ"
         >
           <template v-slot:prepend>
-            <q-icon name="phone"/>
+            <q-icon name="fab fa-qq"/>
           </template>
         </q-input>
         <q-input
@@ -156,10 +158,9 @@
           autogrow
           class="bg-dark-light q-mt-sm"
           style="width: 100%"
-          v-model="editing.data.intro"
+          v-model="userEditBuffer.data.intro"
           clear-icon="close"
           standout=""
-          color="white"
           label="Intro"
         >
           <template v-slot:prepend>
@@ -171,13 +172,13 @@
       <div class="row q-mt-sm justify-center">
         <q-btn
           class="full-width text-weight-bold" color="white" text-color="dark"
-          @click="editing.isEditing=false"
+          @click="userEditBuffer.isEditing=false"
         >
           Cancel
         </q-btn>
         <q-btn
           class="full-width text-weight-bold q-mt-sm" color="white" text-color="dark"
-          @click="commitEditing"
+          @click="commitEdit"
         >
           Commit
         </q-btn>
@@ -210,25 +211,18 @@ const FilePond = vueFilePond(
   FilePondPluginFileValidateType
 );
 
+
 export default {
   name: "Profile",
   components: {
     FilePond,
   },
   mounted() {
-    this.editing.data = {
-      name: this.user.name,
-      password: '',
-      confirmPassword: '',
-      email: this.user.email,
-      mobile: this.user.mobile,
-      intro: this.user.intro,
-      avatarId: this.user.avatar.id
-    }
+    this.initUserEditBufferData()
   },
   data () {
     return {
-      editing:{
+      userEditBuffer:{
         isEditing: false,
         avatarFile:[],
         data:{},
@@ -257,35 +251,50 @@ export default {
     handleFilePondInit: function () {
       console.log('FilePond has initialized');
       // example of instance method call on pond reference
-      this.$refs.pond.getFiles();
-      this.editing.avatarFile=[{
-        source: this.user.avatar.id,
-        options: {
-          type: 'local'
-        }
-      }]
-      console.log(this.editing.avatarFile)
+      // this.$refs.pond.getFiles();
+      if (this.user.avatar){
+        this.userEditBuffer.avatarFile=[{
+          source: this.user.avatar?this.user.avatar.id:null,
+          options: {
+            type: 'local'
+          }
+        }]
+      }
+      // console.log(this.userEditBuffer.avatarFile)
     },
-    commitEditing(){
+    initUserEditBufferData(){
+      this.userEditBuffer.data = {
+        name: this.user.name,
+        password: '',
+        confirmPassword: '',
+        email: this.user.email,
+        qq: this.user.qq,
+        intro: this.user.intro,
+        avatarId: this.user.avatar?this.user.avatar.id:null
+      }
+    },
+    commitEdit(){
       const currentAvatarList = this.$refs.pond.getFiles()
       if(currentAvatarList.length === 0){
-        delete this.editing.data.avatarId
+        delete this.userEditBuffer.data.avatarId
       }else {
         if(currentAvatarList[0].status === 5 || currentAvatarList[0].status === 2){
-          this.editing.data.avatarId = Number(currentAvatarList[0].serverId)
+          this.userEditBuffer.data.avatarId = Number(currentAvatarList[0].serverId)
         }
       }
-      if(this.editing.data.password !== this.editing.data.confirmPassword){
+      if(this.userEditBuffer.data.password !== this.userEditBuffer.data.confirmPassword){
         console.log('密码不一致')
       }else {
-        delete this.editing.data.confirmPassword
-        if (this.editing.data.password === ''){
-          delete this.editing.data.password
+        delete this.userEditBuffer.data.confirmPassword
+        if (this.userEditBuffer.data.password === ''){
+          delete this.userEditBuffer.data.password
         }
       }
-      console.log(this.editing.data)
+      console.log(this.userEditBuffer.data)
 
-      this.$axios.post('api/account/edit', this.editing.data).then((response) => {
+      delete this.userEditBuffer.data.name
+
+      this.$axios.post('api/account/edit', this.userEditBuffer.data).then((response) => {
         let rd = response.data
         if (rd.code === 'success') {
           console.log('rd.data.user')
@@ -295,7 +304,8 @@ export default {
             type: 'success',
             message: `New profile was submitted successfully.`
           })
-          this.editing.isEditing=false
+          this.initUserEditBufferData()
+          this.userEditBuffer.isEditing=false
         }else {
           console.log(response)
         }
@@ -321,7 +331,10 @@ export default {
       }).catch(function (error) {
         console.log(error)
       })
-    }
+    },
+    // genAvatar(seed){
+    //   return 'data:image/png;base64,' + new Identicon(md5(seed), 420).toString()
+    // }
   },
   computed: {
     user() {
