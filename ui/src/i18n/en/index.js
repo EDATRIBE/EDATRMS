@@ -3,12 +3,13 @@ export default {
     navItems: {
       index: 'Index',
       contributors: 'Contributors',
-      about: 'About'
+      announcements: 'Announcements'
     },
     index: {
       animations: 'Animations',
       novels: 'Novels',
       ips: 'Ips',
+      tags: 'Tags'
     }
   }
 }
