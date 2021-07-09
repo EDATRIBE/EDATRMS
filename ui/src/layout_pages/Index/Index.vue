@@ -22,34 +22,47 @@
           dense
           outside-arrows
         >
-          <q-tab ripple class="text-primary text-weight-medium" name="Animations" style="width: 50%">
+          <q-route-tab
+            ripple class="text-primary text-weight-medium" name="Animations" style="width: 50%"
+            to="/index/animations"
+          >
             <q-icon class="q-mr-xs" size="1.7em" name="movie"></q-icon>{{$t('ui.index.animations')}}
-          </q-tab>
-          <q-tab ripple class="text-secondary text-weight-medium" name="Novels"  style="width: 50%">
+          </q-route-tab>
+          <q-route-tab
+            ripple class="text-secondary text-weight-medium" name="Novels"  style="width: 50%"
+            to="/index/novels"
+          >
             <q-icon class="q-mr-xs" size="1.7em" name="import_contacts"></q-icon>{{$t('ui.index.novels')}}
-          </q-tab>
-          <q-tab ripple class="text-accent text-weight-medium" name="IPsAndTags"  style="width: 50%" v-if="currentUser&&currentUser.staff">
+          </q-route-tab>
+          <q-route-tab
+            ripple class="text-accent text-weight-medium" name="IPsAndTags"  style="width: 50%"
+            v-if="currentUser&&currentUser.staff"
+            to="/index/ips_and_tags"
+          >
             <q-icon class="q-mr-xs" size="1.7em" name="source"></q-icon>{{$t('ui.index.ips')}}
             <span class="q-mx-sm">|</span>
             <q-icon class="q-mr-xs" size="1.2em" name="fas fa-hashtag"></q-icon>{{$t('ui.index.tags')}}
-          </q-tab>
+          </q-route-tab>
         </q-tabs>
-        <q-tab-panels keep-alive v-model="tab" class="bg-dark">
-          <q-tab-panel name="Animations" class="q-px-none bg-dark q-pt-xs">
-            <IndexAnimations></IndexAnimations>
-          </q-tab-panel>
-          <q-tab-panel name="Novels" class="q-px-none bg-dark q-pt-xs">
-            <IndexNovels></IndexNovels>
-          </q-tab-panel>
-          <q-tab-panel name="IPsAndTags" class="q-px-none bg-dark q-pt-xs" v-if="currentUser&&currentUser.staff">
-            <index-i-ps></index-i-ps>
-            <index-tags></index-tags>
-          </q-tab-panel>
-        </q-tab-panels>
+        <keep-alive>
+          <router-view />
+        </keep-alive>
+<!--        <q-tab-panels keep-alive v-model="tab" class="bg-dark">-->
+<!--          <q-tab-panel name="Animations" class="q-px-none bg-dark ">-->
+<!--            <IndexAnimations></IndexAnimations>-->
+<!--          </q-tab-panel>-->
+<!--          <q-tab-panel name="Novels" class="q-px-none bg-dark ">-->
+<!--            <IndexNovels></IndexNovels>-->
+<!--          </q-tab-panel>-->
+<!--          <q-tab-panel name="IPsAndTags" class="q-px-none bg-dark " v-if="currentUser&&currentUser.staff">-->
+<!--            <index-i-ps></index-i-ps>-->
+<!--            <index-tags></index-tags>-->
+<!--          </q-tab-panel>-->
+<!--        </q-tab-panels>-->
       </div>
     </div>
 
-    <q-page-sticky expand position="top" class="bg-dark q-px-md q-py-sm" v-show="scrollInfo.position>50">
+    <q-page-sticky expand position="top" class="bg-dark q-px-md q-py-sm" v-show="scrollInfo.position>38">
       <q-toolbar style="width: 95.2%" class="q-px-none">
         <q-input
           dense dark class="text-h5 bg-dark-light" style="width: 100%" standout=""
@@ -60,27 +73,6 @@
           </template>
         </q-input>
       </q-toolbar>
-<!--      <q-tabs-->
-<!--        style="width: 95.2%"-->
-<!--        v-model="tab"-->
-<!--        class="text-grey"-->
-<!--        align="justify"-->
-<!--        inline-label-->
-<!--        dense-->
-<!--        outside-arrows-->
-<!--      >-->
-<!--        <q-tab ripple class="text-primary text-weight-medium" name="Animations" style="width: 50%">-->
-<!--          <q-icon class="q-mr-xs" size="1.7em" name="movie"></q-icon>{{$t('ui.index.animations')}}-->
-<!--        </q-tab>-->
-<!--        <q-tab ripple class="text-secondary text-weight-medium" name="Novels"  style="width: 50%">-->
-<!--          <q-icon class="q-mr-xs" size="1.7em" name="import_contacts"></q-icon>{{$t('ui.index.novels')}}-->
-<!--        </q-tab>-->
-<!--        <q-tab ripple class="text-accent text-weight-medium" name="IPsAndTags"  style="width: 50%" v-if="currentUser&&currentUser.staff">-->
-<!--          <q-icon class="q-mr-xs" size="1.7em" name="source"></q-icon>{{$t('ui.index.ips')}}-->
-<!--          <span class="q-mx-sm">|</span>-->
-<!--          <q-icon class="q-mr-xs" size="1.2em" name="fas fa-hashtag"></q-icon>{{$t('ui.index.tags')}}-->
-<!--        </q-tab>-->
-<!--      </q-tabs>-->
     </q-page-sticky>
   </q-page>
 </template>
@@ -94,10 +86,10 @@ import IndexTags from "src/layout_pages/Index/IndexTags";
 export default {
   name: "Index",
   components: {
-    IndexTags,
-    IndexIPs,
-    IndexNovels,
-    IndexAnimations
+    // IndexTags,
+    // IndexIPs,
+    // IndexNovels,
+    // IndexAnimations
   },
   activated() {
     if(this.$route.query.tab){
@@ -123,41 +115,34 @@ export default {
   },
   created() {
     this.$store.dispatch('getTags')
-    this.$axios.get('api/ip/list').then((response) => {
-      const rd = response.data
-      console.log('return data:')
-      console.log(rd)
-      if (rd.code === 'success') {
-        this.ips = rd.data.ips
-        console.log('ips:')
-        console.log(this.ips)
-      }
+    this.$store.dispatch('getIPs').then(()=>{
       this.LD = false
-    }).catch(function (error) {
-      console.log(error)
     })
   },
   computed: {
-    animations() {
-      let animations = []
-      for (let i = 0; i < this.ips.length; i++) {
-        for (let j = 0; j < this.ips[i].animations.length; j++) {
-          animations.push(this.ips[i].animations[j])
-        }
-      }
-      return animations
-    },
-    novels() {
-      let novels = []
-      for (let i = 0; i < this.ips.length; i++) {
-        for (let j = 0; j < this.ips[i].novels.length; j++) {
-          novels.push(this.ips[i].novels[j])
-        }
-      }
-      return novels
-    },
+    // animations() {
+    //   let animations = []
+    //   for (let i = 0; i < this.ips.length; i++) {
+    //     for (let j = 0; j < this.ips[i].animations.length; j++) {
+    //       animations.push(this.ips[i].animations[j])
+    //     }
+    //   }
+    //   return animations
+    // },
+    // novels() {
+    //   let novels = []
+    //   for (let i = 0; i < this.ips.length; i++) {
+    //     for (let j = 0; j < this.ips[i].novels.length; j++) {
+    //       novels.push(this.ips[i].novels[j])
+    //     }
+    //   }
+    //   return novels
+    // },
     currentUser() {
       return this.$store.state.account.user
+    },
+    currentIPS() {
+      return this.$store.state.ip.ips
     }
   }
 }

@@ -5,7 +5,29 @@ const routes = [
     children: [
       {
         path: '',
-        component: () => import('src/layout_pages/Index'),
+        redirect: 'index'
+      },
+      {
+        path: 'index',
+        component: () => import('src/layout_pages/Index/Index'),
+        children: [
+          {
+            path: '',
+            redirect: 'animations'
+          },
+          {
+            path: 'animations',
+            component: () => import('src/layout_pages/Index/IndexAnimations'),
+          },
+          {
+            path: 'novels',
+            component: () => import('src/layout_pages/Index/IndexNovels'),
+          },
+          {
+            path: 'ips_and_tags',
+            component: () => import('src/layout_pages/Index/IndexIPsAndTags'),
+          }
+        ]
       },
       {
         path: 'ip/create',

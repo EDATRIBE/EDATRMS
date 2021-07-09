@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div class="q-pt-sm">
+
     <!--Tools-->
     <q-expansion-item
       dense
       dark
       expand-icon-toggle
-      class=" q-mb-sm"
+      class="q-mb-sm"
       header-class="bl q-pa-none "
       expand-icon-class="q-pr-sm text-primary"
       expand-icon="filter_alt"
@@ -15,8 +16,8 @@
       <template v-slot:header>
         <div class="row items-center text-body1 full-width ">
           <q-btn-toggle
-            text-color="grey-7"  size="0.75em" flat dense
-            class="no-border-radius" toggle-color="primary"
+            text-color="grey-7"  size="0.75em"  unelevated
+            class="no-border-radius bg-dark-light" toggle-color="primary" toggle-text-color="dark"
             v-model="order"
             :options="[
               {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'date'},
@@ -26,7 +27,7 @@
         </div>
       </template>
       <!--ToolsContent-->
-      <div class="q-pt-xs q-pb-sm bb">
+      <div class="q-pt-sm q-pb-sm bb">
         <!--region-->
         <q-item dense dark class="q-pa-none bl1">
           <multiple-choice
@@ -40,7 +41,7 @@
             v-model="region"
             text-class="text-grey-7"
             b-g-class="bg-dark-light"
-            active-text-class="text-white"
+            active-text-class="text-dark"
             active-b-g-class="bg-primary"
           />
         </q-item>
@@ -57,7 +58,7 @@
             v-model="type"
             text-class="text-grey-7"
             b-g-class="bg-dark-light"
-            active-text-class="text-white"
+            active-text-class="text-dark"
             active-b-g-class="bg-primary"
           />
         </q-item>
@@ -79,7 +80,7 @@
             v-model="date"
             text-class="text-grey-7"
             b-g-class="bg-dark-light"
-            active-text-class="text-white"
+            active-text-class="text-dark"
             active-b-g-class="bg-primary"
           />
         </q-item>
@@ -99,7 +100,7 @@
             v-model="quality"
             text-class="text-grey-7"
             b-g-class="bg-dark-light"
-            active-text-class="text-white"
+            active-text-class="text-dark"
             active-b-g-class="bg-primary"
           />
         </q-item>
@@ -118,7 +119,7 @@
             v-model="videoType"
             text-class="text-grey-7"
             b-g-class="bg-dark-light"
-            active-text-class="text-white"
+            active-text-class="text-dark"
             active-b-g-class="bg-primary"
           />
         </q-item>
@@ -135,7 +136,7 @@
             v-model="hasCaption"
             text-class="text-grey-7"
             b-g-class="bg-dark-light"
-            active-text-class="text-white"
+            active-text-class="text-dark"
             active-b-g-class="bg-primary"
           />
         </q-item>
@@ -201,4 +202,9 @@ a
   border-bottom: solid
   border-bottom-color: $primary
   border-width: 2px
+
+.bt
+  border-top: solid
+  border-top-color: $primary
+  border-top-width: 2px
 </style>
