@@ -1,4 +1,8 @@
 export default {
+  messages: {
+    success: '操作成功！',
+    failure: '操作失败！'
+  },
   ui: {
     navItems: {
       index: '索引',

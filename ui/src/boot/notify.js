@@ -5,7 +5,8 @@ Notify.registerType('success', {
   color: 'dark',
   textColor: 'green',
   position: 'top',
-  group: false
+  group: false,
+  timeout: 1000
 })
 
 Notify.registerType('failure', {
@@ -14,4 +15,5 @@ Notify.registerType('failure', {
   textColor: 'red',
   position: 'top',
   group: false,
+  timeout: 1000
 })

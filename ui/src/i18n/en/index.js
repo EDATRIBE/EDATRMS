@@ -1,4 +1,8 @@
 export default {
+  messages: {
+    success: 'OPERATION SUCCEEDS!',
+    failure: 'OPERATION FAILS!'
+  },
   ui: {
     navItems: {
       index: 'Index',
