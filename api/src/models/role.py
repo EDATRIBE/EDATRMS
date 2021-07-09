@@ -18,8 +18,8 @@ RoleModel = sa.Table(
 )
 
 class RoleReservedNamesSchema(Schema):
-    cnName = fields.String(attribute='cn_name')
-    enName = fields.String(attribute='en_name')
+    cn = fields.String(attribute='cn')
+    en = fields.String(attribute='en')
 
 
 class RoleStyleSchema(Schema):

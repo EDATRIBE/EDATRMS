@@ -25,8 +25,8 @@ TagModel = sa.Table(
 )
 
 class TagReservedNamesSchema(Schema):
-    cnName = fields.String(attribute='cn_name')
-    enName = fields.String(attribute='en_name')
+    cn = fields.String()
+    en = fields.String()
     class Meta:
         ordered = True
 

@@ -34,24 +34,24 @@ AnimationModel = sa.Table(
 
 
 class AnimationReservedNamesSchema(Schema):
-    jpName = fields.String(attribute='jp_name')
-    cnName = fields.String(attribute='cn_name')
-    enName = fields.String(attribute='en_name')
-    rmName = fields.String(attribute='rm_name')
-    miscName = fields.String(attribute='misc_name')
+    jp = fields.String()
+    cn = fields.String()
+    en = fields.String()
+    rm = fields.String()
+    misc = fields.String()
     class Meta:
         ordered = True
 
 class AnimationIntrosSchema(Schema):
-    cnIntro = fields.String(attribute='cn_intro')
-    enIntro = fields.String(attribute='en_intro')
+    cn = fields.String(attribute='cn')
+    en = fields.String(attribute='en')
     class Meta:
         ordered = True
 
 class AnimationImageIdsSchema(Schema):
-    horizontal = fields.Integer(attribute='horizontal')
-    vertical = fields.Integer(attribute='vertical')
-    reversed = fields.Integer(attribute='reversed')
+    horizontal = fields.Integer()
+    vertical = fields.Integer()
+    reversed = fields.Integer()
     class Meta:
         ordered = True
 

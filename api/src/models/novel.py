@@ -39,17 +39,17 @@ class NovelFileAddressesSchema(Schema):
         ordered = True
 
 class NovelReservedNamesSchema(Schema):
-    jpName = fields.String(attribute='jp_name')
-    cnName = fields.String(attribute='cn_name')
-    enName = fields.String(attribute='en_name')
-    rmName = fields.String(attribute='rm_name')
-    miscName = fields.String(attribute='misc_name')
+    jp = fields.String()
+    cn = fields.String()
+    en = fields.String()
+    rm = fields.String()
+    misc = fields.String()
     class Meta:
         ordered = True
 
 class NovelIntrosSchema(Schema):
-    cnIntro = fields.String(attribute='cn_intro')
-    enIntro = fields.String(attribute='en_intro')
+    cn = fields.String(attribute='cn')
+    en = fields.String(attribute='en')
     class Meta:
         ordered = True
 
