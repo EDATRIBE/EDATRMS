@@ -49,9 +49,9 @@
         </div>
         <div style="width: 100%" class="q-pl-md">
           <div class="row justify-end">
-            <q-btn class="q-ml-md"  dense flat color="accent" v-close-popup>cancel</q-btn>
+            <q-btn class="q-ml-md" dense flat color="accent" v-close-popup>cancel</q-btn>
             <q-btn
-              class="q-ml-md"  dense flat color="accent"
+              class="q-ml-md" dense flat color="accent"
               @click="commitCreate"
             >
               commit
@@ -62,7 +62,7 @@
     </q-dialog>
     <!--content-->
     <div>
-      <div class="row q-pt-md q-pb-sm q-px-md bg-dark-light bt" >
+      <div class="row q-pt-md q-pb-sm q-px-md bg-dark-light bt">
         <q-chip
           v-for="(tag,i) in tags" :key="'tag'+i"
           class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
@@ -86,7 +86,7 @@
           outline
           @click="tagCreateBuffer.isCreating = true"
         >
-          <q-icon size="1.1em" class="q-mr-xs"  name="fas fa-plus" color="accent"></q-icon>
+          <q-icon size="1.1em" class="q-mr-xs" name="fas fa-plus" color="accent"></q-icon>
           New
         </q-chip>
       </div>
@@ -101,8 +101,7 @@ export default {
   },
   data: () => ({
     LD: true,
-    tags:[],
-    tagCreateBuffer:{
+    tagCreateBuffer: {
       isCreating: false,
       data: {
         name: '',
@@ -117,7 +116,7 @@ export default {
   methods: {
     foo() {
     },
-    initTagCreateBufferData(){
+    initTagCreateBufferData() {
       this.tagCreateBuffer.data = {
         name: '',
         reservedNames: {
@@ -126,15 +125,15 @@ export default {
         }
       }
     },
-    commitCreate(){
+    commitCreate() {
       this.$axios.post('api/tag/create', this.tagCreateBuffer.data).then((response) => {
         let rd = response.data
         if (rd.code === 'success') {
           this.$q.notify({type: 'success', message: this.$t("messages.success")})
           this.$store.dispatch('getTags')
           this.initTagCreateBufferData()
-          this.tagCreateBuffer.isCreating=false
-        }else {
+          this.tagCreateBuffer.isCreating = false
+        } else {
           console.log(response)
           this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
         }
@@ -142,19 +141,16 @@ export default {
         console.log(error)
       })
     },
-    commitDelete(id){
+    commitDelete(id) {
       const data = {
-        id:id
+        id: id
       }
       this.$axios.post('api/tag/delete', data).then((response) => {
         let rd = response.data
         if (rd.code === 'success') {
-          this.$q.notify({
-            type: 'success',
-            message: `delete tag was submitted successfully.`
-          })
-          this.initTags()
-        }else {
+          this.$q.notify({type: 'success', message: this.$t("messages.success")})
+          this.$store.dispatch('getTags')
+        } else {
           console.log(response)
           this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
         }
