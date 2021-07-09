@@ -3,7 +3,7 @@ from sanic.exceptions import NotFound
 
 from ..models import (AnimationSchema, CaptionSchema, CaptionUserSchema,
                       IPSchema, StorageBucket, StorageRegion, UserSchema,
-                      VideoSchema)
+                      VideoSchema,CaptionUsersSchema)
 from ..services import (AnimationService, CaptionService, CaptionUserService,
                         IPService, StorageService, UserService, VideoService)
 from ..utilities import sha256_hash
@@ -11,7 +11,7 @@ from .common import (ResponseCode, authenticated_staff, authenticated_user,
                      copy_file, required_field_validation, response_json,
                      sift_dict_by_key)
 from .common_dumper import (dump_animation_info, dump_animation_infos,
-                            dump_caption_info, dump_caption_infos,
+                            dump_caption_info, dump_caption_infos,dump_caption_user_infos,
                             dump_ip_info, dump_ip_infos, dump_user_info)
 
 caption = Blueprint('caption', url_prefix='/caption')
@@ -129,46 +129,36 @@ async def list_(request, offset, limit):
         total=total
     )
 
-@caption.post('/contributor/create')
+@caption.post('/set/contributors')
 async def caption_contributor_create(request):
-    data = CaptionUserSchema().load(request.json)
-    required_field_validation(data=data, required_field=['caption_id', 'contributor_id'])
+    data = CaptionUsersSchema().load(request.json)
+    required_field_validation(data=data, required_field=['caption_id', 'user_ids'])
 
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
-    caption = caption_service.info(data['caption_id'])
+    caption = await caption_service.info(data['caption_id'])
     if caption is None:
         raise NotFound('')
 
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    contributor = user_service.info(data['contributor_id'])
-    if contributor is None:
-        raise NotFound('')
+    for user_id in data['user_ids']:
+        user = await user_service.info(user_id)
+        if user is None:
+            raise NotFound('')
 
     caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
-    caption_user_item = await caption_user_service.create(
-        caption_id=data['caption_id'],
-        user_id=data['contributor_id'],
-        created_by=request['session']['user']['id'],
-        updated_by=request['session']['user']['id'],
-        comment=data.get('comment', '')
+    await caption_user_service.delete_by_caption_id(data['caption_id'])
+    caption_user_items = []
+    for user_id in data['user_ids']:
+        caption_user_item = await caption_user_service.create(
+            caption_id=data['caption_id'],
+            user_id=user_id,
+            created_by=request['session']['user']['id'],
+            updated_by=request['session']['user']['id'],
+            comment=data.get('comment', '')
+        )
+        caption_user_items.append(caption_user_item)
+
+    return response_json(
+        caption_user_items=await dump_caption_user_infos(request,caption_user_items)
     )
 
-    return response_json(ip_tag_item=CaptionUserSchema().dump(caption_user_item))
-
-
-@caption.post('/contributor/delete')
-async def caption_contributor_delete(request):
-    data = CaptionUserSchema().load(request.json)
-    required_field_validation(data=data, required_field=['caption_id', 'contributor_id'])
-
-    caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
-    caption_user_items,total = await caption_user_service.list_caption_user_items(
-        caption_id=data['caption_id'],
-        user_id=data['contributor_id']
-    )
-    if total < 1:
-        raise NotFound('')
-
-    await caption_user_service.delete(caption_user_items[0]['id'])
-
-    return response_json(ip_tag_item=CaptionUserSchema().dump(caption_user_items[0]))

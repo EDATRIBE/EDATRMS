@@ -10,7 +10,7 @@ from sanic import response
 from sanic.exceptions import (NotFound, SanicException, ServerError,
                               Unauthorized)
 
-from ..models import (AnimationSchema, AnnouncementSchema, CaptionSchema,
+from ..models import (AnimationSchema, AnnouncementSchema, CaptionSchema,CaptionUserSchema,
                       IPSchema, IPTagSchema, NovelSchema, RoleSchema,
                       StorageBucket, StorageRegion, TagSchema, UserRoleSchema,
                       UserSchema, VideoSchema)
@@ -265,7 +265,7 @@ async def dump_caption_info(request, caption):
         'id', 'animationId', 'integrated', 'state', 'releasedAt',
         'fileAddresses', 'fileMeta',
         'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment','contributorIds','contributors'
+        'updateBy', 'updateAt', 'comment','contributors'
     ]
     caption = CaptionSchema(only=visible_field).dump(caption)
     return caption
@@ -292,6 +292,13 @@ async def dump_caption_infos(request, captions):
     ]
     captions = [CaptionSchema(only=visible_field).dump(v) for v in captions]
     return captions
+
+async def dump_caption_user_infos(request, caption_user_items):
+    if not caption_user_items:
+        return []
+
+    caption_user_items = [CaptionUserSchema().dump(v) for v in caption_user_items]
+    return caption_user_items
 
 
 async def dump_novel_info(request, novel):

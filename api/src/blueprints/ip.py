@@ -132,13 +132,13 @@ async def ip_tag_create(request):
     required_field_validation(data=data, required_field=['ip_id', 'tag_ids'])
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
-    ip = ip_service.info(data['ip_id'])
+    ip = await ip_service.info(data['ip_id'])
     if ip is None:
         raise NotFound('')
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     for tag_id in data['tag_ids']:
-        tag = tag_service.info(tag_id)
+        tag = await tag_service.info(tag_id)
         if tag is None:
             raise NotFound('')
 

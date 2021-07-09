@@ -39,3 +39,10 @@ class CaptionUserSchema(Schema):
 
     class Meta:
         ordered = True
+
+class CaptionUsersSchema(Schema):
+    captionId = fields.Integer(attribute='caption_id')
+    userIds = fields.List(fields.Integer(),attribute='user_ids')
+
+    class Meta:
+        ordered = True

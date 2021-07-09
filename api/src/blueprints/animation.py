@@ -147,7 +147,7 @@ async def list_all(request):
     animations, total = await animation_service.list_animations()
 
     return response_json(
-        ips=await dump_animation_infos(request, animations),
+        animations=await dump_animation_infos(request, animations),
         total=total
     )
 
@@ -158,6 +158,6 @@ async def list_(request, offset, limit):
     animations, total = await animation_service.list_animations(limit=limit, offset=offset)
 
     return response_json(
-        ips=await dump_animation_infos(request, animations),
+        animations=await dump_animation_infos(request, animations),
         total=total
     )

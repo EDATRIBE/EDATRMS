@@ -150,7 +150,7 @@ async def list_all(request):
     novels, total = await novel_service.list_novels()
 
     return response_json(
-        ips=await dump_novel_infos(request, novels),
+        novels=await dump_novel_infos(request, novels),
         total=total
     )
 
@@ -161,6 +161,6 @@ async def list_(request, offset, limit):
     novels, total = await novel_service.list_novels(limit=limit, offset=offset)
 
     return response_json(
-        ips=await dump_novel_infos(request, novels),
+        novels=await dump_novel_infos(request, novels),
         total=total
     )

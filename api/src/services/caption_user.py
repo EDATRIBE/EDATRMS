@@ -35,6 +35,11 @@ class CaptionUserService:
             await conn.execute(
                 sasql.delete(CaptionUserModel).where(CaptionUserModel.c.id == id))
 
+    async def delete_by_caption_id(self,caption_id):
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                sasql.delete(CaptionUserModel).where(CaptionUserModel.c.caption_id == caption_id))
+
     async def info(self, id):
         if id is None:
             return None
