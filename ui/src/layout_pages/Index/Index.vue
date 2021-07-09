@@ -28,7 +28,7 @@
           <q-tab ripple class="text-secondary text-weight-medium" name="Novels"  style="width: 50%">
             <q-icon class="q-mr-xs" size="1.7em" name="import_contacts"></q-icon>{{$t('ui.index.novels')}}
           </q-tab>
-          <q-tab ripple class="text-accent text-weight-medium" name="IPsAndTags"  style="width: 50%" v-if="user&&user.staff">
+          <q-tab ripple class="text-accent text-weight-medium" name="IPsAndTags"  style="width: 50%" v-if="currentUser&&currentUser.staff">
             <q-icon class="q-mr-xs" size="1.7em" name="source"></q-icon>{{$t('ui.index.ips')}}
             <span class="q-mx-sm">|</span>
             <q-icon class="q-mr-xs" size="1.2em" name="fas fa-hashtag"></q-icon>{{$t('ui.index.tags')}}
@@ -41,7 +41,7 @@
           <q-tab-panel name="Novels" class="q-px-none bg-dark q-pt-xs">
             <IndexNovels></IndexNovels>
           </q-tab-panel>
-          <q-tab-panel name="IPsAndTags" class="q-px-none bg-dark q-pt-xs" v-if="user&&user.staff">
+          <q-tab-panel name="IPsAndTags" class="q-px-none bg-dark q-pt-xs" v-if="currentUser&&currentUser.staff">
             <index-i-ps></index-i-ps>
             <index-tags></index-tags>
           </q-tab-panel>
@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <q-page-sticky expand position="top" class="bg-dark q-px-md q-py-sm" v-show="scrollInfo.position>150">
+    <q-page-sticky expand position="top" class="bg-dark q-px-md q-py-sm" v-show="scrollInfo.position>50">
       <q-toolbar style="width: 95.2%" class="q-px-none">
         <q-input
           dense dark class="text-h5 bg-dark-light" style="width: 100%" standout=""
@@ -60,6 +60,27 @@
           </template>
         </q-input>
       </q-toolbar>
+<!--      <q-tabs-->
+<!--        style="width: 95.2%"-->
+<!--        v-model="tab"-->
+<!--        class="text-grey"-->
+<!--        align="justify"-->
+<!--        inline-label-->
+<!--        dense-->
+<!--        outside-arrows-->
+<!--      >-->
+<!--        <q-tab ripple class="text-primary text-weight-medium" name="Animations" style="width: 50%">-->
+<!--          <q-icon class="q-mr-xs" size="1.7em" name="movie"></q-icon>{{$t('ui.index.animations')}}-->
+<!--        </q-tab>-->
+<!--        <q-tab ripple class="text-secondary text-weight-medium" name="Novels"  style="width: 50%">-->
+<!--          <q-icon class="q-mr-xs" size="1.7em" name="import_contacts"></q-icon>{{$t('ui.index.novels')}}-->
+<!--        </q-tab>-->
+<!--        <q-tab ripple class="text-accent text-weight-medium" name="IPsAndTags"  style="width: 50%" v-if="currentUser&&currentUser.staff">-->
+<!--          <q-icon class="q-mr-xs" size="1.7em" name="source"></q-icon>{{$t('ui.index.ips')}}-->
+<!--          <span class="q-mx-sm">|</span>-->
+<!--          <q-icon class="q-mr-xs" size="1.2em" name="fas fa-hashtag"></q-icon>{{$t('ui.index.tags')}}-->
+<!--        </q-tab>-->
+<!--      </q-tabs>-->
     </q-page-sticky>
   </q-page>
 </template>
@@ -95,16 +116,13 @@ export default {
   }),
   methods: {
     foo() {
-      console.log('this.animations')
-      console.log(this.animations)
-      console.log('this.novels')
-      console.log(this.novels)
     },
     onScroll (info) {
       this.scrollInfo = info
     }
   },
-  mounted() {
+  created() {
+    this.$store.dispatch('getTags')
     this.$axios.get('api/ip/list').then((response) => {
       const rd = response.data
       console.log('return data:')
@@ -138,8 +156,8 @@ export default {
       }
       return novels
     },
-    user() {
-      return this.$store.state.user
+    currentUser() {
+      return this.$store.state.account.user
     }
   }
 }

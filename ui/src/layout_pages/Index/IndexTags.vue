@@ -24,24 +24,24 @@
           </div>
           <q-separator color="grey" style="opacity: 20%"></q-separator>
           <div class="row items-center q-py-md">
-            <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">CN NAME</p>
+            <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">NAME-EN</p>
             </div>
             <div class="col-md-10 col-xs-12">
               <q-input
                 dense dark class="text-h6 bg-dark-light" standout=""
-                v-model="tagCreateBuffer.data.reservedNames.cnName"
+                v-model="tagCreateBuffer.data.reservedNames.en"
               >
               </q-input>
             </div>
           </div>
           <q-separator color="grey" style="opacity: 20%"></q-separator>
           <div class="row items-center q-py-md">
-            <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">EN NAME</p>
+            <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">NAME-CN</p>
             </div>
             <div class="col-md-10 col-xs-12">
               <q-input
                 dense dark class="text-h6 bg-dark-light" standout=""
-                v-model="tagCreateBuffer.data.reservedNames.enName"
+                v-model="tagCreateBuffer.data.reservedNames.cn"
               >
               </q-input>
             </div>
@@ -74,7 +74,7 @@
           clickable
         >
           <q-icon class="q-mx-xs" name="fas fa-tags" color="dark"></q-icon>
-          {{tag.reservedNames[$i18n.locale+'Name']||tag.name}}
+          {{ tag.reservedNames[$i18n.locale] || tag.name }}
         </q-chip>
         <q-chip
           class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
@@ -98,7 +98,6 @@
 export default {
   name: "IndexTags",
   created() {
-    this.initTags()
   },
   data: () => ({
     LD: true,
@@ -108,36 +107,22 @@ export default {
       data: {
         name: '',
         reservedNames: {
-          enName:'',
-          cnName:''
+          en: '',
+          cn: ''
         }
       },
     },
     text: 'false'
   }),
   methods: {
-    foo(i){
-      console.log(i)
-    },
-    initTags(){
-      this.$axios.get('api/tag/list').then((response) => {
-        const rd = response.data
-        console.log('return data:')
-        console.log(rd)
-        if (rd.code === 'success') {
-          this.tags = rd.data.tags
-        }
-        this.LD = false
-      }).catch(function (error) {
-        console.log(error)
-      })
+    foo() {
     },
     initTagCreateBufferData(){
       this.tagCreateBuffer.data = {
         name: '',
         reservedNames: {
-          enName:'',
-          cnName:''
+          en: '',
+          cn: ''
         }
       }
     },
@@ -145,19 +130,13 @@ export default {
       this.$axios.post('api/tag/create', this.tagCreateBuffer.data).then((response) => {
         let rd = response.data
         if (rd.code === 'success') {
-          this.$q.notify({
-            type: 'success',
-            message: `New tag was submitted successfully.`
-          })
-          this.initTags()
+          this.$q.notify({type: 'success', message: this.$t("messages.success")})
+          this.$store.dispatch('getTags')
           this.initTagCreateBufferData()
           this.tagCreateBuffer.isCreating=false
         }else {
           console.log(response)
-          this.$q.notify({
-            type: 'failure',
-            message: `failure`
-          })
+          this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
         }
       }).catch((error) => {
         console.log(error)
@@ -177,14 +156,16 @@ export default {
           this.initTags()
         }else {
           console.log(response)
-          this.$q.notify({
-            type: 'failure',
-            message: `failure`
-          })
+          this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
         }
       }).catch((error) => {
         console.log(error)
       })
+    }
+  },
+  computed: {
+    tags() {
+      return this.$store.state.tag.tags
     }
   }
 }

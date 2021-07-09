@@ -3,32 +3,32 @@
     <!--Common-->
     <div v-if="!userEditBuffer.isEditing">
       <div class="row justify-center">
-        <q-avatar size="250px"  class="cursor-pointer " v-if="user !== null">
-          <img contain :src="user.avatar?user.avatar.url:this.genAvatar(user.name)" >
+        <q-avatar size="250px"  class="cursor-pointer " v-if="currentUser !== null">
+          <img contain :src="currentUser.avatar?currentUser.avatar.url:this.genAvatar(currentUser.name)" >
         </q-avatar>
       </div>
       <div
         class="row q-pt-md  items-center  text-h5 text-weight-medium"
       >
-        {{ user.name }}
+        {{ currentUser.name }}
       </div>
       <q-separator class="q-mt-sm" color="white"></q-separator>
       <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
         <div ><q-icon size="1.2em" class="q-mr-sm"  name="email"></q-icon> </div>
         <div  class="text-justify">
-          {{user.email}}
+          {{currentUser.email}}
         </div>
       </div>
       <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
         <div><q-icon size="1.1em" class="q-mr-sm"  name="fab fa-qq"></q-icon> </div>
         <div class="text-justify">
-          {{user.qq}}
+          {{currentUser.qq}}
         </div>
       </div>
       <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
         <div><q-icon size="1.1em" class="q-mr-sm"  name="fas fa-info"></q-icon> </div>
         <div class="text-justify">
-          {{user.intro}}
+          {{currentUser.intro}}
         </div>
       </div>
       <q-separator class="q-mt-sm" color="white"></q-separator>
@@ -252,9 +252,9 @@ export default {
       console.log('FilePond has initialized');
       // example of instance method call on pond reference
       // this.$refs.pond.getFiles();
-      if (this.user.avatar){
+      if (this.currentUser.avatar){
         this.userEditBuffer.avatarFile=[{
-          source: this.user.avatar?this.user.avatar.id:null,
+          source: this.currentUser.avatar?this.currentUser.avatar.id:null,
           options: {
             type: 'local'
           }
@@ -264,13 +264,13 @@ export default {
     },
     initUserEditBufferData(){
       this.userEditBuffer.data = {
-        name: this.user.name,
+        name: this.currentUser.name,
         password: '',
         confirmPassword: '',
-        email: this.user.email,
-        qq: this.user.qq,
-        intro: this.user.intro,
-        avatarId: this.user.avatar?this.user.avatar.id:null
+        email: this.currentUser.email,
+        qq: this.currentUser.qq,
+        intro: this.currentUser.intro,
+        avatarId: this.currentUser.avatar?this.currentUser.avatar.id:null
       }
     },
     commitEdit(){
@@ -322,7 +322,7 @@ export default {
         if (rd.code === 'success') {
           this.$store.commit('setUser',null)
           console.log('user:')
-          console.log(this.user)
+          console.log(this.currentUser)
         }
         this.$q.notify({
           type: 'success',
@@ -331,25 +331,12 @@ export default {
       }).catch(function (error) {
         console.log(error)
       })
-    },
-    // genAvatar(seed){
-    //   return 'data:image/png;base64,' + new Identicon(md5(seed), 420).toString()
-    // }
+    }
   },
   computed: {
-    user() {
-      return this.$store.state.user
+    currentUser() {
+      return this.$store.state.account.user
     }
   }
 }
 </script>
-
-<!--<style >-->
-<!--.filepond&#45;&#45;drop-label {-->
-<!--  color: white;-->
-<!--}-->
-
-<!--.filepond&#45;&#45;panel-root {-->
-<!--  background-color: #373C41;-->
-<!--}-->
-<!--</style>-->

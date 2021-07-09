@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpr fFf">
-    <q-header class="bg-dark q-px-md" reveal>
+    <q-header class="bg-dark q-px-md" reveal :reveal-offset="0">
       <q-toolbar style="width: 95%" class="q-py-md q-px-none q-mx-auto items-center">
         <q-icon name="fas fa-atom" size="2.35em" />
         <div class="text-h4 q-ml-sm" v-if="this.$q.screen.gt.sm">EDATRMS</div>
@@ -34,14 +34,14 @@
           <q-btn
             round outline class="q-ml-md"
             size="0.78em"  icon="mdi-badge-account-horizontal-outline"
-            v-if="user === null"
-            @click="drawer = !drawer"
+            v-if="currentUser === null"
+            @click="accountDrawer = !accountDrawer"
           />
           <q-avatar
             size="2.35em"  v-ripple class="cursor-pointer q-ml-md"
-            v-if="user !== null"
+            v-if="currentUser !== null"
           >
-            <img  @click="drawer = !drawer" :src="user.avatar?user.avatar.url:this.genAvatar(user.name)">
+            <img  @click="accountDrawer = !accountDrawer" :src="currentUser.avatar?currentUser.avatar.url:this.genAvatar(currentUser.name)">
           </q-avatar>
         </div>
       </q-toolbar>
@@ -49,7 +49,7 @@
     <!--UserLoginAndProfile-->
     <q-drawer
       side="right"
-      v-model="drawer"
+      v-model="accountDrawer"
       :width="350"
       dark
       overlay
@@ -60,9 +60,9 @@
     >
       <q-scroll-area class="fit q-px-lg">
         <!--SignIn-->
-        <sign-in v-if="user === null"></sign-in>
+        <sign-in v-if="currentUser === null"></sign-in>
         <!--Profile-->
-        <profile v-if="user !== null"></profile>
+        <profile v-if="currentUser !== null"></profile>
       </q-scroll-area>
     </q-drawer>
     <q-page-container>
@@ -88,41 +88,19 @@ export default {
     NavItems
   },
   created() {
-    this.$axios.get('api/account/info').then((response) => {
-      const rd = response.data
-      console.log('return data:')
-      console.log(rd)
-      if (rd.code === 'success') {
-        this.$store.commit('setUser',rd.data.user)
-        console.log('user:')
-        console.log(this.user)
-      }
-      this.LD = false
-    }).catch(function (error) {
-      console.log(error)
-    })
+    this.$store.dispatch('getUser').then(()=>{})
   },
   data () {
     return {
-      drawer: false,
-      myFiles: [],
-      text: 'sdf'
+      accountDrawer: false
     }
   },
   methods: {
-    foo(){
-      this.$store.commit('setUser',null)
-    },
-    handleFilePondInit: function () {
-      console.log('FilePond has initialized');
-
-      // example of instance method call on pond reference
-      this.$refs.pond.getFiles();
-    },
+    foo(){}
   },
   computed: {
-    user() {
-      return this.$store.state.user
+    currentUser() {
+      return this.$store.state.account.user
     }
   }
 }

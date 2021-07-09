@@ -3,13 +3,11 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import accountStore from "src/store/account";
+import tagStore from "src/store/tag";
 export default new Vuex.Store({
-  state: {
-    user: null
-  },
-  mutations: {
-    setUser(state,user){
-      state.user=user
-    }
+  modules:{
+    account: accountStore,
+    tag: tagStore
   }
 })

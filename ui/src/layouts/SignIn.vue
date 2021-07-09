@@ -13,27 +13,26 @@
       <q-input
         dark
         dense
-        class="text-h6 bg-dark-light q-mb-sm full-width"
+        class=" bg-dark-light q-mb-sm full-width"
         v-model="signInData.email"
-        clear-icon="close"
         standout=""
-        color="white"
+        label="Email address"
       >
         <template v-slot:prepend>
-          <q-icon name="fas fa-user"/>
+          <q-icon name="fas fa-envelope"/>
         </template>
       </q-input>
       <q-input
         dark
         dense
-        class="text-h6 bg-dark-light q-mb-sm full-width"
+        class=" bg-dark-light q-mb-sm full-width"
         v-model="signInData.password"
-        clear-icon="close"
-        color="white"
         standout=""
+        label="Password"
+        type="password"
       >
         <template v-slot:prepend>
-          <q-icon name="fas fa-key"/>
+          <q-icon size="0.95em" name="fas fa-key"/>
         </template>
       </q-input>
     </div>
