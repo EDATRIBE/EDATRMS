@@ -81,12 +81,3 @@ async def logout(request):
 
     return response_json(user=user_repr)
 
-@account.get('/list')
-async def list_(request):
-    user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    users, total = await user_service.list_users()
-
-    return response_json(
-        users=await dump_user_infos(request, users),
-        total=total
-    )

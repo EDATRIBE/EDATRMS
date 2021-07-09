@@ -8,3 +8,4 @@ from .semi_static import semi_static
 from .storage import storage
 from .tag import tag
 from .video import video
+from .user import user
