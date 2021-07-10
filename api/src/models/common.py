@@ -4,7 +4,7 @@ from marshmallow import Schema, fields, validate
 metadata = sa.MetaData()
 
 class BaiduCloudSchema(Schema):
-    url = fields.String(attribute='url')
-    password = fields.String(attribute='password')
+    url = fields.String()
+    password = fields.String()
     class Meta:
         ordered = True
