@@ -30,7 +30,10 @@
             ]"
               />
               <q-space></q-space>
-              <q-icon name="fas fa-plus" color="accent" size="1.25em" class="q-mx-sm"></q-icon>
+              <q-icon
+                name="fas fa-plus" color="accent" size="1.25em" class="q-mx-sm cursor-pointer"
+                @click="$router.push('/ip/create')"
+              />
             </div>
           </template>
 
@@ -66,8 +69,13 @@
               <q-space></q-space>
               <q-btn flat color="accent" icon="add">animation</q-btn>
               <q-btn flat color="accent" icon="add">novel</q-btn>
-              <q-btn flat color="accent" >edit</q-btn>
-              <q-btn flat color="red">delete</q-btn>
+              <q-btn flat color="accent">edit</q-btn>
+              <q-btn
+                flat color="red"
+                @click="commitIPDelete(ip.id)"
+              >
+                delete
+              </q-btn>
             </div>
           </template>
 
@@ -172,6 +180,21 @@ export default {
   methods: {
     foo(i) {
       console.log(i)
+    },
+    commitIPDelete(id) {
+      let temp = {id: id}
+      this.$axios.post('api/ip/delete', temp).then((response) => {
+        let rd = response.data
+        if (rd.code === 'success') {
+          this.$q.notify({type: 'success', message: this.$t("messages.success")})
+          this.$store.dispatch('getIPs')
+        } else {
+          console.log(response)
+          this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   },
   computed: {

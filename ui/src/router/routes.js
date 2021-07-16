@@ -30,8 +30,14 @@ const routes = [
         ]
       },
       {
-        path: 'ip/create',
-        component: () => import('src/layout_pages/IP/IPCreate'),
+        path: 'ip',
+        component: () => import('src/layout_pages/IP/IPLayout'),
+        children: [
+          {
+            path: 'create',
+            component: () => import('src/layout_pages/IP/IPCreate')
+          }
+        ]
       },
       {
         path: 'ann',
