@@ -15,32 +15,30 @@
             </div>
             <div class="col-md-10 col-xs-12">
               <q-input
-                dense dark class="text-h6 bg-dark-light" standout=""
+                dense dark class=" bg-dark-light" standout=""
                 v-model="tagCreateBuffer.data.name"
                 hide-bottom-space
               >
               </q-input>
             </div>
           </div>
-          <q-separator color="grey" style="opacity: 20%"></q-separator>
           <div class="row items-center q-py-md">
             <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">NAME-EN</p>
             </div>
             <div class="col-md-10 col-xs-12">
               <q-input
-                dense dark class="text-h6 bg-dark-light" standout=""
+                dense dark class=" bg-dark-light" standout=""
                 v-model="tagCreateBuffer.data.reservedNames.en"
               >
               </q-input>
             </div>
           </div>
-          <q-separator color="grey" style="opacity: 20%"></q-separator>
           <div class="row items-center q-py-md">
             <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">NAME-CN</p>
             </div>
             <div class="col-md-10 col-xs-12">
               <q-input
-                dense dark class="text-h6 bg-dark-light" standout=""
+                dense dark class=" bg-dark-light" standout=""
                 v-model="tagCreateBuffer.data.reservedNames.cn"
               >
               </q-input>
@@ -62,7 +60,10 @@
     </q-dialog>
     <!--content-->
     <div>
-      <div class="row q-pt-md q-pb-sm q-px-md bg-dark-light bt">
+      <div
+        class="row q-pt-md q-pb-sm q-px-md bg-dark-light bt"
+        v-if="ready"
+      >
         <q-chip
           v-for="(tag,i) in tags" :key="'tag'+i"
           class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
@@ -162,6 +163,9 @@ export default {
   computed: {
     tags() {
       return this.$store.state.tag.tags
+    },
+    ready() {
+      return this.$store.state.tag.ready
     }
   }
 }

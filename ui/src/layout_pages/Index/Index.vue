@@ -114,10 +114,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('getTags')
-    this.$store.dispatch('getIPs').then(()=>{
-      this.LD = false
-    })
+    this.LD = false
   },
   computed: {
     // animations() {

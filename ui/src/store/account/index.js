@@ -13,8 +13,6 @@ const accountStore = {
     getUser(context){
       axios.get('api/account/info').then((response) => {
         const rd = response.data
-        console.log('return data:')
-        console.log(rd)
         if (rd.code === 'success') {
           context.commit('setUser',rd.data.user)
         }
