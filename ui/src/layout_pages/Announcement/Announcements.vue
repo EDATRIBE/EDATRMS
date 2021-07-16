@@ -4,13 +4,22 @@
       <div class="row q-col-gutter-x-lg"><!--do not set margin-->
         <!--LEFT-->
         <div class="col-md-3 col-xs-12 q-pb-md"><!--do not set margin-->
-          <div class="bg-dark-light text-white" style="border-radius: 5px">
+          <div class="bg-dark-light text-grey-6" style="border-radius: 5px">
             <q-list bordered separator v-if="!LD">
               <q-item
-                clickable v-ripple v-for="(ann,i) in announcements" :key="'ann'+i" class="q-mb-none"
-                @click="loadCurrentText(ann.uri)"
+                clickable v-ripple
+                v-for="(ann,i) in announcements" :key="'ann'+i" class="q-mb-none text-body1 text-weight-medium"
+                @click="selectAnnouncement(i,ann.uri)"
+                active-class="acann"
+                :active="i===currentId"
               >
-                <q-item-section class="">{{ ann.title }}</q-item-section>
+                <q-item-section>
+                  <div class="row no-wrap items-center">
+                    <q-icon size="1.5em" class="q-mr-md" name="article"></q-icon>
+                    {{ ann.title }}
+                  </div>
+
+                </q-item-section>
               </q-item>
             </q-list>
           </div>
@@ -44,8 +53,8 @@ export default {
       console.log(rd)
       if (rd.code === 'success') {
         this.announcements = rd.data.announcements
-        if(this.announcements.length !== 0){
-          this.loadCurrentText(this.announcements[0].uri)
+        if (this.announcements.length !== 0) {
+          this.selectAnnouncement(0, this.announcements[0].uri)
         }
       }
     }).catch(function (error) {
@@ -54,12 +63,14 @@ export default {
   },
   data: () => ({
     LD: true,
-    announcements : [],
-    currentText:''
+    announcements: [],
+    currentText: '',
+    currentId: 0
   }),
   methods: {
-    loadCurrentText(uri){
-      this.$axios.get('api/'+uri).then((response) => {
+    selectAnnouncement(i, uri) {
+      this.currentId = i
+      this.$axios.get('api/' + uri).then((response) => {
         this.currentText = response.data
         this.LD = false
       }).catch(function (error) {
@@ -70,6 +81,18 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="sass" scoped>
+.bl
+  border-left: solid
+  border-left-color: white
+  border-width: 2px
+
+.acann
+  color: $dark
+  background-color: white
+
+  //border-right: solid
+  //border-color: white
+  //border-width: 2px
 
 </style>
