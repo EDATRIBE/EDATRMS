@@ -38,8 +38,8 @@ async def create(request):
         written_by=data.get('written_by', ''),
         type=data.get('type'),
         episodes_num=data.get('episodes_num'),
-        created_by=request['session']['user']['id'],
-        updated_by=request['session']['user']['id'],
+        created_by=request.ctx.session['user']['id'],
+        updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')
     )
 
@@ -119,7 +119,7 @@ async def edit(request):
     animation = await animation_service.edit(
         id,
         **allowed_data,
-        updated_by=request['session']['user']['id']
+        updated_by=request.ctx.session['user']['id']
     )
 
     return response_json(animation=await dump_animation_info(request, animation))

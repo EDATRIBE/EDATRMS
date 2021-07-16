@@ -22,8 +22,8 @@ async def create(request):
     tag = await tag_service.create(
         name=data['name'],
         reserved_names=data.get('reserved_names',{}),
-        created_by=request['session']['user']['id'],
-        updated_by=request['session']['user']['id'],
+        created_by=request.ctx.session['user']['id'],
+        updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')
     )
     return response_json(tag=await dump_tag_info(request, tag))
@@ -58,7 +58,7 @@ async def edit(request):
     tag = await tag_service.edit(
         id,
         **allowed_data,
-        updated_by=request['session']['user']['id']
+        updated_by=request.ctx.session['user']['id']
     )
 
     return response_json(tag=await dump_tag_info(request, tag))

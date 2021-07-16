@@ -42,8 +42,8 @@ async def create(request):
         integrated=data.get('integrated'),
         file_addresses=data['file_addresses'],
         file_meta=data.get('file_meta', {}),
-        created_by=request['session']['user']['id'],
-        updated_by=request['session']['user']['id'],
+        created_by=request.ctx.session['user']['id'],
+        updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')
     )
 
@@ -122,7 +122,7 @@ async def edit(request):
     novel = await novel_service.edit(
         id,
         **allowed_data,
-        updated_by=request['session']['user']['id']
+        updated_by=request.ctx.session['user']['id']
     )
 
     return response_json(novel=await dump_novel_info(request, novel))

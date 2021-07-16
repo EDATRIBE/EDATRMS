@@ -27,8 +27,8 @@ async def create(request):
         animation_id=data['animation_id'],
         file_addresses=data['file_addresses'],
         file_meta=data.get('file_meta', {}),
-        created_by=request['session']['user']['id'],
-        updated_by=request['session']['user']['id'],
+        created_by=request.ctx.session['user']['id'],
+        updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')
     )
 
@@ -67,7 +67,7 @@ async def edit(request):
     video = await video_service.edit(
         id,
         **allowed_data,
-        updated_by=request['session']['user']['id']
+        updated_by=request.ctx.session['user']['id']
     )
 
     return response_json(video=await dump_video_info(request, video))

@@ -60,8 +60,8 @@ async def upload(request):
                 bucket=bucket,
                 path=os.path.join(path, file_name),
                 file_meta=file_meta,
-                created_by=request['session']['user']['id'],
-                updated_by=request['session']['user']['id']
+                created_by=request.ctx.session['user']['id'],
+                updated_by=request.ctx.session['user']['id']
             )
 
             saved_files.append(file)
@@ -124,8 +124,8 @@ async def filepond_upload(request):
         bucket=bucket,
         path=os.path.join(path, file_name),
         file_meta=file_meta,
-        created_by=request['session']['user']['id'],
-        updated_by=request['session']['user']['id']
+        created_by=request.ctx.session['user']['id'],
+        updated_by=request.ctx.session['user']['id']
     )
 
     return response.text(file['id'])

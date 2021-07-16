@@ -66,7 +66,7 @@ def authenticated_user():
     def decorator(f):
         @wraps(f)
         async def decorated_function(request, *args, **kwargs):
-            if request['session'].get('user') is None:
+            if request.ctx.session.get('user') is None:
                 raise Unauthorized('Not authenticated user')
 
             return await f(request, *args, **kwargs)
@@ -80,9 +80,9 @@ def authenticated_staff():
     def decorator(f):
         @wraps(f)
         async def decorated_function(request, *args, **kwargs):
-            if request['session'].get('user') is None:
+            if request.ctx.session.get('user') is None:
                 raise Unauthorized('Not authenticated user')
-            elif request['session'].get('user').get('staff') is not True:
+            elif request.ctx.session.get('user').get('staff') is not True:
                 raise Unauthorized('Not authenticated staff')
 
             return await f(request, *args, **kwargs)
@@ -137,8 +137,8 @@ async def copy_file(request, *, file, target_bucket, target_path):
             bucket=target_bucket.value,
             path=os.path.join(target_path, new_file_name),
             file_meta=file['file_meta'],
-            created_by=request['session']['user']['id'],
-            updated_by=request['session']['user']['id']
+            created_by=request.ctx.session['user']['id'],
+            updated_by=request.ctx.session['user']['id']
         )
         return new_file
     else:

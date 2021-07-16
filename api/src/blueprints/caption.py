@@ -38,8 +38,8 @@ async def create(request):
         released_at=data['released_at'],
         file_addresses=data['file_addresses'],
         file_meta=data.get('file_meta', {}),
-        created_by=request['session']['user']['id'],
-        updated_by=request['session']['user']['id'],
+        created_by=request.ctx.session['user']['id'],
+        updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')
     )
 
@@ -48,8 +48,8 @@ async def create(request):
         await caption_user_service.create(
             caption_id=caption['id'],
             user_id=contributor_id,
-            created_by=request['session']['user']['id'],
-            updated_by=request['session']['user']['id'],
+            created_by=request.ctx.session['user']['id'],
+            updated_by=request.ctx.session['user']['id'],
             comment=data.get('comment', '')
         )
 
@@ -88,7 +88,7 @@ async def edit(request):
     caption = await caption_service.edit(
         id,
         **allowed_data,
-        updated_by=request['session']['user']['id']
+        updated_by=request.ctx.session['user']['id']
     )
 
     return response_json(caption=await dump_caption_info(request, caption))
@@ -152,8 +152,8 @@ async def caption_contributor_create(request):
         caption_user_item = await caption_user_service.create(
             caption_id=data['caption_id'],
             user_id=user_id,
-            created_by=request['session']['user']['id'],
-            updated_by=request['session']['user']['id'],
+            created_by=request.ctx.session['user']['id'],
+            updated_by=request.ctx.session['user']['id'],
             comment=data.get('comment', '')
         )
         caption_user_items.append(caption_user_item)

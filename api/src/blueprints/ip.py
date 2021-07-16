@@ -33,8 +33,8 @@ async def create(request):
         name=data['name'],
         reserved_names=data.get('reserved_names',{}),
         region=data.get('region',''),
-        created_by=request['session']['user']['id'],
-        updated_by=request['session']['user']['id'],
+        created_by=request.ctx.session['user']['id'],
+        updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')
     )
 
@@ -43,8 +43,8 @@ async def create(request):
         await ip_tag_service.create(
             ip_id=ip['id'],
             tag_id=tag_id,
-            created_by=request['session']['user']['id'],
-            updated_by=request['session']['user']['id'],
+            created_by=request.ctx.session['user']['id'],
+            updated_by=request.ctx.session['user']['id'],
             comment=data.get('comment', '')
         )
 
@@ -82,7 +82,7 @@ async def edit(request):
     ip = await ip_service.edit(
         id,
         **allowed_data,
-        updated_by=request['session']['user']['id']
+        updated_by=request.ctx.session['user']['id']
     )
     if ip is None:
         raise NotFound('')
@@ -149,8 +149,8 @@ async def ip_tag_create(request):
         ip_tag_item = await ip_tag_service.create(
             ip_id=data['ip_id'],
             tag_id=tag_id,
-            created_by=request['session']['user']['id'],
-            updated_by=request['session']['user']['id'],
+            created_by=request.ctx.session['user']['id'],
+            updated_by=request.ctx.session['user']['id'],
             comment=data.get('comment', '')
         )
         ip_tag_items.append(ip_tag_item)
