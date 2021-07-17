@@ -1,5 +1,5 @@
 <template>
-  <div class="q-col-gutter-y-sm">
+  <div>
     <!--add tag-->
     <q-dialog v-model="tagCreateBuffer.isCreating">
       <div class="bg-dark column q-pa-lg " style="width: 60vw; max-width: 60vw;">
@@ -59,37 +59,39 @@
       </div>
     </q-dialog>
     <!--content-->
-    <div>
-      <div
-        class="row q-pt-md q-pb-sm q-px-md bg-dark-light bt"
-        v-if="ready"
-      >
-        <q-chip
-          v-for="(tag,i) in tags" :key="'tag'+i"
-          class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
-          dense
-          square
-          color="accent"
-          removable
-          @remove="commitDelete(tag.id)"
-          clickable
+    <div class="q-col-gutter-y-sm">
+      <div>
+        <div
+          class="row q-pt-md q-pb-sm q-px-md bg-dark-light bt"
+          v-if="ready"
         >
-          <q-icon class="q-mx-xs" name="fas fa-tags" color="dark"></q-icon>
-          {{ tag.reservedNames[$i18n.locale] || tag.name }}
-        </q-chip>
-        <q-chip
-          class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
-          text-color="dark"
-          dense
-          square
-          color="accent"
-          clickable
-          outline
-          @click="tagCreateBuffer.isCreating = true"
-        >
-          <q-icon size="1.1em" class="q-mr-xs" name="fas fa-plus" color="accent"></q-icon>
-          New
-        </q-chip>
+          <q-chip
+            v-for="(tag,i) in tags" :key="'tag'+i"
+            class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
+            dense
+            square
+            color="accent"
+            removable
+            @remove="commitDelete(tag.id)"
+            clickable
+          >
+            <q-icon class="q-mx-xs" name="fas fa-tags" color="dark"></q-icon>
+            {{ tag.reservedNames[$i18n.locale] || tag.name }}
+          </q-chip>
+          <q-chip
+            class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
+            text-color="dark"
+            dense
+            square
+            color="accent"
+            clickable
+            outline
+            @click="tagCreateBuffer.isCreating = true"
+          >
+            <q-icon size="1.1em" class="q-mr-xs" name="fas fa-plus" color="accent"></q-icon>
+            New
+          </q-chip>
+        </div>
       </div>
     </div>
   </div>
@@ -100,20 +102,22 @@ export default {
   name: "IndexTags",
   created() {
   },
-  data: () => ({
-    LD: true,
-    tagCreateBuffer: {
-      isCreating: false,
-      data: {
-        name: '',
-        reservedNames: {
-          en: '',
-          cn: ''
-        }
+  data() {
+    return {
+      LD: true,
+      tagCreateBuffer: {
+        isCreating: false,
+        data: {
+          name: '',
+          reservedNames: {
+            en: '',
+            cn: ''
+          }
+        },
       },
-    },
-    text: 'false'
-  }),
+      text: 'false'
+    }
+  },
   methods: {
     foo() {
     },

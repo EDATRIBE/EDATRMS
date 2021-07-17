@@ -50,16 +50,18 @@
 <script>
 export default {
   name: "IndexNovels",
-  data: () => ({
-    tab: 'Animations',
-    text: '',
-    model: '',
-    LD: true,
-    expanded: [],
-    scrollInfo: {},
-    ips: [],
-    lorem: 'Kazuto "Kirito" Kirigaya enters a virtual-reality, massively multiplayer online role playing game called Sword Art Online. There is no escape from this world unless the player clears the game; however getting a "game over" results in the death of the player.'
-  }),
+  data() {
+    return {
+      tab: 'Animations',
+      text: '',
+      model: '',
+      LD: true,
+      expanded: [],
+      scrollInfo: {},
+      ips: [],
+      lorem: 'Kazuto "Kirito" Kirigaya enters a virtual-reality, massively multiplayer online role playing game called Sword Art Online. There is no escape from this world unless the player clears the game; however getting a "game over" results in the death of the player.'
+    }
+  },
 }
 </script>
 

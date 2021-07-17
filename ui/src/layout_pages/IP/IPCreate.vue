@@ -153,34 +153,6 @@
             </div>
           </div>
           <q-separator color="grey-7" class="q-my-sm"></q-separator>
-<!--          &lt;!&ndash;enintros&ndash;&gt;-->
-<!--          <div class="row items-center q-py-sm">-->
-<!--            <div class="col-md-2 col-xs-12">-->
-<!--              <p class="q-my-none text-grey text-body1 text-weight-medium">intros-EN</p>-->
-<!--            </div>-->
-<!--            <div class="col-md-10 col-xs-12">-->
-<!--              <q-input-->
-<!--                autogrow spellcheck="false"-->
-<!--                dense dark class=" bg-dark-light" standout=""-->
-<!--                v-model="IPCreateBuffer.data.intros.en"-->
-<!--              >-->
-<!--              </q-input>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          &lt;!&ndash;cnintros&ndash;&gt;-->
-<!--          <div class="row items-center q-py-sm">-->
-<!--            <div class="col-md-2 col-xs-12">-->
-<!--              <p class="q-my-none text-grey text-body1 text-weight-medium">intros-CN</p>-->
-<!--            </div>-->
-<!--            <div class="col-md-10 col-xs-12">-->
-<!--              <q-input-->
-<!--                autogrow-->
-<!--                dense dark class=" bg-dark-light" standout=""-->
-<!--                v-model="IPCreateBuffer.data.intros.cn"-->
-<!--              >-->
-<!--              </q-input>-->
-<!--            </div>-->
-<!--          </div>-->
           <!--Comment-->
           <div class="row items-center q-py-sm">
             <div class="col-md-2 col-xs-12">
@@ -222,7 +194,7 @@
 <script>
 export default {
   name: "IPCreate",
-  data: () => {
+  data() {
     return {
       IPCreateBuffer: {
         data: {
@@ -239,7 +211,7 @@ export default {
         }
       },
       selectedTagModelsBuffer: {
-        data:[]
+        data: []
       },
     }
   },
@@ -253,8 +225,8 @@ export default {
         let rd = response.data
         if (rd.code === 'success') {
           this.$q.notify({type: 'success', message: this.$t("messages.success")})
-          if(this.selectedTagModelsBuffer.data.length>0){
-            let temp={
+          if (this.selectedTagModelsBuffer.data.length > 0) {
+            let temp = {
               ipId: rd.data.ip.id,
               tagIds: []
             }
@@ -265,21 +237,21 @@ export default {
               let rd = response.data
               if (rd.code === 'success') {
                 this.$q.notify({type: 'success', message: this.$t("messages.success")})
-                this.$store.dispatch('getIPs').then(()=>{
+                this.$store.dispatch('getIPs').then(() => {
                   this.$router.push('/index/ips_and_tags')
                 })
               } else {
                 console.log(response)
                 this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
-                this.$store.dispatch('getIPs').then(()=>{
+                this.$store.dispatch('getIPs').then(() => {
                   this.$router.push('/index/ips_and_tags')
                 })
               }
             }).catch((error) => {
               console.log(error)
             })
-          }else {
-            this.$store.dispatch('getIPs').then(()=>{
+          } else {
+            this.$store.dispatch('getIPs').then(() => {
               this.$router.push('/index/ips_and_tags')
             })
           }
@@ -287,7 +259,6 @@ export default {
           console.log(response)
           this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
         }
-
       }).catch((error) => {
         console.log(error)
       })
@@ -302,7 +273,6 @@ export default {
     },
     tagModels() {
       if (!this.tags) return []
-
       const temp = []
       for (const tag of this.tags) {
         temp.push({

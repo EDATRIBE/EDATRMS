@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em" v-if="!LD">
-    <q-scroll-observer @scroll="onScroll" />
+    <q-scroll-observer @scroll="onScroll"/>
     <div class="q-mx-auto" style="width: 95%">
       <div class="column">
         <!--SEARCH-->
@@ -26,39 +26,43 @@
             ripple class="text-primary text-weight-medium" name="Animations" style="width: 50%"
             to="/index/animations"
           >
-            <q-icon class="q-mr-xs" size="1.7em" name="movie"></q-icon>{{$t('ui.index.animations')}}
+            <q-icon class="q-mr-xs" size="1.7em" name="movie"></q-icon>
+            {{ $t('ui.index.animations') }}
           </q-route-tab>
           <q-route-tab
-            ripple class="text-secondary text-weight-medium" name="Novels"  style="width: 50%"
+            ripple class="text-secondary text-weight-medium" name="Novels" style="width: 50%"
             to="/index/novels"
           >
-            <q-icon class="q-mr-xs" size="1.7em" name="import_contacts"></q-icon>{{$t('ui.index.novels')}}
+            <q-icon class="q-mr-xs" size="1.7em" name="import_contacts"></q-icon>
+            {{ $t('ui.index.novels') }}
           </q-route-tab>
           <q-route-tab
-            ripple class="text-accent text-weight-medium" name="IPsAndTags"  style="width: 50%"
+            ripple class="text-accent text-weight-medium" name="IPsAndTags" style="width: 50%"
             v-if="currentUser&&currentUser.staff"
             to="/index/ips_and_tags"
           >
-            <q-icon class="q-mr-xs" size="1.7em" name="source"></q-icon>{{$t('ui.index.ips')}}
+            <q-icon class="q-mr-xs" size="1.7em" name="source"></q-icon>
+            {{ $t('ui.index.ips') }}
             <span class="q-mx-sm">|</span>
-            <q-icon class="q-mr-xs" size="1.2em" name="fas fa-hashtag"></q-icon>{{$t('ui.index.tags')}}
+            <q-icon class="q-mr-xs" size="1.2em" name="fas fa-hashtag"></q-icon>
+            {{ $t('ui.index.tags') }}
           </q-route-tab>
         </q-tabs>
         <keep-alive>
-          <router-view />
+          <router-view/>
         </keep-alive>
-<!--        <q-tab-panels keep-alive v-model="tab" class="bg-dark">-->
-<!--          <q-tab-panel name="Animations" class="q-px-none bg-dark ">-->
-<!--            <IndexAnimations></IndexAnimations>-->
-<!--          </q-tab-panel>-->
-<!--          <q-tab-panel name="Novels" class="q-px-none bg-dark ">-->
-<!--            <IndexNovels></IndexNovels>-->
-<!--          </q-tab-panel>-->
-<!--          <q-tab-panel name="IPsAndTags" class="q-px-none bg-dark " v-if="currentUser&&currentUser.staff">-->
-<!--            <index-i-ps></index-i-ps>-->
-<!--            <index-tags></index-tags>-->
-<!--          </q-tab-panel>-->
-<!--        </q-tab-panels>-->
+        <!--        <q-tab-panels keep-alive v-model="tab" class="bg-dark">-->
+        <!--          <q-tab-panel name="Animations" class="q-px-none bg-dark ">-->
+        <!--            <IndexAnimations></IndexAnimations>-->
+        <!--          </q-tab-panel>-->
+        <!--          <q-tab-panel name="Novels" class="q-px-none bg-dark ">-->
+        <!--            <IndexNovels></IndexNovels>-->
+        <!--          </q-tab-panel>-->
+        <!--          <q-tab-panel name="IPsAndTags" class="q-px-none bg-dark " v-if="currentUser&&currentUser.staff">-->
+        <!--            <index-i-ps></index-i-ps>-->
+        <!--            <index-tags></index-tags>-->
+        <!--          </q-tab-panel>-->
+        <!--        </q-tab-panels>-->
       </div>
     </div>
 
@@ -92,24 +96,26 @@ export default {
     // IndexAnimations
   },
   activated() {
-    if(this.$route.query.tab){
-      this.tab=this.$route.query.tab
+    if (this.$route.query.tab) {
+      this.tab = this.$route.query.tab
     }
-    if(this.$route.query.search){
-      this.searchBuffer=this.$route.query.search
+    if (this.$route.query.search) {
+      this.searchBuffer = this.$route.query.search
     }
   },
-  data: () => ({
-    LD: true,
-    scrollInfo: {},
-    searchBuffer: '',
-    tab: 'Animations',
-    ips: [],
-  }),
+  data() {
+    return {
+      LD: true,
+      scrollInfo: {},
+      searchBuffer: '',
+      tab: 'Animations',
+      ips: [],
+    }
+  },
   methods: {
     foo() {
     },
-    onScroll (info) {
+    onScroll(info) {
       this.scrollInfo = info
     }
   },
@@ -117,24 +123,6 @@ export default {
     this.LD = false
   },
   computed: {
-    // animations() {
-    //   let animations = []
-    //   for (let i = 0; i < this.ips.length; i++) {
-    //     for (let j = 0; j < this.ips[i].animations.length; j++) {
-    //       animations.push(this.ips[i].animations[j])
-    //     }
-    //   }
-    //   return animations
-    // },
-    // novels() {
-    //   let novels = []
-    //   for (let i = 0; i < this.ips.length; i++) {
-    //     for (let j = 0; j < this.ips[i].novels.length; j++) {
-    //       novels.push(this.ips[i].novels[j])
-    //     }
-    //   }
-    //   return novels
-    // },
     currentUser() {
       return this.$store.state.account.user
     },

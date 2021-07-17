@@ -1,5 +1,6 @@
 <template>
   <div class="q-pt-sm">
+    <IPDeleteDialog :is-deleting.sync="isDeleting"></IPDeleteDialog>
     <div class="q-col-gutter-y-sm" v-if="ready">
       <!--Tools-->
       <div>
@@ -39,8 +40,6 @@
 
         </q-expansion-item>
       </div>
-
-
       <!--Content-->
       <div v-for="(ip,i) in currentIPS" :key="i+'ip'+ip.id">
         <!--IPS-->
@@ -69,7 +68,12 @@
               <q-space></q-space>
               <q-btn flat color="accent" icon="add">animation</q-btn>
               <q-btn flat color="accent" icon="add">novel</q-btn>
-              <q-btn flat color="accent">edit</q-btn>
+              <q-btn
+                flat color="accent"
+                @click="isDeleting=true"
+              >
+                edit
+              </q-btn>
               <q-btn
                 flat color="red"
                 @click="commitIPDelete(ip.id)"
@@ -157,7 +161,7 @@
       </div>
     </div>
     <!--pagination-->
-    <div class="full-width row justify-center">
+    <div class="full-width row justify-center q-my-xs">
       <q-pagination
         v-model="current"
         :max="100"
@@ -170,13 +174,18 @@
 </template>
 
 <script>
+import IPDeleteDialog from "src/layout_pages/IP/IPDeleteDialog";
+
 export default {
   name: "IndexIPs",
-  data: () => ({
-    model: '',
-    current: 3,
-    v: true
-  }),
+  components: {IPDeleteDialog},
+  data() {
+    return {
+      model: '',
+      current: 3,
+      isDeleting: false
+    }
+  },
   methods: {
     foo(i) {
       console.log(i)

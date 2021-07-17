@@ -16,7 +16,7 @@
       <template v-slot:header>
         <div class="row items-center text-body1 full-width ">
           <q-btn-toggle
-            text-color="grey-7"  size="0.75em"  unelevated
+            text-color="grey-7" size="0.75em" unelevated
             class="no-border-radius bg-dark-light" toggle-color="primary" toggle-text-color="dark"
             v-model="order"
             :options="[
@@ -163,23 +163,25 @@ import MultipleChoice from "components/MultipleChoice";
 export default {
   name: "IndexAnimations",
   components: {MultipleChoice},
-  data: () => ({
-    tab: 'Animations',
-    text: '',
-    LD: true,
-    expanded: [],
-    scrollInfo: {},
-    soo: false,
-    order: 'date',
-    region: 'all',
-    type: 'all',
-    date: 'all',
-    quality: 'all',
-    videoType: 'all',
-    hasCaption: 'all',
-    ips: [],
-    lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec est ligula. Curabitur porta nibh quis convallis elementum. Praesent laoreet, lacus at tristique pretium, nisl metus luctus nibh, vel accumsan ante sapien eget ante. Nunc neque metus, iaculis ut velit at, facilisis posuere urna. Curabitur tempor quis felis commodo interdum. Ut tempus ullamcorper ipsum. Donec egestas, enim sed accumsan efficitur, elit diam feugiat nunc, in pellentesque risus nulla ut felis. Nulla facilisi. Etiam sagittis consectetur urna, ac consectetur nisi hendrerit in. Aliquam eu purus mollis, commodo ipsum at, vestibulum nisi. Etiam et suscipit justo. Fusce at mauris at lectus bibendum porta in imperdiet leo.'
-  }),
+  data() {
+    return {
+      tab: 'Animations',
+      text: '',
+      LD: true,
+      expanded: [],
+      scrollInfo: {},
+      soo: false,
+      order: 'date',
+      region: 'all',
+      type: 'all',
+      date: 'all',
+      quality: 'all',
+      videoType: 'all',
+      hasCaption: 'all',
+      ips: [],
+      lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec est ligula. Curabitur porta nibh quis convallis elementum. Praesent laoreet, lacus at tristique pretium, nisl metus luctus nibh, vel accumsan ante sapien eget ante. Nunc neque metus, iaculis ut velit at, facilisis posuere urna. Curabitur tempor quis felis commodo interdum. Ut tempus ullamcorper ipsum. Donec egestas, enim sed accumsan efficitur, elit diam feugiat nunc, in pellentesque risus nulla ut felis. Nulla facilisi. Etiam sagittis consectetur urna, ac consectetur nisi hendrerit in. Aliquam eu purus mollis, commodo ipsum at, vestibulum nisi. Etiam et suscipit justo. Fusce at mauris at lectus bibendum porta in imperdiet leo.'
+    }
+  },
 }
 </script>
 

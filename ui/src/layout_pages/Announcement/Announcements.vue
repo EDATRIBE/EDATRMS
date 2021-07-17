@@ -61,12 +61,14 @@ export default {
       console.log(error)
     })
   },
-  data: () => ({
-    LD: true,
-    announcements: [],
-    currentText: '',
-    currentId: 0
-  }),
+  data() {
+    return {
+      LD: true,
+      announcements: [],
+      currentText: '',
+      currentId: 0
+    }
+  },
   methods: {
     selectAnnouncement(i, uri) {
       this.currentId = i
@@ -91,8 +93,8 @@ export default {
   color: $dark
   background-color: white
 
-  //border-right: solid
-  //border-color: white
-  //border-width: 2px
+//border-right: solid
+//border-color: white
+//border-width: 2px
 
 </style>

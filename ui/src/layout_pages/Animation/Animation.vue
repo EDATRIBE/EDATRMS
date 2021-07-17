@@ -105,9 +105,11 @@
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
-              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">DOWNLOAD</p></div>
+              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">DOWNLOAD</p>
+              </div>
               <div class="col-md-10 col-xs-12">
-                <a :href="video.fileAddresses.baiduCloud.url"><p class="q-my-none text-primary text-body1">{{video.fileAddresses.baiduCloud.password}}</p></a>
+                <a :href="video.fileAddresses.baiduCloud.url"><p class="q-my-none text-primary text-body1">
+                  {{ video.fileAddresses.baiduCloud.password }}</p></a>
               </div>
             </div>
           </div>
@@ -123,19 +125,24 @@
             <div class="row q-py-md">
               <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">TYPE</p>
               </div>
-              <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ caption.fileMeta.type }}</p>
+              <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{
+                  caption.fileMeta.type
+                }}</p>
               </div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
               <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">SIZE</p>
               </div>
-              <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ caption.fileMeta.size }}</p>
+              <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{
+                  caption.fileMeta.size
+                }}</p>
               </div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
-              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">INTEGRATED</p>
+              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">
+                INTEGRATED</p>
               </div>
               <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ caption.integrated }}</p>
               </div>
@@ -149,16 +156,19 @@
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
-              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">RELEASED AT</p>
+              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">RELEASED
+                AT</p>
               </div>
               <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ caption.releasedAt }}</p>
               </div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
-              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">DOWNLOAD</p></div>
+              <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">DOWNLOAD</p>
+              </div>
               <div class="col-md-10 col-xs-12">
-                <a :href="caption.fileAddresses.baiduCloud.url"><p class="q-my-none text-primary text-body1">{{caption.fileAddresses.baiduCloud.password}}</p></a>
+                <a :href="caption.fileAddresses.baiduCloud.url"><p class="q-my-none text-primary text-body1">
+                  {{ caption.fileAddresses.baiduCloud.password }}</p></a>
               </div>
             </div>
           </div>
@@ -175,16 +185,18 @@ const {getScrollTarget, setScrollPosition} = scroll
 
 export default {
   name: "Animation",
-  data: () => ({
-    animation: {},
-    tab: 'Animations',
-    text: '',
-    LD: true,
-    expanded: [],
-    scrollInfo: {},
-    ips: [],
-    lorem: 'Kazuto "Kirito" Kirigaya enters a virtual-reality, massively multiplayer online role playing game called Sword Art Online. There is no escape from this world unless the player clears the game; however getting a "game over" results in the death of the player.'
-  }),
+  data() {
+    return {
+      animation: {},
+      tab: 'Animations',
+      text: '',
+      LD: true,
+      expanded: [],
+      scrollInfo: {},
+      ips: [],
+      lorem: 'Kazuto "Kirito" Kirigaya enters a virtual-reality, massively multiplayer online role playing game called Sword Art Online. There is no escape from this world unless the player clears the game; however getting a "game over" results in the death of the player.'
+    }
+  },
   methods: {
     foo() {
     },
@@ -193,7 +205,7 @@ export default {
     }
   },
   mounted() {
-    this.$axios.get('api/animation/info/1').then((response) => {
+    this.$axios.get('api/animation/info/3').then((response) => {
       const rd = response.data
       console.log('return data:')
       console.log(rd)
