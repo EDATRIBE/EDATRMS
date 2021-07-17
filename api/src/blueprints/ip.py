@@ -19,7 +19,7 @@ ip = Blueprint('ip', url_prefix='/ip')
 @authenticated_staff()
 async def create(request):
     data = IPSchema().load(request.json)
-    required_field_validation(data=data, required_field=['name'])
+    required_field_validation(data=data, required_field=['name','region'])
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
     tag_ids = data.get('tag_ids',[])
@@ -32,7 +32,7 @@ async def create(request):
     ip = await ip_service.create(
         name=data['name'],
         reserved_names=data.get('reserved_names',{}),
-        region=data.get('region',''),
+        region=data['region'],
         created_by=request.ctx.session['user']['id'],
         updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')

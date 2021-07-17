@@ -39,7 +39,7 @@ class IPSchema(Schema):
     id = fields.Integer()
     name = fields.String(validate=validate.Length(0,300))
     reservedNames = fields.Nested('IPReservedNamesSchema',attribute='reserved_names')
-    region = fields.String(validate=validate.OneOf(['CN','EN','JP']))
+    region = fields.String(validate=validate.OneOf(['CN','JP','OTHER']))
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
     updateBy = fields.Integer(attribute='updated_by')
