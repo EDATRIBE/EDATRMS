@@ -65,10 +65,6 @@
           allowImageCrop="true"
           imageCropAspectRatio="1:1"
           stylePanelLayout="compact circle"
-          styleButtonRemoveItemPosition="center bottom"
-          styleButtonProcessItemPosition="center bottom"
-          styleLoadIndicatorPosition="center bottom"
-          styleProgressIndicatorPosition="center bottom"
         />
       </div>
       <div class="row q-pt-xs  items-center  text-white text-h5 text-weight-medium">
@@ -87,7 +83,7 @@
             <div class="self-center full-width no-outline" tabindex="0">{{userEditBuffer.data.name}}</div>
           </template>
           <template v-slot:prepend>
-            <q-icon name="fas fa-user"/>
+            <q-icon size="0.8em" name="fas fa-user"/>
           </template>
         </q-field>
       </div>
@@ -104,7 +100,7 @@
           label="New Password"
         >
           <template v-slot:prepend>
-            <q-icon name="fas fa-key"/>
+            <q-icon size="0.8em" name="fas fa-key"/>
           </template>
         </q-input>
         <q-input
@@ -118,7 +114,7 @@
           label="Confirm Password"
         >
           <template v-slot:prepend>
-            <q-icon name="fas fa-key"/>
+            <q-icon size="0.8em" name="fas fa-key"/>
           </template>
         </q-input>
       </div>
@@ -135,7 +131,7 @@
           label="Email"
         >
           <template v-slot:prepend>
-            <q-icon name="email"/>
+            <q-icon size="0.8em" name="fas fa-envelope"/>
           </template>
         </q-input>
         <q-input
@@ -149,7 +145,7 @@
           label="QQ"
         >
           <template v-slot:prepend>
-            <q-icon name="fab fa-qq"/>
+            <q-icon size="0.8em" name="fab fa-qq"/>
           </template>
         </q-input>
         <q-input
@@ -164,7 +160,7 @@
           label="Intro"
         >
           <template v-slot:prepend>
-            <q-icon name="fas fa-info"/>
+            <q-icon size="0.8em" name="fas fa-info"/>
           </template>
         </q-input>
       </div>

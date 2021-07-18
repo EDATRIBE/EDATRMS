@@ -19,7 +19,7 @@
         label="Email address"
       >
         <template v-slot:prepend>
-          <q-icon name="fas fa-envelope"/>
+          <q-icon size="0.8em" name="fas fa-envelope"/>
         </template>
       </q-input>
       <q-input
@@ -32,7 +32,7 @@
         type="password"
       >
         <template v-slot:prepend>
-          <q-icon size="0.95em" name="fas fa-key"/>
+          <q-icon size="0.8em" name="fas fa-key"/>
         </template>
       </q-input>
     </div>

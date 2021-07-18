@@ -9,7 +9,7 @@
           </div>
         </div>
         <div style="width: 100%" class="q-pl-md bl">
-          <div class="row items-center q-py-md">
+          <div class="row items-center q-py-sm">
             <div class="col-md-2 col-xs-12">
               <p class="q-my-none text-grey text-body1 text-weight-medium">NAME</p>
             </div>
@@ -22,7 +22,7 @@
               </q-input>
             </div>
           </div>
-          <div class="row items-center q-py-md">
+          <div class="row items-center q-py-sm">
             <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">NAME-EN</p>
             </div>
             <div class="col-md-10 col-xs-12">
@@ -33,7 +33,7 @@
               </q-input>
             </div>
           </div>
-          <div class="row items-center q-py-md">
+          <div class="row items-center q-py-sm">
             <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">NAME-CN</p>
             </div>
             <div class="col-md-10 col-xs-12">
