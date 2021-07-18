@@ -1,10 +1,14 @@
 <template>
   <div class="q-pt-sm">
-    <IPDeleteDialog :is-deleting.sync="isDeleting"></IPDeleteDialog>
+    <IPDeleteDialog
+      :id.sync="ipDeleteBuffer.id"
+      :is-deleting.sync="ipDeleteBuffer.isDeleting"
+    />
     <div class="q-col-gutter-y-sm" v-if="initialized">
       <!--Tools-->
       <div>
         <q-expansion-item
+          id="tool"
           dense
           dark
           expand-icon-toggle
@@ -81,7 +85,7 @@
               </q-btn>
               <q-btn
                 flat color="red"
-                @click="commitIPDelete(ip.id)"
+                @click="ipDeleteBuffer.id=ip.id;ipDeleteBuffer.isDeleting=true"
               >
                 delete
               </q-btn>
@@ -89,77 +93,85 @@
           </template>
 
           <!--IPContent-->
-          <div class="q-pl-lg q-pb-sm">
-
-            <!--Animations-->
-            <q-expansion-item
-              dense
-              dark
-              expand-icon-toggle
-              class="bg-dark-light bl1 q-mt-sm"
-              header-class="bl q-pa-none bg-dark-light"
-              expand-icon-class="q-px-sm text-primary"
-              :duration="200"
-              v-for="(animation,i) in ip.animations" :key="i+'ani'+ip.id+animation.id"
-            >
-              <!--AnimationsHeader-->
-              <template v-slot:header>
-                <div class="row q-pl-md  items-center text-body1 full-width ">
-                  <q-icon name="movie" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                  {{ animation.reservedNames[$i18n.locale] || animation.name }}
-                  <q-space></q-space>
-                  <q-btn icon="add" flat color="primary">video</q-btn>
-                  <q-btn icon="add" flat color="primary">caption</q-btn>
-                  <q-btn flat color="primary">edit</q-btn>
-                  <q-btn flat color="red">delete</q-btn>
-                </div>
-              </template>
-
-              <!--AnimationsContent-->
-              <div class="q-pl-lg ">
-                <!--AnimationsVideo-->
-                <q-item
-                  dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px"
-                  v-for="(video,i) in animation.videos" :key="i+'vid'+animation.id+video.id"
+          <div class="q-pl-lg q-py-sm"><!--DONT SET MARGIN!-->
+            <div class="q-col-gutter-y-sm"><!--DONT SET MARGIN!-->
+              <!--Animations-->
+              <div v-for="(animation,i) in ip.animations" :key="i+'ani'+ip.id+animation.id"><!--DONT SET MARGIN!-->
+                <q-expansion-item
+                  dense
+                  dark
+                  expand-icon-toggle
+                  class="bg-dark-light bl1"
+                  header-class="bl q-pa-none bg-dark-light"
+                  expand-icon-class="q-px-sm text-primary"
+                  :duration="200"
                 >
-                  <div class="row q-pl-md items-center text-body1 full-width ">
-                    <q-icon name="fas fa-film" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                    {{ video.fileMeta.name || 'video' + i }}
-                    <q-space></q-space>
-                    <q-btn flat color="primary">edit</q-btn>
-                    <q-btn flat color="red">delete</q-btn>
+                  <!--AnimationsHeader-->
+                  <template v-slot:header>
+                    <div class="row q-pl-md  items-center text-body1 full-width ">
+                      <q-icon name="movie" color="primary" size="1.3em" class="q-mr-md"></q-icon>
+                      {{ animation.reservedNames[$i18n.locale] || animation.name }}
+                      <q-space></q-space>
+                      <q-btn icon="add" flat color="primary">video</q-btn>
+                      <q-btn icon="add" flat color="primary">caption</q-btn>
+                      <q-btn flat color="primary">edit</q-btn>
+                      <q-btn flat color="red">delete</q-btn>
+                    </div>
+                  </template>
+
+                  <!--AnimationsContent-->
+                  <div class="q-pl-lg q-py-xs"><!--DONT SET MARGIN!-->
+                    <div class="q-col-gutter-y-xs"><!--DONT SET MARGIN!-->
+                      <!--AnimationsVideo-->
+                      <div v-for="(video,i) in animation.videos" :key="i+'vid'+animation.id+video.id">
+                        <q-item
+                          dense dark class="bg-dark-light q-pa-none bl1" style="padding-right: 39.3px"
+                        >
+                          <div class="row q-pl-md items-center text-body1 full-width ">
+                            <q-icon name="fas fa-film" color="primary" size="1.3em" class="q-mr-md"></q-icon>
+                            {{ video.fileMeta.name || 'video' + i }}
+                            <q-space></q-space>
+                            <q-btn flat color="primary">edit</q-btn>
+                            <q-btn flat color="red">delete</q-btn>
+                          </div>
+                        </q-item>
+                      </div>
+
+                      <!--AnimationsCaption-->
+                      <div v-for="(caption,i) in animation.captions" :key="i+'cap'+animation.id+caption.id">
+                        <q-item
+                          dense dark class="bg-dark-light q-pa-none bl1" style="padding-right: 39.3px"
+                        >
+                          <div class="row q-pl-md items-center text-body1 full-width ">
+                            <q-icon name="fas fa-closed-captioning" color="primary" size="1.3em"
+                                    class="q-mr-md"></q-icon>
+                            {{ caption.fileMeta.name || 'caption' + i }}
+                            <q-space></q-space>
+                            <q-btn flat color="primary">edit</q-btn>
+                            <q-btn flat color="red">delete</q-btn>
+                          </div>
+                        </q-item>
+                      </div>
+                    </div>
                   </div>
-                </q-item>
-                <!--AnimationsCaption-->
+                </q-expansion-item>
+              </div>
+
+              <!--Novel-->
+              <div v-for="(novel,i) in ip.novels" :key="i+'nov'+ip.id+novel.id">
                 <q-item
-                  dense dark class="bg-dark-light q-pa-none bl1 q-mt-sm" style="padding-right: 39.3px"
-                  v-for="(caption,i) in animation.captions" :key="i+'cap'+animation.id+caption.id"
+                  dense dark class="bg-dark-light q-pa-none bl2" style="padding-right: 39.3px"
                 >
                   <div class="row q-pl-md items-center text-body1 full-width ">
-                    <q-icon name="fas fa-closed-captioning" color="primary" size="1.3em" class="q-mr-md"></q-icon>
-                    {{ caption.fileMeta.name || 'caption' + i }}
+                    <q-icon name="import_contacts" color="secondary" size="1.3em" class="q-mr-md"></q-icon>
+                    {{ novel.reservedNames[$i18n.locale] || novel.name }}
                     <q-space></q-space>
-                    <q-btn flat color="primary">edit</q-btn>
+                    <q-btn flat color="secondary">edit</q-btn>
                     <q-btn flat color="red">delete</q-btn>
                   </div>
                 </q-item>
               </div>
-            </q-expansion-item>
-
-
-            <!--Novel-->
-            <q-item
-              dense dark class="bg-dark-light q-pa-none bl2 q-mt-sm" style="padding-right: 39.3px"
-              v-for="(novel,i) in ip.novels" :key="i+'nov'+ip.id+novel.id"
-            >
-              <div class="row q-pl-md items-center text-body1 full-width ">
-                <q-icon name="import_contacts" color="secondary" size="1.3em" class="q-mr-md"></q-icon>
-                {{ novel.reservedNames[$i18n.locale] || novel.name }}
-                <q-space></q-space>
-                <q-btn flat color="secondary">edit</q-btn>
-                <q-btn flat color="red">delete</q-btn>
-              </div>
-            </q-item>
+            </div>
           </div>
 
         </q-expansion-item>
@@ -188,28 +200,24 @@ export default {
     return {
       model: '',
       current: 3,
-      isDeleting: false
+      ipDeleteBuffer: {
+        id: null,
+        isDeleting: false
+      },
+      animationDeleteBuffer: {
+        id: null,
+        isDeleting: false
+      },
+      novelDeleteBuffer: {
+        id: null,
+        isDeleting: false
+      }
     }
   },
   methods: {
     foo(i) {
       console.log(i)
     },
-    commitIPDelete(id) {
-      let temp = {id: id}
-      this.$axios.post('api/ip/delete', temp).then((response) => {
-        let rd = response.data
-        if (rd.code === 'success') {
-          this.$q.notify({type: 'success', message: this.$t("messages.success")})
-          this.$store.dispatch('getIPs')
-        } else {
-          console.log(response)
-          this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
-        }
-      }).catch((error) => {
-        console.log(error)
-      })
-    }
   },
   computed: {
     currentIPS() {
@@ -217,6 +225,13 @@ export default {
     },
     initialized() {
       return this.$store.getters.ipsInitialized
+    }
+  },
+  watch: {
+    current() {
+      window.scrollTo(0, 0)
+      // const element = document.getElementById("tool");
+      // element.scrollIntoView();
     }
   }
 }

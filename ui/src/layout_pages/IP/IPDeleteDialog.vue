@@ -1,38 +1,145 @@
 <template>
-  <q-dialog v-model="show">
-    <div class="bg-dark column q-pa-lg " style="width: 60vw; max-width: 60vw;">
-      <q-btn @click="show=false">hello</q-btn>
-    </div>
-  </q-dialog>
+    <q-dialog v-model="show">
+        <div
+            class="bg-dark column q-pa-lg " style="width: 60vw; max-width: 60vw;"
+            v-if="initialized"
+        >
+            <div style="width: 100%" class="q-pl-md bl">
+                <div class="row q-pb-md">
+                    <p class="q-my-none text-red text-h4 ">DELETE IP</p>
+                </div>
+                <div class="row q-pb-md">
+                    <p class="q-my-none text-body1 text-white ">
+                        Please input
+                        <spin class="text-red text-weight-bold">{{ this.ip.reservedNames[this.$i18n.locale] || this.ip.name }}</spin>
+                        to confirm this operation.
+                    </p>
+                </div>
+                <div class="row items-center q-py-sm">
+                    <div class="col-md-12 col-xs-12">
+                        <q-input
+                            hide-bottom-space
+                            color="dark-light"
+                            dense dark class="" standout=""
+                            v-model="confirmation"
+                            :error="!isValid"
+                            :error-message="'Wrong Confirmation'"
+                        >
+                        </q-input>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%" class="q-pl-md">
+                <div class="row justify-end">
+                    <q-btn class="q-ml-md" dense flat color="red" v-close-popup>cancel</q-btn>
+                    <q-btn
+                        class="q-ml-md" dense flat color="red"
+                        v-close-popup
+                        :disable="!isValid"
+                        @click="commitIPDelete(ip.id)"
+                    >
+                        commit
+                    </q-btn>
+                </div>
+            </div>
+        </div>
+    </q-dialog>
 </template>
 
 <script>
 export default {
-  name: "IPDeleteDialog",
-  props: {
-    isDeleting: Boolean,
-  },
-  data() {
-    return {
-      show: false
-    }
-  },
-  methods: {
-  },
-  watch: {
-    isDeleting(){
-      this.show=this.isDeleting
+    name: "IPDeleteDialog",
+    props: {
+        id: Number,
+        isDeleting: Boolean,
     },
-    show(){
-      this.$emit('update:isDeleting',this.show)
+    data() {
+        return {
+            show: false,
+            confirmation: '',
+            loading: false,
+        }
+    },
+    methods: {
+        commitIPDelete(id) {
+            let temp = {id: id}
+            this.$axios.post('api/ip/delete', temp).then((response) => {
+                let rd = response.data
+                if (rd.code === 'success') {
+                    this.$q.notify({type: 'success', message: this.$t("messages.success")})
+                    this.$store.dispatch('getIPs')
+                } else {
+                    console.log(response)
+                    this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
+                }
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+    },
+    watch: {
+        isDeleting() {
+            this.show = this.isDeleting
+        },
+        show() {
+            if (this.show === false) {//clear state
+                this.$emit('update:id', null)
+                this.confirmation= ''
+            }
+            this.$emit('update:isDeleting', this.show)
+        }
+    },
+    computed: {
+        isValid(){
+            return this.confirmation ===(this.ip.reservedNames[this.$i18n.locale] || this.ip.name)
+        },
+        initialized() {
+            return this.ip !== null
+        },
+        ips() {
+            return this.$store.state.ip.ips
+        },
+        ip() {
+            if (this.ips === null) {
+                return null
+            }
+            for (const ip of this.ips) {
+                if (ip.id === this.id) {
+                    return ip
+                }
+            }
+            return null
+        }
     }
-  },
-  computed: {
-
-  }
 }
 </script>
 
-<style scoped>
+<style lang="sass" scoped>
+.bl
+    border-left: solid
+    border-left-color: $red
+    border-width: 2px
 
+.bl1
+    border-left: solid
+    border-left-color: $primary
+    border-width: 2px
+
+.bl2
+    border-left: solid
+    border-left-color: $secondary
+    border-width: 2px
+
+.bl3
+    border-left: solid
+    border-left-color: white
+    border-width: 2px
+
+.bt
+    border-top: solid
+    border-top-color: $red
+    border-top-width: 2px
+//border-bottom: solid
+//border-bottom-color: $red
+//border-bottom-width: 2px
 </style>
