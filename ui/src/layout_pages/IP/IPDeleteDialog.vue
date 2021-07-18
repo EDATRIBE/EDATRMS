@@ -11,7 +11,7 @@
                 <div class="row q-pb-md">
                     <p class="q-my-none text-body1 text-white ">
                         Please input
-                        <spin class="text-red text-weight-bold">{{ this.ip.reservedNames[this.$i18n.locale] || this.ip.name }}</spin>
+                        <spin class="text-red text-weight-bold">{{ ip.reservedNames[$i18n.locale] || ip.name }}</spin>
                         to confirm this operation.
                     </p>
                 </div>

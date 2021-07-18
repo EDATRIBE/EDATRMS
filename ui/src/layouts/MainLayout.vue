@@ -3,7 +3,7 @@
         <q-header class="bg-dark q-px-md" reveal :reveal-offset="0">
             <q-toolbar style="width: 95%" class="q-py-md q-px-none q-mx-auto items-center">
                 <q-icon name="fas fa-atom" size="2.35em"/>
-                <div class="text-h4 q-ml-sm" v-if="this.$q.screen.gt.sm">EDATRMS</div>
+                <div class="text-h4 q-ml-sm" v-if="$q.screen.gt.sm">EDATRMS</div>
                 <q-space/>
 
                 <nav-items v-if="$q.screen.gt.sm"/>
@@ -28,10 +28,10 @@
                 </q-btn-dropdown>
 
                 <q-separator vertical color="grey" inset="true" class="q-ml-md" v-if="!$q.screen.gt.sm"/>
-                <nav-items v-if="!this.$q.screen.gt.sm"/>
+                <nav-items v-if="!$q.screen.gt.sm"/>
 
                 <q-separator vertical color="grey" inset="true" class="q-ml-md" v-if="$q.screen.gt.sm"/>
-                <div v-if="this.$q.screen.gt.sm">
+                <div v-if="$q.screen.gt.sm">
                     <q-btn
                         round outline class="q-ml-md"
                         size="0.78em" icon="mdi-badge-account-horizontal-outline"
@@ -43,7 +43,7 @@
                         v-if="currentUser !== null"
                     >
                         <img @click="accountDrawer = !accountDrawer"
-                             :src="currentUser.avatar?currentUser.avatar.url:this.genAvatar(currentUser.name)">
+                             :src="currentUser.avatar?currentUser.avatar.url:GenAvatar(currentUser.name)">
                     </q-avatar>
                 </div>
             </q-toolbar>
@@ -82,6 +82,8 @@ import SignIn from "layouts/SignIn";
 import Profile from "layouts/Profile";
 import NavItems from "layouts/NavItems";
 
+import {GenAvatar} from "src/utilities/GenAvatar";
+
 export default {
     name: 'MainLayout',
     components: {
@@ -102,8 +104,9 @@ export default {
         }
     },
     methods: {
+        GenAvatar: GenAvatar,
         foo() {
-        }
+        },
     },
     computed: {
         currentUser() {
@@ -113,7 +116,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .filepond--drop-label {
     color: white;
 }
@@ -187,12 +190,12 @@ export default {
 }
 
 .q-input .text-negative {
-    color: #F44336 !important
+    color: $red !important
 }
 
 .q-field--error .q-field__bottom {
-    color: #F44336 !important;
-    color: #F44336 !important
+    color: $red !important;
+    color: $red !important
 }
 
 

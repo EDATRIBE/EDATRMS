@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="this.$q.screen.gt.sm" class="row">
+    <div v-if="$q.screen.gt.sm" class="row">
       <q-btn
         dense flat  no-caps class="btn-fixed-width text-h6 q-ml-sm"
         @click="$router.push('/')"
@@ -21,7 +21,7 @@
       </q-btn>
 
     </div>
-    <div v-if="!this.$q.screen.gt.sm" class="bg-dark no-border-radius">
+    <div v-if="!$q.screen.gt.sm" class="bg-dark no-border-radius">
       <q-btn-dropdown   flat dense no-caps class="text-body1 q-ml-sm" dropdown-icon="menu" no-icon-animation content-class="bg-dark-light">
         <div class="column q-pa-sm">
           <q-btn align="left" flat dense no-caps class="text-body1 text-white">{{$t("ui.navItems.index")}}</q-btn>

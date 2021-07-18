@@ -5,7 +5,7 @@
       <div class="row q-col-gutter-x-lg justify-center">
         <!--LEFT-->
         <div class="column col-md-3 col-xs-12 q-pb-md">
-          <q-img :src="this.animation.images.vertical.url">
+          <q-img :src="animation.images.vertical.url">
           </q-img>
           <q-btn dense color="primary" class="q-mt-sm">
             REPORT A PROBLEM
@@ -16,7 +16,7 @@
         <div class="column col-md-9 col-xs-12 q-pb-md">
           <!--TITLE-->
           <div style="width: 100%" class="q-px-md q-pb-md bl">
-            <p class="q-my-none text-white  text-h4">{{ this.animation.name }}</p>
+            <p class="q-my-none text-white  text-h4">{{ animation.name }}</p>
           </div>
           <!--INFOS-->
           <div style="width: 100%" class="q-pa-md bl">
@@ -31,13 +31,13 @@
               <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">INTRO</p>
               </div>
               <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1 text-justify">
-                {{ this.animation.intros.enIntro }}</p></div>
+                {{ animation.intros.enIntro }}</p></div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
             <div class="row q-py-md">
               <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">TYPE</p>
               </div>
-              <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ this.animation.type }}</p>
+              <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{ animation.type }}</p>
               </div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
@@ -45,7 +45,7 @@
               <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">EPS NUM</p>
               </div>
               <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{
-                  this.animation.episodesNum
+                  animation.episodesNum
                 }}</p></div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
@@ -53,7 +53,7 @@
               <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">PRODUCED
                 BY</p></div>
               <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{
-                  this.animation.producedBy
+                  animation.producedBy
                 }}</p></div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
@@ -61,7 +61,7 @@
               <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">WRITTEN
                 BY</p></div>
               <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{
-                  this.animation.writtenBy
+                  animation.writtenBy
                 }}</p></div>
             </div>
             <q-separator color="grey" style="opacity: 20%"></q-separator>
@@ -69,7 +69,7 @@
               <div class="col-md-2 col-xs-12"><p class="q-my-none text-grey text-body1 text-weight-medium">RELEASED
                 AT</p></div>
               <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">{{
-                  this.animation.releasedAt
+                  animation.releasedAt
                 }}</p></div>
             </div>
           </div>
