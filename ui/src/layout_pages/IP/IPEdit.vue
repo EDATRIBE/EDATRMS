@@ -6,7 +6,7 @@
         <!--Title-->
         <div style="width: 100%" class="q-pl-md bl">
           <div class="row q-pb-md">
-            <p class="q-my-none text-accent text-h4 ">NEW IP</p>
+            <p class="q-my-none text-accent text-h4 ">EDIT IP</p>
           </div>
         </div>
 
@@ -20,7 +20,7 @@
             <div class="col-md-10 col-xs-12">
               <q-input
                 dense dark class="bg-dark-light" standout=""
-                v-model="IPCreateBuffer.data.name"
+                v-model="IPEditBuffer.data.name"
               >
               </q-input>
             </div>
@@ -33,7 +33,7 @@
             <div class="col-md-10 col-xs-12">
               <q-input
                 dense dark class="bg-dark-light" standout=""
-                v-model="IPCreateBuffer.data.reservedNames.cn"
+                v-model="IPEditBuffer.data.reservedNames.cn"
               >
               </q-input>
             </div>
@@ -46,7 +46,7 @@
             <div class="col-md-10 col-xs-12">
               <q-input
                 dense dark class="bg-dark-light" standout=""
-                v-model="IPCreateBuffer.data.reservedNames.en"
+                v-model="IPEditBuffer.data.reservedNames.en"
               >
               </q-input>
             </div>
@@ -59,7 +59,7 @@
             <div class="col-md-10 col-xs-12">
               <q-input
                 dense dark class=" bg-dark-light" standout=""
-                v-model="IPCreateBuffer.data.reservedNames.jp"
+                v-model="IPEditBuffer.data.reservedNames.jp"
               >
               </q-input>
             </div>
@@ -72,7 +72,7 @@
             <div class="col-md-10 col-xs-12">
               <q-input
                 dense dark class=" bg-dark-light" standout=""
-                v-model="IPCreateBuffer.data.reservedNames.rm"
+                v-model="IPEditBuffer.data.reservedNames.rm"
               >
               </q-input>
             </div>
@@ -85,7 +85,7 @@
             <div class="col-md-10 col-xs-12">
               <q-input
                 dense dark class=" bg-dark-light" standout=""
-                v-model="IPCreateBuffer.data.reservedNames.misc"
+                v-model="IPEditBuffer.data.reservedNames.misc"
               >
               </q-input>
             </div>
@@ -104,7 +104,7 @@
                 options-dense
                 options-selected-class="text-accent"
                 standout=""
-                v-model="IPCreateBuffer.data.region"
+                v-model="IPEditBuffer.data.region"
                 hide-bottom-space
                 :options="regionModels"
                 emit-value
@@ -121,8 +121,7 @@
             <div class="col-md-10 col-xs-12">
               <q-select
                 class="bg-dark-light"
-                dark
-                dense
+                dark dense
                 options-dense
                 options-selected-class="text-accent"
                 standout=""
@@ -161,7 +160,7 @@
             <div class="col-md-10 col-xs-12">
               <q-input
                 dense dark class=" bg-dark-light" standout=""
-                v-model="IPCreateBuffer.data.comment"
+                v-model="IPEditBuffer.data.comment"
               >
               </q-input>
             </div>
@@ -180,7 +179,7 @@
             </q-btn>
             <q-btn
               class="q-ml-md" dense flat color="accent"
-              @click="commitCreate"
+              @click="commitEdit"
             >
               commit
             </q-btn>
@@ -193,10 +192,14 @@
 
 <script>
 export default {
-  name: "IPCreate",
+  name: "IPEdit",
+  created() {
+    if (this.readyToInitialize) this.initPage()
+  },
   data() {
     return {
-      IPCreateBuffer: {
+      IPEditBuffer: {
+        loading: true,
         data: {
           name: '',
           reservedNames: {
@@ -211,19 +214,48 @@ export default {
         }
       },
       selectedTagModelsBuffer: {
+        loading: true,
         data: []
       },
     }
   },
   methods: {
     foo() {
-      console.log(this.IPCreateBuffer)
-      console.log(this.selectedTagModelsBuffer)
     },
-    commitCreate() {
-      this.$axios.post('api/ip/create', this.IPCreateBuffer.data).then((response) => {
+    initPage() {
+      const ipId = this.$route.query.id
+      for (const ip of this.ips) {
+        if (ip.id === Number(ipId)) {
+          this.initIPEditBuffer(ip)
+          this.initSelectedTagModelsBuffer(ip.tags)
+        }
+      }
+    },
+    initIPEditBuffer(ip) {
+      console.log(this)
+      this.IPEditBuffer.data.id = ip.id
+      this.IPEditBuffer.data.name = ip.name
+      this.IPEditBuffer.data.reservedNames.en = ip.reservedNames.en
+      this.IPEditBuffer.data.reservedNames.cn = ip.reservedNames.cn
+      this.IPEditBuffer.data.reservedNames.jp = ip.reservedNames.jp
+      this.IPEditBuffer.data.reservedNames.rm = ip.reservedNames.rm
+      this.IPEditBuffer.data.reservedNames.misc = ip.reservedNames.misc
+      this.IPEditBuffer.data.region = ip.region
+      this.IPEditBuffer.data.comment = ip.comment
+      this.IPEditBuffer.loading = false
+    },
+    initSelectedTagModelsBuffer(tags) {
+      for (const tag of tags) {
+        for (const tagModel of this.tagModels) {
+          if (tagModel.value === tag.id) this.selectedTagModelsBuffer.data.push(tagModel)
+        }
+      }
+      this.selectedTagModelsBuffer.loading = false
+    },
+    commitEdit() {
+      this.$axios.post('api/ip/edit', this.IPEditBuffer.data).then((response) => {
         let rd = response.data
-        if (rd.code === 'success') {//ip create s
+        if (rd.code === 'success') {
           this.$q.notify({type: 'success', message: this.$t("messages.success")})
           let temp = {
             ipId: rd.data.ip.id,
@@ -234,37 +266,40 @@ export default {
           }
           this.$axios.post('api/ip/set/tags', temp).then((response) => {
             let rd = response.data
-            if (rd.code === 'success') {//tag set s
+            if (rd.code === 'success') {
               this.$q.notify({type: 'success', message: this.$t("messages.success")})
-              this.$store.dispatch('getIPs').then(() => {
-                this.$router.push('/index/ips_and_tags')
-              })
-            } else {//ip create s bug tag set f
+            } else {
               console.log(response)
               this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
-              this.$store.dispatch('getIPs').then(() => {
-                this.$router.push('/index/ips_and_tags')
-              })
             }
-          }).catch((error) => {//tag set requests f
+            this.$store.dispatch('getIPs').then(() => {
+              this.$router.push('/index/ips_and_tags')
+            })
+          }).catch((error) => {
             console.log(error)
-            this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
           })
-        } else {//ip create requests
+        } else {
           console.log(response)
           this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
         }
       }).catch((error) => {
         console.log(error)
+        this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
       })
     }
   },
   computed: {
-    tags() {
-      return this.$store.state.tag.tags
+    readyToInitialize() {
+      return this.$store.getters.ipsInitialized && this.$store.getters.tagsInitialized
     },
     initialized() {
-      return this.$store.getters.tagsInitialized
+      return !this.IPEditBuffer.loading && !this.selectedTagModelsBuffer.loading
+    },
+    ips() {
+      return this.$store.state.ip.ips
+    },
+    tags() {
+      return this.$store.state.tag.tags
     },
     tagModels() {
       if (!this.tags) return []
@@ -292,6 +327,14 @@ export default {
           value: 'OTHER'
         },
       ]
+    }
+  },
+  watch: {
+    readyToInitialize() {
+      if (this.readyToInitialize) {
+        console.log(this.ips)
+        this.initPage()
+      }
     }
   }
 }
