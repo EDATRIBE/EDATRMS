@@ -128,7 +128,7 @@ async def filepond_upload(request):
         updated_by=request.ctx.session['user']['id']
     )
 
-    return response.text(file['id'])
+    return response.text(str(file['id']))
 
 
 @storage.get('/file/filepond/load/<id:int>')
