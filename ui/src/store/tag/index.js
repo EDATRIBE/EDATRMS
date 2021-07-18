@@ -2,12 +2,17 @@ import axios from "axios";
 
 const tagStore = {
   state: {
-    ready: false,
+    loading: false,
     tags: null
   },
+  getters:{
+    tagsInitialized(state){
+      return state.tags !== null
+    }
+  },
   mutations: {
-    setReady(state, b){
-      state.ready=b
+    setLoading(state, b){
+      state.loading=b
     },
     setTags(state,tags){
       state.tags=tags
@@ -16,13 +21,13 @@ const tagStore = {
   actions: {
     getTags(context){
       if (context.state.tags === null){
-        context.commit('setReady',false)
+        context.commit('setLoading',true)
       }
       axios.get('api/tag/list').then((response) => {
         const rd = response.data
         if (rd.code === 'success') {
           context.commit('setTags',rd.data.tags)
-          context.commit('setReady',true)
+          context.commit('setLoading',false)
         }
       }).catch(function (error) {
         console.log(error)

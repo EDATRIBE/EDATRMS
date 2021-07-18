@@ -63,7 +63,7 @@
       <div>
         <div
           class="row q-pt-md q-pb-sm q-px-md bg-dark-light bt"
-          v-if="ready"
+          v-if="initialized"
         >
           <q-chip
             v-for="(tag,i) in tags" :key="'tag'+i"
@@ -168,8 +168,8 @@ export default {
     tags() {
       return this.$store.state.tag.tags
     },
-    ready() {
-      return this.$store.state.tag.ready
+    initialized() {
+      return this.$store.getters.tagsInitialized
     }
   }
 }

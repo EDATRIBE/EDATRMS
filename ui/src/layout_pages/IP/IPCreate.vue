@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em" v-if="ready">
+  <q-page padding class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em" v-if="initialized">
     <div class="q-mx-auto" style="width: 95%">
       <div class="column full-width">
 
@@ -268,8 +268,8 @@ export default {
     tags() {
       return this.$store.state.tag.tags
     },
-    ready() {
-      return this.$store.state.tag.ready
+    initialized() {
+      return this.$store.getters.tagsInitialized
     },
     tagModels() {
       if (!this.tags) return []

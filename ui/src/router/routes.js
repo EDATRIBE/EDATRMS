@@ -36,6 +36,10 @@ const routes = [
           {
             path: 'create',
             component: () => import('src/layout_pages/IP/IPCreate')
+          },
+          {
+            path: 'edit',
+            component: () => import('src/layout_pages/IP/IPEdit')
           }
         ]
       },

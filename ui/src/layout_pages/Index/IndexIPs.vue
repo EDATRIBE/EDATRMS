@@ -1,7 +1,7 @@
 <template>
   <div class="q-pt-sm">
     <IPDeleteDialog :is-deleting.sync="isDeleting"></IPDeleteDialog>
-    <div class="q-col-gutter-y-sm" v-if="ready">
+    <div class="q-col-gutter-y-sm" v-if="initialized">
       <!--Tools-->
       <div>
         <q-expansion-item
@@ -70,7 +70,12 @@
               <q-btn flat color="accent" icon="add">novel</q-btn>
               <q-btn
                 flat color="accent"
-                @click="isDeleting=true"
+                @click="$router.push({
+                  path: '/ip/edit',
+                  query: {
+                    id: ip.id
+                  }
+                })"
               >
                 edit
               </q-btn>
@@ -210,8 +215,8 @@ export default {
     currentIPS() {
       return this.$store.state.ip.ips
     },
-    ready() {
-      return this.$store.state.ip.ready
+    initialized() {
+      return this.$store.getters.ipsInitialized
     }
   }
 }

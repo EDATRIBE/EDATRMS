@@ -1,7 +1,7 @@
 <template>
   <q-dialog v-model="show">
     <div class="bg-dark column q-pa-lg " style="width: 60vw; max-width: 60vw;">
-      <q-btn v-close-popup>hello</q-btn>
+      <q-btn @click="show=false">hello</q-btn>
     </div>
   </q-dialog>
 </template>

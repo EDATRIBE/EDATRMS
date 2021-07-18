@@ -2,12 +2,17 @@ import axios from "axios";
 
 const ipStore = {
   state: {
-    ready: false,
+    loading: false,
     ips: null
   },
+  getters:{
+    ipsInitialized(state){
+      return state.ips !== null
+    }
+  },
   mutations: {
-    setReady(state, b){
-      state.ready=b
+    setLoading(state, b){
+      state.loading=b
     },
     setIPs(state,ips){
       state.ips=ips
@@ -16,13 +21,13 @@ const ipStore = {
   actions: {
     getIPs(context){
       if (context.state.ips === null){
-        context.commit('setReady',false)
+        context.commit('setLoading',true)
       }
       axios.get('api/ip/list').then((response) => {
         const rd = response.data
         if (rd.code === 'success') {
           context.commit('setIPs',rd.data.ips)
-          context.commit('setReady',true)
+          context.commit('setLoading',false)
         }
       }).catch(function (error) {
         console.log(error)
