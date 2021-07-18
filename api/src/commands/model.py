@@ -40,7 +40,6 @@ class Model:
         try:
             temp_metadata = sa.MetaData()
             temp_metadata.reflect(self.engine)
-            temp_metadata.drop_all(self.engine)
             tables = temp_metadata.tables
         except SQLAlchemyError as err:
             self.console.print(err, style='danger')
