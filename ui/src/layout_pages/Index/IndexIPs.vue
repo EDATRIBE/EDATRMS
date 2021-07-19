@@ -30,9 +30,9 @@
                                 toggle-color="accent"
                                 toggle-text-color="dark"
                                 :options="[
-              {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'one'},
-              {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'two'}
-            ]"
+                                  {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'one'},
+                                  {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'two'}
+                                ]"
                             />
                             <q-space></q-space>
                             <q-icon
@@ -75,11 +75,11 @@
                             <q-btn
                                 flat color="accent"
                                 @click="$router.push({
-                  path: '/ip/edit',
-                  query: {
-                    id: ip.id
-                  }
-                })"
+                                  path: '/ip/edit',
+                                  query: {
+                                    id: ip.id
+                                  }
+                                })"
                             >
                                 edit
                             </q-btn>
@@ -114,7 +114,7 @@
                                             {{ animation.reservedNames[$i18n.locale] || animation.name }}
                                             <q-icon
                                                 @click="$router.push({path:'/animation/info',query:{id:animation.id}})"
-                                                size="0.7em" color="primary" class="cursor-pointer q-ml-sm"
+                                                size="0.7em" color="primary" class="cursor-pointer q-ml-md"
                                                 name="fas fa-link"
                                             />
                                             <q-space></q-space>

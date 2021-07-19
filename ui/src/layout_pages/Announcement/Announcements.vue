@@ -89,7 +89,7 @@ export default {
     watch: {
         readyToInitialize() {
             if (this.readyToInitialize) {
-                if (this.readyToInitialize) this.selectAnnouncement(this.$route.query.title)
+                this.selectAnnouncement(this.$route.query.title)
             }
         }
     }

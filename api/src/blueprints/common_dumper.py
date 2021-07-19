@@ -183,7 +183,7 @@ async def dump_animation_info(request, animation):
     animation['captions'] = captions
 
     visible_field = [
-        'id', 'ipId', 'name', 'reservedNames', 'intros', 'imageIds',
+        'id', 'ipId', 'name', 'reservedNames', 'intros',
         'producedBy', 'releasedAt', 'writtenBy', 'type', 'episodesNum',
         'createdBy', 'createdAt',
         'updateBy', 'updateAt', 'comment','images','videos','captions'
@@ -214,7 +214,7 @@ async def dump_animation_infos(request, animations):
         animation['captions'] = captions
 
     visible_field = [
-        'id', 'ipId', 'name', 'reservedNames', 'intros', 'imageIds',
+        'id', 'ipId', 'name', 'reservedNames', 'intros',
         'producedBy', 'releasedAt', 'writtenBy', 'type', 'episodesNum',
         'createdBy', 'createdAt',
         'updateBy', 'updateAt', 'comment','images','videos','captions'
