@@ -10,7 +10,7 @@
                                 clickable v-ripple
                                 v-for="(ann,i) in announcements" :key="'ann'+i"
                                 class="q-mb-none text-body1 text-weight-medium"
-                                @click="selectAnnouncement(i)"
+                                @click="$router.push({path:'/ann',query:{title:ann.title}})"
                                 active-class="acann"
                                 :active="i===currentId"
                             >
@@ -47,8 +47,12 @@
 export default {
     name: 'Announcements',
     components: {},
+    beforeRouteUpdate(to,from,next){
+        this.selectAnnouncement(to.query.title)
+        next()
+    },
     created() {
-        if (this.readyToInitialize) this.selectAnnouncement(0)
+        if (this.readyToInitialize) this.selectAnnouncement(this.$route.query.title)
     },
     data() {
         return {
@@ -58,10 +62,14 @@ export default {
         }
     },
     methods: {
-        selectAnnouncement(i) {
-            if (i===undefined||i<0||i>this.announcements.length-1) i=0
-            this.currentId = Number(i)
-            const uri = this.announcements[i].uri
+        selectAnnouncement(title) {
+            this.currentId =0
+            for (const i in this.announcements) {
+                if (this.announcements[i].title===title){
+                    this.currentId=Number(i)
+                }
+            }
+            const uri = this.announcements[this.currentId].uri
             this.$axios.get('api/' + uri).then((response) => {
                 this.currentText = response.data
                 this.LD = false
@@ -81,7 +89,7 @@ export default {
     watch: {
         readyToInitialize() {
             if (this.readyToInitialize) {
-                if (this.readyToInitialize) this.selectAnnouncement(0)
+                if (this.readyToInitialize) this.selectAnnouncement(this.$route.query.title)
             }
         }
     }

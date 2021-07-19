@@ -1,5 +1,5 @@
-<template>
-  <q-page padding class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em" v-if="initialized">
+<template v-if="initialized">
+  <q-page padding class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em">
     <div class="q-mx-auto" style="width: 95%">
       <div class="column full-width">
 

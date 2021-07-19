@@ -107,7 +107,7 @@ export default {
     return {
       LD: true,
       scrollInfo: {},
-      searchBuffer: '',
+      // searchBuffer: '',
       tab: 'Animations',
       ips: [],
     }
@@ -128,6 +128,9 @@ export default {
     },
     currentIPS() {
       return this.$store.state.ip.ips
+    },
+    searchBuffer() {
+        return this.$route.path
     }
   }
 }

@@ -68,7 +68,7 @@
             </q-scroll-area>
         </q-drawer>
         <q-page-container>
-            <keep-alive include="Index,Announcements">
+            <keep-alive include="Index">
                 <router-view/>
             </keep-alive>
         </q-page-container>
