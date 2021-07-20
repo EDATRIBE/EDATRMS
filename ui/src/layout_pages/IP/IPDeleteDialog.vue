@@ -11,7 +11,7 @@
                 <div class="row q-pb-md">
                     <p class="q-my-none text-body1 text-white ">
                         Please input
-                        <spin class="text-red text-weight-bold">{{ ip.reservedNames[$i18n.locale] || ip.name }}</spin>
+                        <span class="text-red text-weight-bold">{{ ip.reservedNames[$i18n.locale] || ip.name }}</span>
                         to confirm this operation.
                     </p>
                 </div>
@@ -19,11 +19,11 @@
                     <div class="col-md-12 col-xs-12">
                         <q-input
                             hide-bottom-space
-                            color="dark-light"
+                            bg-color="dark-light"
                             dense dark class="" standout=""
                             v-model="confirmation"
-                            :error="!isValid"
-                            :error-message="'Wrong Confirmation'"
+                            :lazy-rules="true"
+                            :rules="[()=> isValid||'Wrong Confirmation']"
                         >
                         </q-input>
                     </div>
