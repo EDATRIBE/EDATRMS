@@ -51,7 +51,7 @@ class AnimationIntrosSchema(Schema):
 class AnimationImageIdsSchema(Schema):
     horizontal = fields.Integer()
     vertical = fields.Integer()
-    reversed = fields.Integer()
+    reserved = fields.Integer()
     class Meta:
         ordered = True
 

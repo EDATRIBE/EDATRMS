@@ -56,7 +56,7 @@ class NovelIntrosSchema(Schema):
 class NovelImageIdsSchema(Schema):
     horizontal = fields.Integer(attribute='horizontal')
     vertical = fields.Integer(attribute='vertical')
-    reversed = fields.Integer(attribute='reversed')
+    reserved = fields.Integer(attribute='reserved')
     class Meta:
         ordered = True
 
