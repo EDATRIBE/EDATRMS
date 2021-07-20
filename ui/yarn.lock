@@ -4028,6 +4028,11 @@ filepond-plugin-image-preview@^4.6.6:
   resolved "https://registry.nlark.com/filepond-plugin-image-preview/download/filepond-plugin-image-preview-4.6.6.tgz#beca9d89fb9719fb91eba52c0f2b9d4eccf81dc6"
   integrity sha1-vsqdifuXGfuR66UsDyudTsz4HcY=
 
+filepond-plugin-image-transform@^3.8.6:
+  version "3.8.6"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-transform/-/filepond-plugin-image-transform-3.8.6.tgz#016ec48f5fdde6ee0fa800a47352dac5e80f9452"
+  integrity sha512-P2YREIBHb+ywH8AWs5SIucuRUgwGIh0vYl+blcf+Otc7SvfcZjl//1cnMPvdGSWQhqL2brDvbE5EM1ctpdr0kA==
+
 filepond-plugin-image-validate-size@^1.2.6:
   version "1.2.6"
   resolved "https://registry.nlark.com/filepond-plugin-image-validate-size/download/filepond-plugin-image-validate-size-1.2.6.tgz#38c8fb354c4f59a1c3c004960f84d416bdf8b76a"

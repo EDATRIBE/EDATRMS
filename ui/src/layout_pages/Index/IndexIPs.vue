@@ -70,8 +70,18 @@
                                 </q-chip>
                             </div>
                             <q-space></q-space>
-                            <q-btn flat color="accent" icon="add">animation</q-btn>
-                            <q-btn flat color="accent" icon="add">novel</q-btn>
+                            <q-btn
+                                flat color="primary" icon="add"
+                                @click="$router.push({
+                                  path: '/animation/create',
+                                  query: {
+                                    ip_id: ip.id
+                                  }
+                                })"
+                            >
+                                animation
+                            </q-btn>
+                            <q-btn flat color="secondary" icon="add">novel</q-btn>
                             <q-btn
                                 flat color="accent"
                                 @click="$router.push({
@@ -114,7 +124,7 @@
                                             {{ animation.reservedNames[$i18n.locale] || animation.name }}
                                             <q-icon
                                                 @click="$router.push({path:'/animation/info',query:{id:animation.id}})"
-                                                size="0.7em" color="primary" class="cursor-pointer q-ml-md"
+                                                size="0.75em" color="primary" class="cursor-pointer q-ml-md"
                                                 name="fas fa-link"
                                             />
                                             <q-space></q-space>
