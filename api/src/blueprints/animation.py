@@ -96,7 +96,6 @@ async def edit(request):
         if animation['image_ids'].get(key) == value:
             new_image_ids[key] = value
             continue
-        print(animation['image_ids'].get(key) ,value)
         file = await storage_service.info(value)
         new_file = await copy_file(
             request,

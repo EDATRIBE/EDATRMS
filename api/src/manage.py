@@ -1,9 +1,5 @@
 import asyncio
 import logging
-#TODO:
-#   Solve The DeprecationWarning:
-#       The loop argument is deprecated since Python 3.8, and scheduled for removal in Python 3.10.
-import warnings
 
 import fire
 
@@ -11,7 +7,6 @@ from .commands import Model, User
 from .config import config, get_log_config
 from .models import close_cache, close_db, init_cache, init_db
 
-warnings.filterwarnings('ignore',category=DeprecationWarning)
 
 class Manage:
     def __init__(self, config):
