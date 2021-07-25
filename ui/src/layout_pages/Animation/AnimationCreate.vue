@@ -7,13 +7,11 @@
                     <div>
                         <file-pond
                             name="file_pond_file"
-                            ref="pond"
+                            ref="verticalPond"
                             class="full-width"
                             :label-idle="label"
                             accepted-file-types="image/jpeg, image/png"
-                            :files="animationCreateBuffer.avatarFile"
                             :server="animationCreateBuffer.server"
-                            @init="handleFilePondInit"
                             allowImageCrop="true"
                             allowImageTransform="true"
                             imageCropAspectRatio="2:3"
@@ -25,13 +23,11 @@
                     <div>
                         <file-pond
                             name="file_pond_file"
-                            ref="pond"
+                            ref="horizontalPond"
                             class="full-width"
                             :label-idle="label"
                             accepted-file-types="image/jpeg, image/png"
-                            :files="animationCreateBuffer.avatarFile"
                             :server="animationCreateBuffer.server"
-                            @init="handleFilePondInit"
                             allowImageCrop="true"
                             imageCropAspectRatio="16:9"
                             stylePanelLayout="compact"
@@ -59,7 +55,7 @@
                                 <q-input
                                     readonly
                                     dense dark bg-color="dark-light" standout=""
-                                    v-model="ipmodel"
+                                    v-model="ipNameI18n"
                                 >
                                 </q-input>
                             </div>
@@ -150,7 +146,7 @@
                             </div>
                             <div class="col-md-10 col-xs-12">
                                 <q-input
-                                    dense dark class=" bg-dark-light" standout=""
+                                    dense dark class=" bg-dark-light" standout="" autogrow
                                     v-model="animationCreateBuffer.data.intros.en"
                                 >
                                 </q-input>
@@ -163,21 +159,7 @@
                             </div>
                             <div class="col-md-10 col-xs-12">
                                 <q-input
-                                    dense dark class=" bg-dark-light" standout=""
-                                    v-model="animationCreateBuffer.data.intros.cn"
-                                >
-                                </q-input>
-                            </div>
-                        </div>
-                        <q-separator color="grey-7" class="q-my-sm"></q-separator>
-                        <!--cnintro-->
-                        <div class="row items-center q-py-sm">
-                            <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">INTRO-CN</p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <q-input
-                                    dense dark class=" bg-dark-light" standout=""
+                                    dense dark class=" bg-dark-light" standout="" autogrow
                                     v-model="animationCreateBuffer.data.intros.cn"
                                 >
                                 </q-input>
@@ -241,11 +223,20 @@
                                 <p class="q-my-none text-grey text-body1 text-weight-medium">TYPE</p>
                             </div>
                             <div class="col-md-10 col-xs-12">
-                                <q-input
-                                    dense dark class=" bg-dark-light" standout=""
+                                <q-select
+                                    class="bg-dark-light"
+                                    dark
+                                    dense
+                                    options-dense
+                                    options-selected-class="text-accent"
+                                    standout=""
                                     v-model="animationCreateBuffer.data.type"
+                                    hide-bottom-space
+                                    :options="typeModels"
+                                    emit-value
+                                    map-options
                                 >
-                                </q-input>
+                                </q-select>
                             </div>
                         </div>
                         <!--epnum-->
@@ -288,6 +279,7 @@
                             </q-btn>
                             <q-btn
                                 class="q-ml-md" dense flat color="primary"
+                                @click="commitCreate"
                             >
                                 commit
                             </q-btn>
@@ -335,7 +327,6 @@ export default {
             ip: null,
             label:'Drag & Drop a 16:9 image or <span class=\"filepond--label-action\"> Browse </span>',
             animationCreateBuffer: {
-                avatarFile: [],
                 data:{
                     ipId: null,
                     name: '',
@@ -353,7 +344,6 @@ export default {
                     imageIds:{
                         vertical:null,
                         horizontal:null,
-                        reversed:null
                     },
                     producedBy: '',
                     releasedAt: null,
@@ -382,6 +372,42 @@ export default {
                     this.ip=ip
                 }
             }
+        },
+        commitCreate(){
+            this.animationCreateBuffer.data.ipId = this.ip.id
+            const verticalImageList = this.$refs.verticalPond.getFiles()
+            if (verticalImageList.length === 0) {
+                delete this.animationCreateBuffer.data.imageIds.vertical
+            } else {
+                if (verticalImageList[0].status === 5 || verticalImageList[0].status === 2) {
+                    this.animationCreateBuffer.data.imageIds.vertical = Number(verticalImageList[0].serverId)
+                }
+            }
+            const horizontalImageList = this.$refs.horizontalPond.getFiles()
+            if (horizontalImageList.length === 0) {
+                delete this.animationCreateBuffer.data.imageIds.horizontal
+            } else {
+                if (horizontalImageList[0].status === 5 || horizontalImageList[0].status === 2) {
+                    this.animationCreateBuffer.data.imageIds.horizontal = Number(horizontalImageList[0].serverId)
+                }
+            }
+            this.$axios.post('api/animation/create', this.animationCreateBuffer.data).then((response) => {
+                let rd = response.data
+                if (rd.code === 'success') {
+                    this.$q.notify({type: 'success', message: this.$t("messages.success")})
+                    this.$store.dispatch('getIPs').then(() => {
+                        this.$router.push('/index/ips_and_tags')
+                    })
+                } else {
+                    console.log('post success bug exec fail,error is:')
+                    console.log(response)
+                    this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
+                }
+            }).catch((error) => {
+                console.log('post fail,error is:')
+                console.log(error)
+                this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
+            })
         }
     },
     computed: {
@@ -394,13 +420,37 @@ export default {
         initialized(){
             return this.ip!==null
         },
-        ipmodel(){
+        ipNameI18n(){
             return this.ip.reservedNames[this.$i18n.locale] || this.ip.name
+        },
+        typeModels() {
+            return [
+                {
+                    label: '_i18n_tv',
+                    value: 'TV'
+                },
+                {
+                    label: '_i18n_movie',
+                    value: 'MOVIE'
+                },
+                {
+                    label: '_i18n_sp',
+                    value: 'SP'
+                },
+                {
+                    label: '_i18n_ova',
+                    value: 'OVA'
+                },
+                {
+                    label: '_i18n_oad',
+                    value: 'OAD'
+                },
+            ]
         }
     },
     watch: {
         readyToInitialize() {
-            console.log(this.$route.query.ip_id)
+            console.log('animation/create:ip_id='+this.$route.query.ip_id)
             if (this.readyToInitialize) {
                 this.selectIP(this.$route.query.ipId)
             }
