@@ -4,8 +4,12 @@
             <div class="row q-col-gutter-x-lg justify-center">
                 <!--LEFT-->
                 <div class="column col-md-3 col-xs-12 q-pb-md">
-                    <q-img :src="animation.images.vertical.url"/>
-                    <q-btn dense color="primary" class="q-mt-sm">
+                    <q-img
+                        class="q-mb-sm"
+                        :src="animation.images.vertical.url"
+                        v-if="animation.images.vertical!==undefined"
+                    />
+                    <q-btn dense color="primary" text-color="dark">
                         REPORT A PROBLEM
                         <q-icon class="q-pl-sm" name="construction" size="1.5em"/>
                     </q-btn>
@@ -14,12 +18,12 @@
                 <div class="column col-md-9 col-xs-12 q-pb-md">
                     <!--TITLE-->
                     <div style="width: 100%" class="q-px-md q-pb-md bl">
-                        <p class="q-my-none text-white  text-h4">
+                        <p class="q-my-none text-primary  text-h4">
                             {{ animation.reservedNames[$i18n.locale] || animation.name }}
                         </p>
                     </div>
                     <!--INFOS-->
-                    <div style="width: 100%" class="q-pa-md bl">
+                    <div style="width: 100%" class="q-px-md q-pt-md bl">
                         <div class="row q-py-md">
                             <div class="col-md-2 col-xs-12">
                                 <q-icon color="primary" name="fas fa-info-circle" size="2.5em"></q-icon>
@@ -100,7 +104,7 @@
                         </div>
                     </div>
                     <!--VIDEOS-->
-                    <div style="width: 100%" class="q-pa-md bl" v-for="(video,i) in animation.videos" :key="'video'+i">
+                    <div style="width: 100%" class="q-px-md q-pt-md bl" v-for="(video,i) in animation.videos" :key="'video'+i">
                         <div class="row q-py-md ">
                             <div class="col-md-2 col-xs-12">
                                 <q-icon color="primary" name="fas fa-film" size="2.5em"></q-icon>
@@ -157,7 +161,7 @@
                         </div>
                     </div>
                     <!--CPATIONS-->
-                    <div style="width: 100%" class="q-pa-md bl" v-for="(caption,i) in animation.captions"
+                    <div style="width: 100%" class="q-px-md q-pt-md bl" v-for="(caption,i) in animation.captions"
                          :key="'caption'+i">
                         <div class="row q-py-md">
                             <div class="col-md-2 col-xs-12">
@@ -237,12 +241,25 @@
                                     DOWNLOAD
                                 </p>
                             </div>
-                            <div class="col-md-10 col-xs-12">
-                                <a :href="caption.fileAddresses.baiduCloud.url">
-                                    <p class="q-my-none text-primary text-body1">
-                                        {{ caption.fileAddresses.baiduCloud.password }}
-                                    </p>
-                                </a>
+                            <div class="col-md-10 col-xs-12 row">
+                                <div class="q-mr-lg">
+                                    <a :href="caption.fileAddresses.baiduCloud.url">
+                                        <p class="q-my-none text-primary text-body1">
+                                            AliCloud
+                                            -
+                                            {{ caption.fileAddresses.baiduCloud.password }}
+                                        </p>
+                                    </a>
+                                </div>
+                                <div class="q-mr-md">
+                                    <a :href="caption.fileAddresses.baiduCloud.url">
+                                        <p class="q-my-none text-primary text-body1">
+                                            百度云
+                                            -
+                                            {{ caption.fileAddresses.baiduCloud.password }}
+                                        </p>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -253,12 +270,9 @@
 </template>
 
 <script>
-import {scroll} from 'quasar'
-
-const {getScrollTarget, setScrollPosition} = scroll
 
 export default {
-    name: "Animation",
+    name: "AnimationInfo",
     created() {
         if (this.readyToInitialize) this.selectAnimation(this.$route.query.id)
     },

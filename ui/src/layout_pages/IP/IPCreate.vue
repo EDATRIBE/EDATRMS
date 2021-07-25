@@ -279,15 +279,15 @@ export default {
     regionModels() {
       return [
         {
-          label: 'cn',
+          label: '_i18n_cn',
           value: 'CN'
         },
         {
-          label: 'jp',
+          label: '_i18n_jp',
           value: 'JP'
         },
         {
-          label: 'other',
+          label: '_i18n_other',
           value: 'OTHER'
         },
       ]

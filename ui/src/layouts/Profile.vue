@@ -61,11 +61,11 @@
                 <file-pond
                     style="width: 250px"
                     name="file_pond_file"
-                    ref="pond"
+                    ref="avatarPond"
                     class="cursor-pointer"
                     label-idle="DROP OR CLICK"
                     accepted-file-types="image/jpeg, image/png"
-                    :files="userEditBuffer.avatarFile"
+                    :files="userEditBuffer.avatarImage"
                     :server="userEditBuffer.server"
                     @init="handleFilePondInit"
                     allowImageCrop="true"
@@ -228,7 +228,7 @@ export default {
         return {
             userEditBuffer: {
                 isEditing: false,
-                avatarFile: [],
+                avatarImage: [],
                 data: {},
                 server: {
                     url: '/api',
@@ -255,17 +255,14 @@ export default {
         },
         handleFilePondInit: function () {
             console.log('FilePond has initialized');
-            // example of instance method call on pond reference
-            // this.$refs.pond.getFiles();
             if (this.currentUser.avatar) {
-                this.userEditBuffer.avatarFile = [{
+                this.userEditBuffer.avatarImage = [{
                     source: this.currentUser.avatar ? this.currentUser.avatar.id : null,
                     options: {
                         type: 'local'
                     }
                 }]
             }
-            // console.log(this.userEditBuffer.avatarFile)
         },
         initUserEditBufferData() {
             this.userEditBuffer.data = {
@@ -279,7 +276,7 @@ export default {
             }
         },
         commitEdit() {
-            const currentAvatarList = this.$refs.pond.getFiles()
+            const currentAvatarList = this.$refs.avatarPond.getFiles()
             if (currentAvatarList.length === 0) {
                 delete this.userEditBuffer.data.avatarId
             } else {
