@@ -130,7 +130,17 @@
                                             <q-space></q-space>
                                             <q-btn icon="add" flat color="primary">video</q-btn>
                                             <q-btn icon="add" flat color="primary">caption</q-btn>
-                                            <q-btn flat color="primary">edit</q-btn>
+                                            <q-btn
+                                                flat color="primary"
+                                                @click="$router.push({
+                                                        path: '/animation/edit',
+                                                        query: {
+                                                            id: animation.id
+                                                        }
+                                                })"
+                                            >
+                                                edit
+                                            </q-btn>
                                             <q-btn flat color="red">delete</q-btn>
                                         </div>
                                     </template>

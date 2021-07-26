@@ -58,6 +58,10 @@ const routes = [
                     {
                         path: 'create',
                         component: () => import('src/layout_pages/Animation/AnimationCreate')
+                    },
+                    {
+                        path: 'edit',
+                        component: () => import('src/layout_pages/Animation/AnimationEdit')
                     }
                 ]
             },
