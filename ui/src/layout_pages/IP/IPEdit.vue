@@ -232,7 +232,6 @@ export default {
       }
     },
     initIPEditBuffer(ip) {
-      console.log(this)
       this.IPEditBuffer.data.id = ip.id
       this.IPEditBuffer.data.name = ip.name
       this.IPEditBuffer.data.reservedNames.en = ip.reservedNames.en

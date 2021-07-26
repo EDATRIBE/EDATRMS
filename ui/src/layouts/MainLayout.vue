@@ -124,7 +124,6 @@ export default {
     background-color: #373C41;
 }
 
-
 .q-markdown--link {
     font-weight: 500;
     text-decoration: none;
