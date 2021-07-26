@@ -34,7 +34,6 @@
                     <q-btn class="q-ml-md" dense flat color="red" v-close-popup>cancel</q-btn>
                     <q-btn
                         class="q-ml-md" dense flat color="red"
-                        v-close-popup
                         :disable="!isValid"
                         @click="commitIPDelete(ip.id)"
                     >
@@ -62,12 +61,14 @@ export default {
     },
     methods: {
         commitIPDelete(id) {
-            let temp = {id: id}
-            this.$axios.post('api/ip/delete', temp).then((response) => {
+            let data = {id: id}
+            this.$axios.post('api/ip/delete', data).then((response) => {
                 let rd = response.data
                 if (rd.code === 'success') {
                     this.$q.notify({type: 'success', message: this.$t("messages.success")})
-                    this.$store.dispatch('getIPs')
+                    this.$store.dispatch('getIPs').then(()=>{
+                        this.show = false
+                    })
                 } else {
                     console.log(response)
                     this.$q.notify({type: 'failure', message: this.$t("messages.failure")})

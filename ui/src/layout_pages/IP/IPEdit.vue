@@ -332,6 +332,7 @@ export default {
   watch: {
     readyToInitialize() {
       if (this.readyToInitialize) {
+        console.log('readyToInitialize,this.ips:')
         console.log(this.ips)
         this.initPage()
       }

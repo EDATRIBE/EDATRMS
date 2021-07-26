@@ -3,13 +3,13 @@
         <div class="q-mx-auto" style="width: 95%">
             <div class="row q-col-gutter-x-lg justify-center">
                 <!--LEFT-->
-                <div class="column col-md-3 col-xs-12 q-pb-md">
+                <div class="column col-md-3 col-xs-12">
                     <q-img
-                        class="q-mb-sm"
+                        style="border-radius: 4px"
                         :src="animation.images.vertical.url"
                         v-if="animation.images.vertical!==undefined"
                     />
-                    <q-btn dense color="primary" text-color="dark">
+                    <q-btn dense class=" q-mt-sm" color="primary" text-color="white">
                         REPORT A PROBLEM
                         <q-icon class="q-pl-sm" name="construction" size="1.5em"/>
                     </q-btn>
@@ -77,19 +77,19 @@
                             </div>
                         </div>
                         <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                    WRITTEN BY
-                                </p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ animation.writtenBy }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
+<!--                        <div class="row q-py-md">-->
+<!--                            <div class="col-md-2 col-xs-12">-->
+<!--                                <p class="q-my-none text-grey text-body1 text-weight-medium">-->
+<!--                                    WRITTEN BY-->
+<!--                                </p>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-10 col-xs-12">-->
+<!--                                <p class="q-my-none text-white text-body1">-->
+<!--                                    {{ animation.writtenBy }}-->
+<!--                                </p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <q-separator color="grey" style="opacity: 20%"></q-separator>-->
                         <div class="row q-py-md">
                             <div class="col-md-2 col-xs-12">
                                 <p class="q-my-none text-grey text-body1 text-weight-medium">

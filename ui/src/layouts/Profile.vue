@@ -253,16 +253,16 @@ export default {
                 message: `New profile was submitted successfully.`
             })
         },
-        handleFilePondInit: function () {
-            console.log('FilePond has initialized');
-            if (this.currentUser.avatar) {
+        handleFilePondInit() {
+            if (this.currentUser.avatar!==null) {
                 this.userEditBuffer.avatarImage = [{
-                    source: this.currentUser.avatar ? this.currentUser.avatar.id : null,
+                    source: this.currentUser.avatar.id,
                     options: {
                         type: 'local'
                     }
                 }]
             }
+            console.log('FilePond has initialized');
         },
         initUserEditBufferData() {
             this.userEditBuffer.data = {

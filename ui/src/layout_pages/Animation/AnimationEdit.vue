@@ -45,7 +45,7 @@
                     <!--TITLE-->
                     <div style="width: 100%" class="q-px-md q-pb-md bl">
                         <p class="q-my-none text-primary  text-h4">
-                            NEW ANIMATION
+                            Edit ANIMATION
                         </p>
                     </div>
                     <!--Fields-->
