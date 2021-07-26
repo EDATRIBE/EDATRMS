@@ -63,6 +63,9 @@ export default {
     },
     methods: {
         selectAnnouncement(title) {
+            if(title===undefined){
+                this.$router.push({path:'/ann',query:{title:this.announcements[0].title}})
+            }
             this.currentId =0
             for (const i in this.announcements) {
                 if (this.announcements[i].title===title){
