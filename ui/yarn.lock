@@ -4023,10 +4023,10 @@ filepond-plugin-image-exif-orientation@^1.0.11:
   resolved "https://registry.nlark.com/filepond-plugin-image-exif-orientation/download/filepond-plugin-image-exif-orientation-1.0.11.tgz#c46b522e8873e2ad5b9c7e2bbbe71176c9df58b2"
   integrity sha1-xGtSLohz4q1bnH4ru+cRdsnfWLI=
 
-filepond-plugin-image-preview@^4.6.6:
-  version "4.6.6"
-  resolved "https://registry.nlark.com/filepond-plugin-image-preview/download/filepond-plugin-image-preview-4.6.6.tgz#beca9d89fb9719fb91eba52c0f2b9d4eccf81dc6"
-  integrity sha1-vsqdifuXGfuR66UsDyudTsz4HcY=
+filepond-plugin-image-preview@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-preview/-/filepond-plugin-image-preview-4.0.1.tgz#c94206ede6b6213a6cfa2de2a7547af0ca681431"
+  integrity sha512-EYul+89+9vyS60zfYi0oUAC3H98z4KOI42TPiFnsCo+CzQu07UDA93etIIZW1Zc/Bad+fqDaXkayi9oxM6W08Q==
 
 filepond-plugin-image-transform@^3.8.6:
   version "3.8.6"
