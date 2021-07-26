@@ -4,6 +4,10 @@
             :id.sync="ipDeleteBuffer.id"
             :is-deleting.sync="ipDeleteBuffer.isDeleting"
         />
+        <AnimationDeleteDialog
+            :id.sync="animationDeleteBuffer.id"
+            :is-deleting.sync="animationDeleteBuffer.isDeleting"
+        />
         <div class="q-col-gutter-y-sm" v-if="initialized">
             <!--Tools-->
             <div>
@@ -133,15 +137,20 @@
                                             <q-btn
                                                 flat color="primary"
                                                 @click="$router.push({
-                                                        path: '/animation/edit',
-                                                        query: {
-                                                            id: animation.id
-                                                        }
+                                                    path: '/animation/edit',
+                                                    query: {
+                                                        id: animation.id
+                                                    }
                                                 })"
                                             >
                                                 edit
                                             </q-btn>
-                                            <q-btn flat color="red">delete</q-btn>
+                                            <q-btn
+                                                flat color="red"
+                                                @click="animationDeleteBuffer.id=animation.id; animationDeleteBuffer.isDeleting=true"
+                                            >
+                                                delete
+                                            </q-btn>
                                         </div>
                                     </template>
 
@@ -225,10 +234,11 @@
 
 <script>
 import IPDeleteDialog from "src/layout_pages/IP/IPDeleteDialog";
+import AnimationDeleteDialog from "src/layout_pages/Animation/AnimationDeleteDialog";
 
 export default {
     name: "IndexIPs",
-    components: {IPDeleteDialog},
+    components: {AnimationDeleteDialog, IPDeleteDialog},
     data() {
         return {
             model: '',
