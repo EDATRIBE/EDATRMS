@@ -1,54 +1,54 @@
 # 开发文档
 
-## 需求分析
+## 需求分析@[Tridagger](https://github.com/Tridagger)@[Amaindex](https://github.com/Amaindex)
 
 ### 系统目标
 
 本项目旨在建立一个用于管理视频、字幕以及轻小说资源的系统。
 
-系统功能主要包含三个方面：
+所需功能主要包含三个方面：
 
 1. **整理资源**
 
-    目前部落拥有的资源包括，英配动画、未加工的CC字幕、已加工的CC字幕、已压制的英配动画、英配轻小说。目前这些资源都是分别整理记录。并且单英配动画的信息就有很多，比如季数、中文名、英文名、罗马音名、剧场版等。之前资源少时，下载资源时就是无脑下载，因为大多数动画都没有收录。但现在以及收录的动画超过了800部，资源网上发布新资源时很难分辨这个番是否已经收录。需要根据罗马音名或英文名搜中文名，然后再与已有资源对比然后再确认下载，这个过程已经严重拖慢了效率。如果将已有的资源建立一个数据库，里面包含需要的信息，这些信息可以去网上爬下来。这样有新资源时就很快知道是否已经收录，而且资源网站还有RSS功能，也可以实现有新资源时自动提示下载，或者再进一步实现自动下载。
+    待整理的资源包括英配动画、cc字幕（包括已经加工和未加工以及正在加工）、压制完成的英配动画、英配轻小说。对于每类资源需能分别记录对应的必要信息，如英配动画的季数、中文名、英文名、罗马音名，以及动画类型，原著作者等等。
 
-2. **分享资源**
+2. **资源检索与分享**
 
-    目前部落分享资源主要通过 [list.edatribe.com](https://list.edatribe.com/)网址分享资源，这就是一个静态网页，里面的信息很少，而且需要手动更新。如果连接此数据库就可以自动更新信息，而且可以显示更多信息，包括大小，集数，视频质量等等。下载资源的体验会更好。
+    提供多种资源检索方式，如关键字、标签、过滤器等等。同时为已经被收录的资源提供良好的展示页面。
 
-3. **网站调用**
+3. **提供编程接口**
 
-    目前网站更新动画时，动画信息都是手工录入，如果能和此数据库连接，就可以直接调用数据库里的信息，减少工作量。
-
-此数据库主要是一个后端程序，通过API可以让不同程序调用。其实本质上有些类似学生管理系统或者图书馆管理系统。
+    提供必要的编程接口供其他系统使用。如查询收录资源的统计信息，或者各类资源的具体信息等等。
 
 ### 具体功能
 
-1. **信息录入功能**
+1. **信息管理**
 
-    当有新资源时需要录入到数据库，有些信息需要手工操作，有些信息可以直接爬其他网站。比如：[anidb.net](https://anidb.net/)（英文数据库）、[bangumi.tv](https://bangumi.tv/)（中文数据库）、[reelgood.com](https://reelgood.com/)。录入时可以调用爬取的资源，如果信息不对也可以手动修改。
+    信息录入功能应包括：自动导入如[anidb.net](https://anidb.net/)、[bangumi.tv](https://bangumi.tv/)、[reelgood.com](https://reelgood.com/)等数据库的信息，以及手动录入信息。同时为已经录入的信息提供编辑与删除等功能。
 
-2. **信息查询功能**
+2. **信息检索**
 
     这也是这个数据库的核心功能，可以根据已知的信息查询想要的信息。例如：根据一个番剧名（英文名、罗马音名、中文名、日文名等）查询出这个番的其他信息。或者查询这个数据库的某些信息，集数最多的番是哪部、2020年上架的番有哪些、搞笑的番有哪些、参与制作字幕最多人是谁（肯定是子弹啦，Ahhh）类似这种功能。
 
-3. **用户权限管理**
+3. **用户管理**
 
     设置不同用户权限，有的可以修改，有的只能查询，这类功能。
 
-4. **日志功能**
+4. **日志记录**
 
     记录数据库修改信息，方便纠错。
 
-5. **报表功能**
+5. **生成报表**
 
     能够输出年度总结
 
-## 系统设计
+## 系统设计@[Amaindex](https://github.com/Amaindex)
 
-### 技术架构
+### 总体架构
 
-![fram](dev.assets/tec_fram.png)
+
+
+<div align=center><img width="700" src="dev.assets/fram.png"/></div>
 
 
 
@@ -76,9 +76,8 @@
     | [ reserved_names.en_name ]   | json.attr: str | Optional | 英文名       |
     | [ reserved_names.rm_name ]   | json.attr: str | Optional | 罗马音名     |
     | [ reserved_names.misc_name ] | json.attr: str | Optional | 混合关键字   |
-    | intros                       | json           | False    | 简介         |
-    | [ intro.cn_intro ]           | json.attr: str | Optional | 中文简介     |
-    | [ intro.en_intro ]           | json.attr: str | Optional | 英文简介     |
+    | region                       | varchar(300)   | False    | 地区         |
+    | written_by                   | varchar(300)   | False    | 原著作者     |
     |                              |                |          |              |
     | created_by                   | integer        | False    | 创建者       |
     | created_at                   | datetime       | False    | 创建日期     |
@@ -99,30 +98,33 @@
 
 * **Column:**
 
-    | Filed               | Type | Nullable | Comment             |
-    | ------------------- | ---- | -------- | ------------------- |
-    | id              | integer | PK |                     |
-    | ip_id           | integer | False | 所属ip的id |
-    | name            | varchar(300) | False | 标识名         |
-    | reserved_names | json | False | 别名 |
-    | [ reserved_names.jp_name ] | json.attr: str | Optional | 日文名             |
-    | [ reserved_names.cn_name ] | json.attr: str | Optional | 中文名             |
-    | [ reserved_names.en_name ] | json.attr: str | Optional | 英文名             |
-    | [ reserved_names.rm_name ] | json.attr: str | Optional | 罗马音名           |
-    | [ reserved_names.misc_name ] | json.attr: str | Optional | 混合关键词 |
-    | intros | json | False | 简介 |
-    | [ en_intro ]        | json.attr: str | Optional | 中文简介            |
-    | [ cn_intro ]        | json.attr: str | Optional | 英文简介            |
-    | image_ids | json | False | 展示图id |
-    | [ image_ids.horizontal_image_id ] | json.attr: int | Necessary | 横向图id       |
-    | [ image_ids.vertical_image_id ] | json.attr: int | Necessary | 竖向图id |
-    | [ image_ids.reversed_image_id ] | json.attr: int | Optional | 备用图id |
-    | produced_by | varchar(300) | False | 出品公司       |
-    | released_at | datetime | False | 上映时间 |
-    | written_by      | varchar(300) | False | 原著作者       |
-    | type            | varchar(300) | False | TV/movie/SP/OVA/OAD |
-    | episodes_num    | integer | False | 集数            |
-    
+    | Filed                             | Type            | Nullable  | Comment             |
+    | --------------------------------- | --------------- | --------- | ------------------- |
+    | id                                | integer         | PK        |                     |
+    | ip_id                             | integer         | False     | 所属ip的id          |
+    | name                              | varchar(300)    | False     | 标识名              |
+    | reserved_names                    | json            | False     | 别名                |
+    | [ reserved_names.jp_name ]        | json.attr: str  | Optional  | 日文名              |
+    | [ reserved_names.cn_name ]        | json.attr: str  | Optional  | 中文名              |
+    | [ reserved_names.en_name ]        | json.attr: str  | Optional  | 英文名              |
+    | [ reserved_names.rm_name ]        | json.attr: str  | Optional  | 罗马音名            |
+    | [ reserved_names.misc_name ]      | json.attr: str  | Optional  | 混合关键词          |
+    | intros                            | json            | False     | 简介                |
+    | [ en_intro ]                      | json.attr: str  | Optional  | 中文简介            |
+    | [ cn_intro ]                      | json.attr: str  | Optional  | 英文简介            |
+    | image_ids                         | json            | False     | 展示图id            |
+    | [ image_ids.horizontal_image_id ] | json.attr: int  | Necessary | 横向图id            |
+    | [ image_ids.vertical_image_id ]   | json.attr: int  | Necessary | 竖向图id            |
+    | [ image_ids.reversed_image_id ]   | json.attr: int  | Optional  | 备用图id            |
+    | produced_by                       | varchar(300)    | False     | 出品公司            |
+    | released_at                       | datetime        | False     | 上映时间            |
+    | type                              | varchar(300)    | False     | TV/movie/SP/OVA/OAD |
+    | episodes_num                      | integer         | False     | 集数                |
+    | sharing_address                   | json            | False     | 分享地址            |
+    | [ sharing_addresses.type ]        | json.attr: dict | Optional  |                     |
+   | [ sharing_addresses.url ]         | json.attr: str  | Necessary |                     |
+   | [ sharing_addresses.password]     | json.attr: str  | Optional  |                     |
+   
 * **Enum:**
 
     - type: (TV, MOVIE, SP, OVA, OAD)
@@ -136,19 +138,15 @@
 
 * **Column:**
 
-    | Filed                                   | Type            | Nullable  | Comment           |
-    | --------------------------------------- | --------------- | --------- | ----------------- |
-    | id                                      | integer         | PK        |                   |
-    | animation_id                            | integer         | False     |                   |
-    | file_address                            | json            | False     | 存储地址          |
-    | [ file_addresses.baidu_cloud ]          | json.attr: dict | Optional  |                   |
-    | [ file_addresses.baidu_cloud.url ]      | json.attr: str  | Necessary |                   |
-    | [ file_addresses.baidu_cloud .password] | json.attr: str  | Optional  |                   |
-    | file_meta                               | json            | False     | 视频元信息        |
-    | [ file_meta.name ]                      | json.attr: str  | Optional  | 文件原名          |
-    | [ file_meta.type ]                      | json.attr: str  | Optional  | 格式（mp4/        |
-    | [ file_meta.size ]                      | json.attr: int  | Optional  | 视频大小          |
-    | [ file_meta.quality ]                   | json.attr: str  | Optional  | 分辨率（720/原画/ |
+    | Filed                 | Type           | Nullable | Comment           |
+    | --------------------- | -------------- | -------- | ----------------- |
+    | id                    | integer        | PK       |                   |
+    | animation_id          | integer        | False    |                   |
+    | file_meta             | json           | False    | 视频元信息        |
+    | [ file_meta.name ]    | json.attr: str | Optional | 文件原名          |
+    | [ file_meta.type ]    | json.attr: str | Optional | 格式（mp4/        |
+    | [ file_meta.size ]    | json.attr: int | Optional | 视频大小          |
+    | [ file_meta.quality ] | json.attr: str | Optional | 分辨率（720/原画/ |
     
 * **Enum:**
 
@@ -171,10 +169,6 @@
     | integrated | bool | False | 完整1，不完整0 |
     | state | varchar(300) | False | doing/todo/done |
     | released_at | datetime | True | 完成于     |
-    | file_address                    | json            | False     | 存储地址          |
-    | [ file_addresses.baidu_cloud ] | json.attr: dict | Optional  |                   |
-    | [ file_addresses.baidu_cloud.url ] | json.attr: str  | Necessary |                   |
-    | [ file_addresses .baidu_cloud.password] | json.attr: str  | Optional  |                   |
     | file_meta    | json  | False | 文件元信息 |
     | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
     | [ file_meta.type ] | json.attr: str | Optional | 格式/txt/pdf   |
@@ -217,10 +211,10 @@
     | written_by   | varchar(300) | False | 作者       |
     | volumes_num  | integer | False | 卷数       |
     | integrated | bool | False | 完整性 |
-   | file_address                    | json            | False     | 存储地址          |
-   | [ file_addresses.baidu_cloud ] | json.attr: dict | Optional  |                   |
-   | [ file_addresses.baidu_cloud.url ] | json.attr: str  | Necessary |                   |
-   | [ file_addresses.baidu_cloud .password] | json.attr: str  | Optional  |                   |
+   | sharing_address             | json            | False     | 分享地址        |
+   | [ sharing_addresses.type ] | json.attr: dict | Optional  |                   |
+   | [ sharing_addresses.url ] | json.attr: str  | Necessary |                   |
+   | [ sharing_addresses.password] | json.attr: str  | Optional  |                   |
    | file_meta    | json  | False | 文件元信息 |
    | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
    | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
