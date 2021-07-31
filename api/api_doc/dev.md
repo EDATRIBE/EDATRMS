@@ -1,6 +1,6 @@
 # 开发文档
 
-## 需求分析@[Tridagger](https://github.com/Tridagger)@[Amaindex](https://github.com/Amaindex)
+## 需求分析
 
 ### 系统目标
 
@@ -42,7 +42,7 @@
 
     能够输出年度总结
 
-## 系统设计@[Amaindex](https://github.com/Amaindex)
+## 系统设计
 
 ### 总体架构
 
@@ -52,7 +52,7 @@
 
 
 
-### 数据模型
+### Model
 
 #### 设计准则
 
@@ -115,15 +115,15 @@
     | image_ids                         | json            | False     | 展示图id            |
     | [ image_ids.horizontal_image_id ] | json.attr: int  | Necessary | 横向图id            |
     | [ image_ids.vertical_image_id ]   | json.attr: int  | Necessary | 竖向图id            |
-    | [ image_ids.reversed_image_id ]   | json.attr: int  | Optional  | 备用图id            |
     | produced_by                       | varchar(300)    | False     | 出品公司            |
     | released_at                       | datetime        | False     | 上映时间            |
     | type                              | varchar(300)    | False     | TV/movie/SP/OVA/OAD |
     | episodes_num                      | integer         | False     | 集数                |
-    | sharing_address                   | json            | False     | 分享地址            |
-    | [ sharing_addresses.type ]        | json.attr: dict | Optional  |                     |
-   | [ sharing_addresses.url ]         | json.attr: str  | Necessary |                     |
-   | [ sharing_addresses.password]     | json.attr: str  | Optional  |                     |
+   | sharing_address                     | json           | False     | 分享地址     |
+   | [ sharing_addresses.baidu.url ]     | json.attr: str | Necessary |              |
+   | [ sharing_addresses.baidu.password] | json.attr: str | Optional  |              |
+   | [ sharing_addresses.ali.url ]       | json.attr: str | Necessary |              |
+   | [ sharing_addresses.ali.password]   | json.attr: str | Optional  |              |
    
 * **Enum:**
 
@@ -190,35 +190,35 @@
 
 * **Column:**
 
-    | Filed            | Type      | Nullable | Comment        |
-    | ---------------- | --------- | -------- | -------------- |
-    | id           | integer | PK |                |
-    | ip_id        | integer | False | 参照ip的id |
-    | name                | varchar(300) | False | 标识名   |
-    | reserved_names | json  | False | 别名     |
-    | [ reserved_names.jp_name ] | json.attr: str | Optional | 日文名       |
-    | [ reserved_names.cn_name ] | json.attr: str | Optional | 中文名       |
-    | [ reserved_names.en_name ] | json.attr: str | Optional | 英文名       |
-    | [ reserved_names.rm_name ] | json.attr: str | Optional | 罗马音名     |
-    | [ reserved_names.misc_name ] | json.attr: str | Optional | 混合关键字   |
-    | intros              | json  | False | 简介     |
-    | [ intro.cn_intro ]    | json.attr: str | Optional | 中文简介     |
-    | [ intro.en_intro ]    | json.attr: str | Optional | 英文简介     |
-    | image_ids | json | True |  |
-    | [ image_ids.horizontal_image_id ] | json.attr: int | Necessary | 横向图id       |
-    | [ image_ids.vertical_image_id ] | json.attr: int | Necessary | 竖向图id |
-    | [ image_ids.reversed_image_id ] | json.attr: int | Optional | 备用图id |
-    | written_by   | varchar(300) | False | 作者       |
-    | volumes_num  | integer | False | 卷数       |
-    | integrated | bool | False | 完整性 |
-   | sharing_address             | json            | False     | 分享地址        |
-   | [ sharing_addresses.type ] | json.attr: dict | Optional  |                   |
-   | [ sharing_addresses.url ] | json.attr: str  | Necessary |                   |
-   | [ sharing_addresses.password] | json.attr: str  | Optional  |                   |
-   | file_meta    | json  | False | 文件元信息 |
-   | [ file_meta.name ] | json.attr: str | Optional | 文件原名       |
-   | [ file_meta.format ] | json.attr: str | Optional | 格式/txt/pdf   |
-   | [ file_meta.size ] | json.attr: int | Optional | 文件大小       |
+    | Filed                               | Type           | Nullable  | Comment      |
+    | ----------------------------------- | -------------- | --------- | ------------ |
+    | id                                  | integer        | PK        |              |
+    | ip_id                               | integer        | False     | 参照ip的id   |
+    | name                                | varchar(300)   | False     | 标识名       |
+    | reserved_names                      | json           | False     | 别名         |
+    | [ reserved_names.jp_name ]          | json.attr: str | Optional  | 日文名       |
+    | [ reserved_names.cn_name ]          | json.attr: str | Optional  | 中文名       |
+    | [ reserved_names.en_name ]          | json.attr: str | Optional  | 英文名       |
+    | [ reserved_names.rm_name ]          | json.attr: str | Optional  | 罗马音名     |
+    | [ reserved_names.misc_name ]        | json.attr: str | Optional  | 混合关键字   |
+    | intros                              | json           | False     | 简介         |
+    | [ intro.cn_intro ]                  | json.attr: str | Optional  | 中文简介     |
+    | [ intro.en_intro ]                  | json.attr: str | Optional  | 英文简介     |
+    | image_ids                           | json           | True      |              |
+    | [ image_ids.horizontal_image_id ]   | json.attr: int | Necessary | 横向图id     |
+    | [ image_ids.vertical_image_id ]     | json.attr: int | Necessary | 竖向图id     |
+    | written_by                          | varchar(300)   | False     | 作者         |
+    | volumes_num                         | integer        | False     | 卷数         |
+    | integrated                          | bool           | False     | 完整性       |
+   | file_meta                           | json           | False     | 文件元信息   |
+   | [ file_meta.name ]                  | json.attr: str | Optional  | 文件原名     |
+   | [ file_meta.format ]                | json.attr: str | Optional  | 格式/txt/pdf |
+   | [ file_meta.size ]                  | json.attr: int | Optional  | 文件大小     |
+   | sharing_address                     | json           | False     | 分享地址     |
+   | [ sharing_addresses.baidu.url ]     | json.attr: str | Necessary |              |
+   | [ sharing_addresses.baidu.password] | json.attr: str | Optional  |              |
+   | [ sharing_addresses.ali.url ]       | json.attr: str | Necessary |              |
+   | [ sharing_addresses.ali.password]   | json.attr: str | Optional  |              |
    
 * **Enum:**
 
@@ -330,7 +330,7 @@
 
 
 
-### 业务功能
+### Service
 
 #### 设计准则
 
@@ -397,7 +397,7 @@
 
 
 
-### API 端点
+### API
 
 #### 设计准则
 
@@ -430,3 +430,6 @@ api_data
 ...
 ```
 
+
+
+## 系统测试
