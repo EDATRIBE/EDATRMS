@@ -3,13 +3,12 @@ import sqlalchemy.sql as sasql
 from marshmallow import Schema, fields, validate
 
 from ..utilities import LocalDateTime
-from .common import BaiduCloudSchema, metadata
+from .common import metadata
 
 VideoModel = sa.Table(
     'video', metadata,
     sa.Column('id', sa.INTEGER(), primary_key=True),
     sa.Column('animation_id', sa.INTEGER(), nullable=False),
-    sa.Column('file_addresses', sa.JSON(), nullable=False),
     sa.Column('file_meta', sa.JSON(), nullable=False),
     sa.Column('created_by', sa.INTEGER(), nullable=False),
     sa.Column('created_at', LocalDateTime(), nullable=False,
@@ -29,12 +28,6 @@ VideoModel = sa.Table(
 
 
 
-class VideoFileAddressesSchema(Schema):
-    baiduCloud = fields.Nested('BaiduCloudSchema',attribute='baidu_cloud')
-    class Meta:
-        ordered = True
-
-
 class VideoFileMetaSchema(Schema):
     name = fields.String()
     type = fields.String(validate=validate.OneOf(['MP4','MKV','AV1','OGG']))
@@ -47,7 +40,6 @@ class VideoFileMetaSchema(Schema):
 class VideoSchema(Schema):
     id = fields.Integer()
     animationId = fields.Integer(attribute='animation_id')
-    fileAddresses = fields.Nested('VideoFileAddressesSchema',attribute='file_addresses')
     fileMeta = fields.Nested('VideoFileMetaSchema',attribute='file_meta')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')

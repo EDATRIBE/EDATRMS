@@ -1,12 +1,7 @@
 from sanic import Blueprint
-from sanic.exceptions import NotFound
 
-from ..models import StorageBucket, StorageRegion, UserSchema
-from ..services import StorageService, UserService
-from ..utilities import sha256_hash
-from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     copy_file, required_field_validation, response_json,
-                     sift_dict_by_key)
+from ..services import UserService
+from .common import response_json
 from .common_dumper import dump_user_info, dump_user_infos
 
 user = Blueprint('user', url_prefix='/user')

@@ -21,10 +21,16 @@ class RoleReservedNamesSchema(Schema):
     cn = fields.String(attribute='cn')
     en = fields.String(attribute='en')
 
+    class Meta:
+        ordered = True
+
 
 class RoleStyleSchema(Schema):
     icon = fields.String()
     color = fields.String()
+
+    class Meta:
+        ordered = True
 
 class RoleSchema(Schema):
     id = fields.Integer()

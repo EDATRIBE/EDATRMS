@@ -1,19 +1,27 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
-from ..models import (IPSchema, IPTagSchema, IPTagsSchema, StorageBucket,
-                      StorageRegion, UserSchema)
-from ..services import (IPService, IPTagService, StorageService, TagService,
-                        UserService)
-from ..utilities import sha256_hash
-from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     copy_file, required_field_validation, response_json,
-                     sift_dict_by_key)
-from .common_dumper import (dump_ip_info, dump_ip_infos, dump_ip_tag_infos,
-                            dump_user_info)
+from ..models import IPSchema, IPTagsSchema
+from ..services import IPService, IPTagService, TagService
+from .common import ResponseCode, authenticated_staff, required_field_validation, response_json, sift_dict_by_key
+from .common_dumper import dump_ip_info, dump_ip_infos, dump_ip_tag_infos
 
 ip = Blueprint('ip', url_prefix='/ip')
 
+
+# @ip.post('/foo')
+# @authenticated_staff()
+# async def foo(request):
+#     data = IPSchema().load(request.json)
+#     required_field_validation(data=data, required_field=['id'])
+#
+#     ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
+#     ip_tag_items = await ip_tag_service.info_by_ip_ids([data['id']])
+#
+#     print(ip_tag_items)
+#     return response_json(
+#         ip_tag_items=await dump_ip_tag_infos(request, ip_tag_items[0])
+#     )
 
 @ip.post('/create')
 @authenticated_staff()
@@ -21,32 +29,16 @@ async def create(request):
     data = IPSchema().load(request.json)
     required_field_validation(data=data, required_field=['name','region'])
 
-    tag_service = TagService(request.app.config, request.app.db, request.app.cache)
-    tag_ids = data.get('tag_ids',[])
-    for tag_id in tag_ids:
-        tag = await tag_service.info(tag_id)
-        if tag is None:
-            raise NotFound('')
-
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = await ip_service.create(
         name=data['name'],
         reserved_names=data.get('reserved_names',{}),
         region=data['region'],
+        written_by=data.get('written_by', ''),
         created_by=request.ctx.session['user']['id'],
         updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')
     )
-
-    ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
-    for tag_id in tag_ids:
-        await ip_tag_service.create(
-            ip_id=ip['id'],
-            tag_id=tag_id,
-            created_by=request.ctx.session['user']['id'],
-            updated_by=request.ctx.session['user']['id'],
-            comment=data.get('comment', '')
-        )
 
     return response_json(ip=await dump_ip_info(request, ip))
 
@@ -76,7 +68,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=['name', 'reserved_names', 'region', 'comment']
+        allowed_key=['name', 'reserved_names', 'region','written_by', 'comment']
     )
 
     ip = await ip_service.edit(

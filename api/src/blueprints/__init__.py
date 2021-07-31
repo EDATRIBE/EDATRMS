@@ -7,5 +7,5 @@ from .novel import novel
 from .semi_static import semi_static
 from .storage import storage
 from .tag import tag
-from .video import video
 from .user import user
+from .video import video

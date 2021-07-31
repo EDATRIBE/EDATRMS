@@ -1,18 +1,10 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
-from ..models import (AnimationSchema, CaptionSchema, CaptionUserSchema,
-                      IPSchema, StorageBucket, StorageRegion, UserSchema,
-                      VideoSchema,CaptionUsersSchema)
-from ..services import (AnimationService, CaptionService, CaptionUserService,
-                        IPService, StorageService, UserService, VideoService)
-from ..utilities import sha256_hash
-from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     copy_file, required_field_validation, response_json,
-                     sift_dict_by_key)
-from .common_dumper import (dump_animation_info, dump_animation_infos,
-                            dump_caption_info, dump_caption_infos,dump_caption_user_infos,
-                            dump_ip_info, dump_ip_infos, dump_user_info)
+from ..models import CaptionSchema, CaptionUsersSchema
+from ..services import CaptionService, CaptionUserService, UserService
+from .common import ResponseCode, authenticated_staff, required_field_validation, response_json, sift_dict_by_key
+from .common_dumper import dump_caption_info, dump_caption_infos, dump_caption_user_infos
 
 caption = Blueprint('caption', url_prefix='/caption')
 
@@ -21,14 +13,7 @@ caption = Blueprint('caption', url_prefix='/caption')
 @authenticated_staff()
 async def create(request):
     data = CaptionSchema().load(request.json)
-    required_field_validation(data=data, required_field=['animation_id', 'integrated', 'state', 'file_addresses'])
-
-    user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    contributor_ids = data.get('contributor_ids',[])
-    for contributor_id in contributor_ids:
-        contributor = await user_service.info(contributor_id)
-        if contributor is None:
-            raise NotFound('')
+    required_field_validation(data=data, required_field=['animation_id', 'integrated', 'state'])
 
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     caption = await caption_service.create(
@@ -36,22 +21,11 @@ async def create(request):
         integrated=data['integrated'],
         state=data['state'],
         released_at=data['released_at'],
-        file_addresses=data['file_addresses'],
         file_meta=data.get('file_meta', {}),
         created_by=request.ctx.session['user']['id'],
         updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')
     )
-
-    caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
-    for contributor_id in contributor_ids:
-        await caption_user_service.create(
-            caption_id=caption['id'],
-            user_id=contributor_id,
-            created_by=request.ctx.session['user']['id'],
-            updated_by=request.ctx.session['user']['id'],
-            comment=data.get('comment', '')
-        )
 
 
     return response_json(caption=await dump_caption_info(request, caption))
@@ -82,7 +56,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=['animation_id','integrated','state', 'file_addresses', 'file_meta', 'comment']
+        allowed_key=['integrated','state','released_at','file_meta', 'comment']
     )
 
     caption = await caption_service.edit(

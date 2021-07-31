@@ -1,24 +1,7 @@
-import os
-import traceback
-from enum import Enum
-from functools import wraps
-
-import aiofiles
-from marshmallow import Schema, ValidationError, fields
-from pymysql.err import DatabaseError
-from sanic import response
-from sanic.exceptions import (NotFound, SanicException, ServerError,
-                              Unauthorized)
-
-from ..models import (AnimationSchema, AnnouncementSchema, CaptionSchema,CaptionUserSchema,
-                      IPSchema, IPTagSchema, NovelSchema, RoleSchema,
-                      StorageBucket, StorageRegion, TagSchema, UserRoleSchema,
-                      UserSchema, VideoSchema)
-from ..services import (AnimationService, CaptionService, CaptionUserService,
-                        IPService, IPTagService, NovelService, RoleService,
-                        ServiceException, StorageService, TagService,
-                        UserRoleService, UserService, VideoService)
-from ..utilities import random_string
+from ..models import (AnimationSchema, AnnouncementSchema, CaptionSchema, CaptionUserSchema, IPSchema, IPTagSchema,
+                      NovelSchema, TagSchema, UserSchema, VideoSchema)
+from ..services import (AnimationService, CaptionService, CaptionUserService, IPTagService, NovelService, RoleService,
+                        StorageService, TagService, UserRoleService, UserService, VideoService)
 
 
 async def dump_user_info(request, user):
@@ -38,7 +21,7 @@ async def dump_user_info(request, user):
     roles = await role_service.infos(role_ids)
     user['roles'] = roles
 
-    visible_field = ['id', 'name', 'email', 'qq', 'intro', 'avatar', 'createdAt', 'staff','roles']
+    visible_field = ['id', 'name', 'email', 'qq', 'intro', 'avatar', 'createdAt', 'staff', 'roles']
     user = UserSchema(only=visible_field).dump(user)
     return user
 
@@ -65,7 +48,7 @@ async def dump_user_infos(request, users):
         roles = await role_service.infos(role_ids)
         user['roles'] = roles
 
-    visible_field = ['id', 'name', 'email', 'qq', 'intro', 'avatar', 'createdAt', 'staff','roles']
+    visible_field = ['id', 'name', 'email', 'qq', 'intro', 'avatar', 'createdAt', 'staff', 'roles']
     users = [UserSchema(only=visible_field).dump(v) for v in users]
     return users
 
@@ -76,7 +59,7 @@ async def dump_ip_info(request, ip):
 
     ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
-    ip_tag_items,total = await ip_tag_service.list_ip_tag_items(ip_id=ip['id'])
+    ip_tag_items, total = await ip_tag_service.list_ip_tag_items(ip_id=ip['id'])
     tag_ids = [ip_tag_item['tag_id'] for ip_tag_item in ip_tag_items]
     tags = await tag_service.infos(tag_ids)
 
@@ -87,7 +70,7 @@ async def dump_ip_info(request, ip):
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
-    animations,total = await animation_service.list_animations(ip_id=ip['id'])
+    animations, total = await animation_service.list_animations(ip_id=ip['id'])
     for animation in animations:
         images = {}
         for key, value in animation['image_ids'].items():
@@ -98,7 +81,7 @@ async def dump_ip_info(request, ip):
         captions, total = await caption_service.list_captions(animation_id=animation['id'])
         animation['videos'] = videos
         animation['captions'] = captions
-    novels,total = await novel_service.list_novels(ip_id=ip['id'])
+    novels, total = await novel_service.list_novels(ip_id=ip['id'])
     ip['animations'] = animations
     ip['novels'] = novels
     for novel in novels:
@@ -109,8 +92,9 @@ async def dump_ip_info(request, ip):
         novel['images'] = images
 
     visible_field = [
-        'id', 'name', 'reservedNames', 'region', 'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment','tags','animations','novels'
+        'id', 'name', 'reservedNames', 'region', 'writtenBy',
+        'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment',
+        'tags', 'animations', 'novels'
     ]
     ip = IPSchema(only=visible_field).dump(ip)
     return ip
@@ -122,8 +106,8 @@ async def dump_ip_infos(request, ips):
 
     ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
-    for ip in ips:
-        ip_tag_items, total = await ip_tag_service.list_ip_tag_items(ip_id=ip['id'])
+    ip_tag_items_list = await ip_tag_service.info_by_ip_ids([ip['id'] for ip in ips ])
+    for ip,ip_tag_items in zip(ips,ip_tag_items_list):
         tag_ids = [i['tag_id'] for i in ip_tag_items]
         tags = await tag_service.infos(tag_ids)
         ip['tags'] = tags
@@ -157,8 +141,9 @@ async def dump_ip_infos(request, ips):
         ip['novels'] = novels
 
     visible_field = [
-        'id', 'name', 'reservedNames', 'region', 'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment','tags','animations','novels'
+        'id', 'name', 'reservedNames', 'region', 'writtenBy',
+        'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment',
+        'tags', 'animations', 'novels'
     ]
     ips = [IPSchema(only=visible_field).dump(v) for v in ips]
     return ips
@@ -177,16 +162,16 @@ async def dump_animation_info(request, animation):
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
-    videos,total = await video_service.list_videos(animation_id=animation['id'])
-    captions,total = await caption_service.list_captions(animation_id=animation['id'])
+    videos, total = await video_service.list_videos(animation_id=animation['id'])
+    captions, total = await caption_service.list_captions(animation_id=animation['id'])
     animation['videos'] = videos
     animation['captions'] = captions
 
     visible_field = [
         'id', 'ipId', 'name', 'reservedNames', 'intros',
-        'producedBy', 'releasedAt', 'writtenBy', 'type', 'episodesNum',
-        'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment','images','videos','captions'
+        'producedBy', 'releasedAt', 'type', 'episodesNum', 'sharingAddresses',
+        'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment',
+        'images', 'videos', 'captions'
     ]
     animation = AnimationSchema(only=visible_field).dump(animation)
     return animation
@@ -215,9 +200,9 @@ async def dump_animation_infos(request, animations):
 
     visible_field = [
         'id', 'ipId', 'name', 'reservedNames', 'intros',
-        'producedBy', 'releasedAt', 'writtenBy', 'type', 'episodesNum',
-        'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment','images','videos','captions'
+        'producedBy', 'releasedAt', 'type', 'episodesNum', 'sharingAddresses',
+        'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment',
+        'images', 'videos', 'captions'
     ]
     animations = [AnimationSchema(only=visible_field).dump(v) for v in animations]
     return animations
@@ -228,9 +213,8 @@ async def dump_video_info(request, video):
         return None
 
     visible_field = [
-        'id', 'animationId', 'fileAddresses', 'fileMeta',
-        'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment'
+        'id', 'animationId', 'fileMeta',
+        'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment'
     ]
     video = VideoSchema(only=visible_field).dump(video)
     return video
@@ -241,9 +225,8 @@ async def dump_video_infos(request, videos):
         return []
 
     visible_field = [
-        'id', 'animationId', 'fileAddresses', 'fileMeta',
-        'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment'
+        'id', 'animationId', 'fileMeta',
+        'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment'
     ]
     videos = [VideoSchema(only=visible_field).dump(v) for v in videos]
     return videos
@@ -255,17 +238,15 @@ async def dump_caption_info(request, caption):
 
     caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    caption_user_items,total = await caption_user_service.list_caption_user_items(caption_id=caption['id'])
+    caption_user_items, total = await caption_user_service.list_caption_user_items(caption_id=caption['id'])
     contributor_ids = [caption_user_item['user_id'] for caption_user_item in caption_user_items]
     contributor = await user_service.infos(contributor_ids)
     caption['contributor_ids'] = contributor_ids
     caption['contributors'] = contributor
 
     visible_field = [
-        'id', 'animationId', 'integrated', 'state', 'releasedAt',
-        'fileAddresses', 'fileMeta',
-        'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment','contributors'
+        'id', 'animationId', 'integrated', 'state', 'releasedAt', 'fileMeta',
+        'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment', 'contributors'
     ]
     caption = CaptionSchema(only=visible_field).dump(caption)
     return caption
@@ -285,13 +266,12 @@ async def dump_caption_infos(request, captions):
         caption['contributors'] = contributor
 
     visible_field = [
-        'id', 'animationId', 'integrated', 'state', 'releasedAt',
-        'fileAddresses', 'fileMeta',
-        'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment','contributorIds','contributors'
+        'id', 'animationId', 'integrated', 'state', 'releasedAt', 'fileMeta',
+        'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment', 'contributors'
     ]
     captions = [CaptionSchema(only=visible_field).dump(v) for v in captions]
     return captions
+
 
 async def dump_caption_user_infos(request, caption_user_items):
     if not caption_user_items:
@@ -307,16 +287,16 @@ async def dump_novel_info(request, novel):
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
     images = {}
-    for key,value in novel['image_ids'].items():
+    for key, value in novel['image_ids'].items():
         file = await storage_service.info(value)
         images[key] = file
     novel['images'] = images
 
     visible_field = [
-        'id', 'ipId', 'name', 'reservedNames', 'intros', 'imageIds',
-        'writtenBy', 'volumesNum', 'integrated', 'fileAddresses', 'fileMeta',
-        'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment','images'
+        'id', 'ipId', 'name', 'reservedNames', 'intros',
+        'volumesNum', 'integrated', 'fileMeta', 'sharingAddresses',
+        'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment',
+        'images'
     ]
     novel = NovelSchema(only=visible_field).dump(novel)
     return novel
@@ -335,10 +315,10 @@ async def dump_novel_infos(request, novels):
         novel['images'] = images
 
     visible_field = [
-        'id', 'ipId', 'name', 'reservedNames', 'intros', 'imageIds',
-        'writtenBy', 'volumesNum', 'integrated', 'fileAddresses', 'fileMeta',
-        'createdBy', 'createdAt',
-        'updateBy', 'updateAt', 'comment','images'
+        'id', 'ipId', 'name', 'reservedNames', 'intros',
+        'volumesNum', 'integrated', 'fileMeta', 'sharingAddresses',
+        'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment',
+        'images'
     ]
     novels = [NovelSchema(only=visible_field).dump(v) for v in novels]
     return novels
@@ -348,7 +328,7 @@ async def dump_tag_info(request, tag):
     if tag is None:
         return None
 
-    visible_field = ['id', 'name','reservedNames', 'createdBy', 'createdAt',
+    visible_field = ['id', 'name', 'reservedNames', 'createdBy', 'createdAt',
                      'updateBy', 'updateAt', 'comment']
     tag = TagSchema(only=visible_field).dump(tag)
     return tag
@@ -358,10 +338,11 @@ async def dump_tag_infos(request, tags):
     if not tags:
         return []
 
-    visible_field = ['id', 'name','reservedNames', 'createdBy', 'createdAt',
+    visible_field = ['id', 'name', 'reservedNames', 'createdBy', 'createdAt',
                      'updateBy', 'updateAt', 'comment']
     tags = [TagSchema(only=visible_field).dump(v) for v in tags]
     return tags
+
 
 async def dump_ip_tag_infos(request, ip_tag_items):
     if not ip_tag_items:
@@ -370,11 +351,12 @@ async def dump_ip_tag_infos(request, ip_tag_items):
     ip_tag_items = [IPTagSchema().dump(v) for v in ip_tag_items]
     return ip_tag_items
 
-async def dump_announcement_infos(request,announcements):
+
+async def dump_announcement_infos(request, announcements):
     if not announcements:
         return []
 
-    visible_field = ['title', 'uri', 'createdAt','updateAt']
+    visible_field = ['title', 'uri', 'createdAt', 'updateAt']
 
-    announcements =  [AnnouncementSchema(only=visible_field).dump(v) for v in announcements]
+    announcements = [AnnouncementSchema(only=visible_field).dump(v) for v in announcements]
     return announcements

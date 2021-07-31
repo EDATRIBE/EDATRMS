@@ -7,8 +7,7 @@ from sanic.exceptions import NotFound
 from ..models import FileSchema, StorageBucket, StorageRegion
 from ..services import StorageService
 from ..utilities import random_string
-from .common import (ResponseCode, authenticated_user,
-                     required_field_validation, response_json)
+from .common import ResponseCode, authenticated_user, response_json
 
 storage = Blueprint('storage', url_prefix='/storage')
 

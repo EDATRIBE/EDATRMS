@@ -1,15 +1,11 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
-from ..models import (AnimationSchema, IPSchema, StorageBucket, StorageRegion,
-                      UserSchema)
-from ..services import AnimationService, IPService, StorageService, UserService
-from ..utilities import sha256_hash
-from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     copy_file, required_field_validation, response_json,
+from ..models import AnimationSchema, StorageBucket
+from ..services import AnimationService, StorageService
+from .common import (ResponseCode, authenticated_staff, copy_file, required_field_validation, response_json,
                      sift_dict_by_key)
-from .common_dumper import (dump_animation_info, dump_animation_infos,
-                            dump_ip_info, dump_ip_infos, dump_user_info)
+from .common_dumper import dump_animation_info, dump_animation_infos
 
 animation = Blueprint('animation', url_prefix='/animation')
 
@@ -18,7 +14,16 @@ animation = Blueprint('animation', url_prefix='/animation')
 @authenticated_staff()
 async def create(request):
     data = AnimationSchema().load(request.json)
-    required_field_validation(data=data, required_field=['ip_id', 'name', 'released_at', 'type', 'episodes_num'])
+    required_field_validation(
+        data=data,
+        required_field=[
+            'ip_id',
+            'name',
+            'released_at',
+            'type',
+            'episodes_num'
+        ]
+    )
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
     for key, value in data.get('image_ids', {}).items():
@@ -35,9 +40,9 @@ async def create(request):
         image_ids=data.get('image_ids', {}),
         produced_by=data.get('produced_by', ''),
         released_at=data.get('released_at'),
-        written_by=data.get('written_by', ''),
         type=data.get('type'),
         episodes_num=data.get('episodes_num'),
+        sharing_addresses=data.get('sharing_addresses', {}),
         created_by=request.ctx.session['user']['id'],
         updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')
@@ -110,8 +115,15 @@ async def edit(request):
     allowed_data = sift_dict_by_key(
         data=data,
         allowed_key=[
-            'ip_id', 'name', 'reserved_names', 'intros', 'image_ids',
-            'produced_by', 'released_at', 'written_by', 'type', 'episodes_num',
+            'name',
+            'reserved_names',
+            'intros',
+            'image_ids',
+            'produced_by',
+            'released_at',
+            'type',
+            'episodes_num',
+            'sharing_addresses',
             'comment'
         ]
     )

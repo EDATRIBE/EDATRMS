@@ -15,9 +15,9 @@ AnimationModel = sa.Table(
     sa.Column('image_ids', sa.JSON(), nullable=False),
     sa.Column('produced_by', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.Column('released_at', LocalDateTime(), nullable=False),
-    sa.Column('written_by', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.Column('type', sa.VARCHAR(300), nullable=False, server_default=''),
     sa.Column('episodes_num', sa.INTEGER(), nullable=False),
+    sa.Column('sharing_addresses', sa.JSON(), nullable=False),
     sa.Column('created_by', sa.INTEGER(), nullable=False),
     sa.Column('created_at', LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
     sa.Column('updated_by', sa.INTEGER(), nullable=False),
@@ -33,40 +33,19 @@ AnimationModel = sa.Table(
 )
 
 
-class AnimationReservedNamesSchema(Schema):
-    jp = fields.String()
-    cn = fields.String()
-    en = fields.String()
-    rm = fields.String()
-    misc = fields.String()
-    class Meta:
-        ordered = True
-
-class AnimationIntrosSchema(Schema):
-    cn = fields.String(attribute='cn')
-    en = fields.String(attribute='en')
-    class Meta:
-        ordered = True
-
-class AnimationImageIdsSchema(Schema):
-    horizontal = fields.Integer()
-    vertical = fields.Integer()
-    reserved = fields.Integer()
-    class Meta:
-        ordered = True
-
 class AnimationSchema(Schema):
     id = fields.Integer()
     ipId = fields.Integer(attribute='ip_id')
     name = fields.String(validate=validate.Length(0,300))
-    reservedNames = fields.Nested('AnimationReservedNamesSchema',attribute='reserved_names')
-    intros = fields.Nested('AnimationIntrosSchema')
-    imageIds = fields.Nested('AnimationImageIdsSchema',attribute='image_ids')
+    reservedNames = fields.Nested('ReservedNamesSchema',attribute='reserved_names')
+    intros = fields.Nested('IntrosSchema')
+    imageIds = fields.Nested('ImageIdsSchema',attribute='image_ids')
     producedBy = fields.String(validate=validate.Length(0,300),attribute='produced_by')
     releasedAt = fields.DateTime(attribute='released_at')
     writtenBy = fields.String(validate=validate.Length(0,300),attribute='written_by')
     type = fields.String(validate=validate.OneOf(['TV','MOVIE','SP','OVA','OAD']))
     episodesNum = fields.Integer(attribute='episodes_num')
+    sharingAddresses = fields.Nested('SharingAddressesSchema', attribute='sharing_addresses')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
     updateBy = fields.Integer(attribute='updated_by')
@@ -76,5 +55,6 @@ class AnimationSchema(Schema):
     images = fields.Dict(keys=fields.String(),values=fields.Nested('FileSchema'))
     videos = fields.List(fields.Nested('VideoSchema'))
     captions = fields.List(fields.Nested('CaptionSchema'))
+
     class Meta:
         ordered = True

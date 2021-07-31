@@ -1,15 +1,11 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
-from ..models import (IPSchema, NovelSchema, StorageBucket, StorageRegion,
-                      UserSchema)
-from ..services import IPService, NovelService, StorageService, UserService
-from ..utilities import sha256_hash
-from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     copy_file, required_field_validation, response_json,
+from ..models import NovelSchema, StorageBucket
+from ..services import NovelService, StorageService
+from .common import (ResponseCode, authenticated_staff, copy_file, required_field_validation, response_json,
                      sift_dict_by_key)
-from .common_dumper import (dump_ip_info, dump_ip_infos, dump_novel_info,
-                            dump_novel_infos, dump_user_info)
+from .common_dumper import dump_novel_info, dump_novel_infos
 
 novel = Blueprint('novel', url_prefix='/novel')
 
@@ -20,8 +16,12 @@ async def create(request):
     data = NovelSchema().load(request.json)
     required_field_validation(
         data=data,
-        required_field=['ip_id', 'name', 'written_by',
-                        'volumes_num','integrated','file_addresses']
+        required_field=[
+            'ip_id',
+            'name',
+            'volumes_num',
+            'integrated'
+        ]
     )
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
@@ -37,11 +37,10 @@ async def create(request):
         reserved_names=data.get('reserved_names', {}),
         intros=data.get('intros', {}),
         image_ids=data.get('image_ids', {}),
-        written_by=data['written_by'],
         volumes_num=data.get('volumes_num'),
         integrated=data.get('integrated'),
-        file_addresses=data['file_addresses'],
         file_meta=data.get('file_meta', {}),
+        sharing_addresses=data.get('sharing_addresses', {}),
         created_by=request.ctx.session['user']['id'],
         updated_by=request.ctx.session['user']['id'],
         comment=data.get('comment', '')
@@ -115,7 +114,7 @@ async def edit(request):
         data=data,
         allowed_key=[
             'ip_id', 'name', 'reserved_names', 'intros', 'image_ids',
-            'written_by', 'volumes_num','integrated','file_addresses','file_meta'
+            'volumes_num','integrated','file_meta','sharing_addresses',
             'comment'
         ]
     )

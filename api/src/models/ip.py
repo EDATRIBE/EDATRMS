@@ -11,6 +11,7 @@ IPModel = sa.Table(
     sa.Column('name', sa.VARCHAR(300), nullable=False),
     sa.Column('reserved_names', sa.JSON(), nullable=False),
     sa.Column('region', sa.VARCHAR(300), nullable=False,server_default=''),
+    sa.Column('written_by', sa.VARCHAR(300), nullable=False,server_default=''),
     sa.Column('created_by', sa.Integer(), nullable=False),
     sa.Column('created_at', LocalDateTime(), nullable=False, server_default=sasql.text('CURRENT_TIMESTAMP')),
     sa.Column('updated_by', sa.INTEGER(), nullable=False),
@@ -31,6 +32,7 @@ class IPReservedNamesSchema(Schema):
     en = fields.String()
     rm = fields.String()
     misc = fields.String()
+
     class Meta:
         ordered = True
 
@@ -40,6 +42,7 @@ class IPSchema(Schema):
     name = fields.String(validate=validate.Length(0,300))
     reservedNames = fields.Nested('IPReservedNamesSchema',attribute='reserved_names')
     region = fields.String(validate=validate.OneOf(['CN','JP','OTHER']))
+    writtenBy = fields.String(attribute='written_by',validate=validate.Length(0,300))
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
     updateBy = fields.Integer(attribute='updated_by')

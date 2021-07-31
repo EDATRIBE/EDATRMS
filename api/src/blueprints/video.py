@@ -1,17 +1,10 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
-from ..models import (AnimationSchema, IPSchema, StorageBucket, StorageRegion,
-                      UserSchema, VideoSchema)
-from ..services import (AnimationService, IPService, StorageService,
-                        UserService, VideoService)
-from ..utilities import sha256_hash
-from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     copy_file, required_field_validation, response_json,
-                     sift_dict_by_key)
-from .common_dumper import (dump_animation_info, dump_animation_infos,
-                            dump_ip_info, dump_ip_infos, dump_user_info,
-                            dump_video_info, dump_video_infos)
+from ..models import VideoSchema
+from ..services import VideoService
+from .common import ResponseCode, authenticated_staff, required_field_validation, response_json, sift_dict_by_key
+from .common_dumper import dump_video_info, dump_video_infos
 
 video = Blueprint('video', url_prefix='/video')
 
@@ -20,12 +13,11 @@ video = Blueprint('video', url_prefix='/video')
 @authenticated_staff()
 async def create(request):
     data = VideoSchema().load(request.json)
-    required_field_validation(data=data, required_field=['animation_id', 'file_addresses'])
+    required_field_validation(data=data, required_field=['animation_id'])
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     video = await video_service.create(
         animation_id=data['animation_id'],
-        file_addresses=data['file_addresses'],
         file_meta=data.get('file_meta', {}),
         created_by=request.ctx.session['user']['id'],
         updated_by=request.ctx.session['user']['id'],
@@ -61,7 +53,7 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=['animation_id',  'file_addresses','file_meta', 'comment']
+        allowed_key=['file_meta', 'comment']
     )
 
     video = await video_service.edit(

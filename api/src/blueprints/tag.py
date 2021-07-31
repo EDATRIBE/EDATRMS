@@ -1,13 +1,10 @@
 from sanic import Blueprint
 from sanic.exceptions import NotFound
 
-from ..models import StorageBucket, StorageRegion, TagSchema, UserSchema
-from ..services import StorageService, TagService, UserService
-from ..utilities import sha256_hash
-from .common import (ResponseCode, authenticated_staff, authenticated_user,
-                     copy_file, required_field_validation, response_json,
-                     sift_dict_by_key)
-from .common_dumper import dump_tag_info, dump_tag_infos, dump_user_info
+from ..models import TagSchema
+from ..services import TagService
+from .common import ResponseCode, authenticated_staff, required_field_validation, response_json, sift_dict_by_key
+from .common_dumper import dump_tag_info, dump_tag_infos
 
 tag = Blueprint('tag', url_prefix='/tag')
 
