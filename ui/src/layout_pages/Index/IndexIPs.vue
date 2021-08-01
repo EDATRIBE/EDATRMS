@@ -132,8 +132,18 @@
                                                 name="fas fa-link"
                                             />
                                             <q-space></q-space>
-                                            <q-btn icon="add" flat color="primary">video</q-btn>
-                                            <q-btn icon="add" flat color="primary">caption</q-btn>
+                                            <q-btn
+                                                @click="$router.push({path:'/animation/video/create',query:{animation_id:animation.id}})"
+                                                icon="add" flat color="primary"
+                                            >
+                                                video
+                                            </q-btn>
+                                            <q-btn
+                                                @click="$router.push({path:'/animation/caption/create',query:{animation_id:animation.id}})"
+                                                icon="add" flat color="primary"
+                                            >
+                                                caption
+                                            </q-btn>
                                             <q-btn
                                                 flat color="primary"
                                                 @click="$router.push({

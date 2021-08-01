@@ -60,6 +60,7 @@
                                 </q-input>
                             </div>
                         </div>
+                        <q-separator color="grey-7" class="q-my-sm"></q-separator>
                         <!--Name-->
                         <div class="row items-center q-py-sm">
                             <div class="col-md-2 col-xs-12">
@@ -406,7 +407,7 @@ export default {
         },
         selectIP(id) {
             for (const ip of this.ips) {
-                if (ip.id === Number(this.$route.query.ip_id)){
+                if (ip.id === Number(id)){
                     this.ip=ip
                 }
             }
@@ -490,7 +491,7 @@ export default {
         readyToInitialize() {
             console.log('animation/create:ip_id='+this.$route.query.ip_id)
             if (this.readyToInitialize) {
-                this.selectIP(this.$route.query.ipId)
+                this.selectIP(this.$route.query.ip_id)
             }
         },
 

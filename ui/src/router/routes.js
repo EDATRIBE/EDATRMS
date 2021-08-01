@@ -62,6 +62,26 @@ const routes = [
                     {
                         path: 'edit',
                         component: () => import('src/layout_pages/Animation/AnimationEdit')
+                    },
+                    {
+                        path: 'caption',
+                        component: () => import('src/layout_pages/Animation/Caption/CaptionLayout'),
+                        children: [
+                            {
+                                path: 'create',
+                                component:() => import('src/layout_pages/Animation/Caption/CaptionCreate')
+                            }
+                        ]
+                    },
+                    {
+                        path: 'video',
+                        component: () => import('src/layout_pages/Animation/Video/VideoLayout'),
+                        children: [
+                            {
+                                path: 'create',
+                                component:() => import('src/layout_pages/Animation/Video/VideoCreate')
+                            }
+                        ]
                     }
                 ]
             },
