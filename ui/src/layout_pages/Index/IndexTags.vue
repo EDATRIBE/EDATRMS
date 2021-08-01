@@ -67,7 +67,7 @@
         >
           <q-chip
             v-for="(tag,i) in tags" :key="'tag'+i"
-            class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
+            class="q-mr-sm q-mb-sm q-ml-none q-mt-none text-weight-medium"
             dense
             square
             color="accent"
@@ -79,7 +79,7 @@
             {{ tag.reservedNames[$i18n.locale] || tag.name }}
           </q-chip>
           <q-chip
-            class="q-mr-sm q-mb-sm q-ml-none q-mt-none"
+            class="q-mr-sm q-mb-sm q-ml-none q-mt-none text-weight-medium"
             text-color="dark"
             dense
             square

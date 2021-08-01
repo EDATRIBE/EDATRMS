@@ -1,5 +1,5 @@
 <template>
-    <div class="q-pt-sm">
+    <div class="q-pt-sm ">
         <IPDeleteDialog
             :id.sync="ipDeleteBuffer.id"
             :is-deleting.sync="ipDeleteBuffer.isDeleting"
@@ -62,13 +62,18 @@
                 >
                     <!--IPHeader-->
                     <template v-slot:header>
-                        <div class="row no-wrap q-pl-md  items-center text-body1 full-width ">
+                        <div class="row no-wrap q-pl-md  items-center text-body1 full-width text-weight-medium">
                             <q-icon name="source" color="accent" size="1.3em" class="q-mr-md"></q-icon>
                             {{ ip.reservedNames[$i18n.locale] || ip.name }}
-                            <div class="row q-mx-md">
+                            <div class="row q-mx-sm">
+                                <q-chip
+                                    size="0.7em" square dense text-color="dark" color="accent" class="q-py-none text-weight-medium"
+                                >
+                                    {{ ip.region }}
+                                </q-chip>
                                 <q-chip
                                     v-for="(tag,i) in ip.tags" :key="i+'tag'+ip.id+tag.id"
-                                    size="0.7em" square dense text-color="dark" color="accent" class="q-py-none"
+                                    size="0.7em" square dense text-color="dark" color="accent" class="q-py-none text-weight-medium"
                                 >
                                     {{ tag.reservedNames[$i18n.locale] || tag.name }}
                                 </q-chip>
@@ -123,14 +128,26 @@
                                 >
                                     <!--AnimationsHeader-->
                                     <template v-slot:header>
-                                        <div class="row q-pl-md  items-center text-body1 full-width ">
+                                        <div class="row q-pl-md  items-center text-body1 full-width text-weight-medium">
                                             <q-icon name="movie" color="primary" size="1.3em" class="q-mr-md"></q-icon>
                                             {{ animation.reservedNames[$i18n.locale] || animation.name }}
                                             <q-icon
                                                 @click="$router.push({path:'/animation/info',query:{id:animation.id}})"
-                                                size="0.75em" color="primary" class="cursor-pointer q-ml-md"
+                                                size="0.75em" color="primary" class="cursor-pointer q-ml-sm"
                                                 name="fas fa-link"
                                             />
+                                            <div class="row q-mx-sm">
+                                                <q-chip outline
+                                                    size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
+                                                >
+                                                    {{ animation.type }}
+                                                </q-chip>
+                                                <q-chip outline
+                                                    size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
+                                                >
+                                                    {{ animation.episodesNum }} EPS
+                                                </q-chip>
+                                            </div>
                                             <q-space></q-space>
                                             <q-btn
                                                 @click="$router.push({path:'/animation/video/create',query:{animation_id:animation.id}})"
@@ -174,10 +191,22 @@
                                                     dense dark class="bg-dark-light q-pa-none bl1"
                                                     style="padding-right: 39.3px"
                                                 >
-                                                    <div class="row q-pl-md items-center text-body1 full-width ">
+                                                    <div class="row q-pl-md items-center text-body1 full-width text-weight-medium">
                                                         <q-icon name="fas fa-film" color="primary" size="1.3em"
                                                                 class="q-mr-md"></q-icon>
                                                         {{ video.fileMeta.name || 'video' + i }}
+                                                        <div class="row q-mx-sm">
+                                                            <q-chip outline
+                                                                size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
+                                                            >
+                                                                {{ video.fileMeta.type }}
+                                                            </q-chip>
+                                                            <q-chip outline
+                                                                size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
+                                                            >
+                                                                {{ video.fileMeta.quality }}
+                                                            </q-chip>
+                                                        </div>
                                                         <q-space></q-space>
                                                         <q-btn flat color="primary">edit</q-btn>
                                                         <q-btn flat color="red">delete</q-btn>
@@ -192,11 +221,23 @@
                                                     dense dark class="bg-dark-light q-pa-none bl1"
                                                     style="padding-right: 39.3px"
                                                 >
-                                                    <div class="row q-pl-md items-center text-body1 full-width ">
+                                                    <div class="row q-pl-md items-center text-body1 full-width text-weight-medium">
                                                         <q-icon name="fas fa-closed-captioning" color="primary"
                                                                 size="1.3em"
                                                                 class="q-mr-md"></q-icon>
-                                                        {{ caption.fileMeta.name || 'caption' + i }}
+                                                        {{ caption.fileMeta.name || 'caption'  }}
+                                                        <div class="row q-mx-sm">
+                                                            <q-chip outline
+                                                                size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
+                                                            >
+                                                                {{ caption.state }}
+                                                            </q-chip>
+                                                            <q-chip outline
+                                                                size="0.7em" square dense color="primary" class="q-py-none text-weight-medium"
+                                                            >
+                                                                {{ caption.fileMeta.type }}
+                                                            </q-chip>
+                                                        </div>
                                                         <q-space></q-space>
                                                         <q-btn flat color="primary">edit</q-btn>
                                                         <q-btn flat color="red">delete</q-btn>
@@ -236,7 +277,7 @@
                 :max="100"
                 color="accent"
                 input
-                input-class="text-accent"
+                input-class="text-accent text-weight-medium"
             />
         </div>
     </div>
