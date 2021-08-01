@@ -66,12 +66,12 @@ class IPTagService:
 
         return [d.get(v) for v in ids]
 
+
     async def list_ip_tag_items(self, *, ip_id=None,tag_id=None,limit=None, offset=None):
         select_sm = IPTagModel.select()
         count_sm = sasql.select([sasql.func.count()]). \
             select_from(IPTagModel)
 
-        # select_sm = select_sm.order_by(UserModel.c.id.desc())
         if ip_id is not None:
             clause = IPTagModel.c.ip_id == ip_id
             select_sm = select_sm.where(clause)
@@ -93,3 +93,19 @@ class IPTagService:
             total = await result.scalar()
 
         return (rows, total)
+
+    async def info_by_ip_ids(self, ip_ids):
+        valid_ip_ids = [v for v in ip_ids if v is not None]
+
+        if valid_ip_ids:
+            d = {valid_ip_id: [] for valid_ip_id in valid_ip_ids}
+            async with self.db.acquire() as conn:
+                result = await conn.execute(
+                    IPTagModel.select().where(IPTagModel.c.ip_id.in_(valid_ip_ids))
+                )
+                for row in await result.fetchall():
+                    d[row['ip_id']].append(dict(row))
+        else:
+            d = {}
+
+        return [d.get(ip_id) for ip_id in ip_ids]
