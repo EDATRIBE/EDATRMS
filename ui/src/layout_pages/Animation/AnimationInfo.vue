@@ -1,4 +1,4 @@
-<template >
+<template>
     <q-page v-if="initialized" padding class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em">
         <div class="q-mx-auto" style="width: 95%">
             <div class="row q-col-gutter-x-lg justify-center">
@@ -77,19 +77,19 @@
                             </div>
                         </div>
                         <q-separator color="grey" style="opacity: 20%"></q-separator>
-<!--                        <div class="row q-py-md">-->
-<!--                            <div class="col-md-2 col-xs-12">-->
-<!--                                <p class="q-my-none text-grey text-body1 text-weight-medium">-->
-<!--                                    WRITTEN BY-->
-<!--                                </p>-->
-<!--                            </div>-->
-<!--                            <div class="col-md-10 col-xs-12">-->
-<!--                                <p class="q-my-none text-white text-body1">-->
-<!--                                    {{ animation.writtenBy }}-->
-<!--                                </p>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <q-separator color="grey" style="opacity: 20%"></q-separator>-->
+                        <!--                        <div class="row q-py-md">-->
+                        <!--                            <div class="col-md-2 col-xs-12">-->
+                        <!--                                <p class="q-my-none text-grey text-body1 text-weight-medium">-->
+                        <!--                                    WRITTEN BY-->
+                        <!--                                </p>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="col-md-10 col-xs-12">-->
+                        <!--                                <p class="q-my-none text-white text-body1">-->
+                        <!--                                    {{ animation.writtenBy }}-->
+                        <!--                                </p>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <q-separator color="grey" style="opacity: 20%"></q-separator>-->
                         <div class="row q-py-md">
                             <div class="col-md-2 col-xs-12">
                                 <p class="q-my-none text-grey text-body1 text-weight-medium">
@@ -104,7 +104,8 @@
                         </div>
                     </div>
                     <!--VIDEOS-->
-                    <div style="width: 100%" class="q-px-md q-pt-md bl" v-for="(video,i) in animation.videos" :key="'video'+i">
+                    <div style="width: 100%" class="q-px-md q-pt-md bl" v-for="(video,i) in animation.videos"
+                         :key="'video'+i">
                         <div class="row q-py-md ">
                             <div class="col-md-2 col-xs-12">
                                 <q-icon color="primary" name="fas fa-film" size="2.5em"></q-icon>
@@ -144,19 +145,6 @@
                                 <p class="q-my-none text-white text-body1">
                                     {{ video.fileMeta.quality }}
                                 </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12"><p
-                                class="q-my-none text-grey text-body1 text-weight-medium">DOWNLOAD</p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <a :href="video.fileAddresses.baiduCloud.url">
-                                    <p class="q-my-none text-primary text-body1">
-                                        {{ video.fileAddresses.baiduCloud.password || 'LINK' }}
-                                    </p>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -234,31 +222,58 @@
                                 </p>
                             </div>
                         </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
+                    </div>
+                    <!--Address-->
+                    <div style="width: 100%" class="q-px-md q-pt-md bl">
                         <div class="row q-py-md">
                             <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                    DOWNLOAD
-                                </p>
+                                <q-icon color="primary" name="cloud_download" size="2.7em"></q-icon>
                             </div>
-                            <div class="col-md-10 col-xs-12 row">
-                                <div class="q-mr-lg">
-                                    <a :href="caption.fileAddresses.baiduCloud.url">
-                                        <p class="q-my-none text-primary text-body1">
-                                            AliCloud
-                                            -
-                                            {{ caption.fileAddresses.baiduCloud.password }}
-                                        </p>
-                                    </a>
+                            <div class="col-md-10 col-xs-12">
+                                <p class="q-my-none text-white text-white text-h2"></p>
+                            </div>
+                        </div>
+                        <div
+                            v-if="animation.sharingAddresses.aliCloud !== undefined &&
+                             animation.sharingAddresses.aliCloud.url!==''"
+                        >
+                            <q-separator color="grey" style="opacity: 20%"/>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-grey text-body1 text-weight-medium">
+                                        ALI CLOUD
+                                    </p>
                                 </div>
-                                <div class="q-mr-md">
-                                    <a :href="caption.fileAddresses.baiduCloud.url">
-                                        <p class="q-my-none text-primary text-body1">
-                                            百度云
-                                            -
-                                            {{ caption.fileAddresses.baiduCloud.password }}
-                                        </p>
-                                    </a>
+                                <div class="col-md-10 col-xs-12 row">
+                                    <div class="q-mr-lg">
+                                        <a :href="animation.sharingAddresses.aliCloud.url">
+                                            <p class="q-my-none text-primary text-body1">
+                                                {{ animation.sharingAddresses.aliCloud.password }}
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            v-if="animation.sharingAddresses.baiduCloud !== undefined &&
+                             animation.sharingAddresses.baiduCloud.url!==''"
+                        >
+                            <q-separator color="grey" style="opacity: 20%"/>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-grey text-body1 text-weight-medium">
+                                        BAIDU CLOUD
+                                    </p>
+                                </div>
+                                <div class="col-md-10 col-xs-12 row">
+                                    <div class="q-mr-lg">
+                                        <a :href="animation.sharingAddresses.baiduCloud.url">
+                                            <p class="q-my-none text-primary text-body1">
+                                                {{ animation.sharingAddresses.baiduCloud.password }}
+                                            </p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -287,8 +302,8 @@ export default {
         selectAnimation(id) {
             for (const ip of this.ips) {
                 for (const animation of ip.animations) {
-                    if (animation.id===Number(id)){
-                        this.animation=animation
+                    if (animation.id === Number(id)) {
+                        this.animation = animation
                     }
                 }
             }
@@ -301,9 +316,9 @@ export default {
         ips() {
             return this.$store.state.ip.ips
         },
-        initialized(){
-            return this.animation!==null
-        }
+        initialized() {
+            return this.animation !== null
+        },
     },
     watch: {
         readyToInitialize() {

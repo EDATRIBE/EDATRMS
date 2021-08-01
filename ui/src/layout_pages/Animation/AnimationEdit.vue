@@ -257,6 +257,58 @@
                             </div>
                         </div>
                         <q-separator color="grey-7" class="q-my-sm"></q-separator>
+                        <!--baidu-->
+                        <div class="row items-center q-py-sm">
+                            <div class="col-md-2 col-xs-12">
+                                <p class="q-my-none text-grey text-body1 text-weight-medium">URL-BAIDU</p>
+                            </div>
+                            <div class="col-md-10 col-xs-12">
+                                <q-input
+                                    dense dark class=" bg-dark-light" standout=""
+                                    v-model="animationEditBuffer.data.sharingAddresses.baiduCloud.url"
+                                >
+                                </q-input>
+                            </div>
+                        </div>
+                        <div class="row items-center q-py-sm">
+                            <div class="col-md-2 col-xs-12">
+                                <p class="q-my-none text-grey text-body1 text-weight-medium">PASSWORD-BAIDU</p>
+                            </div>
+                            <div class="col-md-10 col-xs-12">
+                                <q-input
+                                    dense dark class=" bg-dark-light" standout=""
+                                    v-model="animationEditBuffer.data.sharingAddresses.baiduCloud.password"
+                                >
+                                </q-input>
+                            </div>
+                        </div>
+                        <q-separator color="grey-7" class="q-my-sm"></q-separator>
+                        <!--ali-->
+                        <div class="row items-center q-py-sm">
+                            <div class="col-md-2 col-xs-12">
+                                <p class="q-my-none text-grey text-body1 text-weight-medium">URL-ALI</p>
+                            </div>
+                            <div class="col-md-10 col-xs-12">
+                                <q-input
+                                    dense dark class=" bg-dark-light" standout=""
+                                    v-model="animationEditBuffer.data.sharingAddresses.aliCloud.url"
+                                >
+                                </q-input>
+                            </div>
+                        </div>
+                        <div class="row items-center q-py-sm">
+                            <div class="col-md-2 col-xs-12">
+                                <p class="q-my-none text-grey text-body1 text-weight-medium">PASSWORD-ALI</p>
+                            </div>
+                            <div class="col-md-10 col-xs-12">
+                                <q-input
+                                    dense dark class=" bg-dark-light" standout=""
+                                    v-model="animationEditBuffer.data.sharingAddresses.aliCloud.password"
+                                >
+                                </q-input>
+                            </div>
+                        </div>
+                        <q-separator color="grey-7" class="q-my-sm"></q-separator>
                         <!--Comment-->
                         <div class="row items-center q-py-sm">
                             <div class="col-md-2 col-xs-12">
@@ -332,6 +384,16 @@ export default {
                     writtenBy: '',
                     type: null,
                     episodesNum: null,
+                    sharingAddresses: {
+                        baiduCloud: {
+                            url:'',
+                            password:''
+                        },
+                        aliCloud: {
+                            url:'',
+                            password:''
+                        }
+                    },
                     comment:''
                 },
                 server: {
@@ -373,6 +435,10 @@ export default {
             this.animationEditBuffer.data.type = animation.type
             this.animationEditBuffer.data.type = animation.type
             this.animationEditBuffer.data.episodesNum = animation.episodesNum
+            this.animationEditBuffer.data.sharingAddresses.baiduCloud.url = animation.sharingAddresses.baiduCloud.url
+            this.animationEditBuffer.data.sharingAddresses.baiduCloud.password = animation.sharingAddresses.baiduCloud.password
+            this.animationEditBuffer.data.sharingAddresses.aliCloud.url = animation.sharingAddresses.aliCloud.url
+            this.animationEditBuffer.data.sharingAddresses.aliCloud.password = animation.sharingAddresses.baiduCloud.password
             this.animationEditBuffer.data.comment = animation.comment
             this.animationEditBuffer.data.imageIds.vertical = animation.imageIds.vertical
             this.animationEditBuffer.data.imageIds.horizontal = animation.imageIds.horizontal
