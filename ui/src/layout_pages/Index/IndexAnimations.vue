@@ -149,10 +149,20 @@
         <!--Content-->
         <div class="row q-col-gutter-x-sm q-col-gutter-y-sm">
             <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
-                <q-card class="bg-dark-deep" flat>
-                    <img :src="require('assets/aaa.jpg')">
+                <q-card class="bg-dark cursor-pointer"  flat @click="()=>{}">
+                    <q-img :src="require('assets/aaa.jpg')" class="my-img" native-context-menu>
+                        <div class="absolute-full text-subtitle2 flex flex-center my-text">
+                            <q-icon size="4em" name="fas fa-link"></q-icon>
+                        </div>
+                        <q-chip
+                            dense
+                            class="absolute q-ma-none text-weight-medium" color="primary"
+                            style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 6px;">
+                            {{i%2?'EPS':'MOVIE'}}
+                        </q-chip>
+                    </q-img>
                     <q-card-section class="q-pa-xs text-white text-body1 text-weight-bold ov">
-                        {{ lorem }}
+                        {{ lorem[i%2] }}
                     </q-card-section>
                 </q-card>
             </div>
@@ -182,7 +192,7 @@ export default {
             videoType: 'all',
             hasCaption: 'all',
             ips: [],
-            lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec est ligula. Curabitur porta nibh quis convallis elementum. Praesent laoreet, lacus at tristique pretium, nisl metus luctus nibh, vel accumsan ante sapien eget ante. Nunc neque metus, iaculis ut velit at, facilisis posuere urna. Curabitur tempor quis felis commodo interdum. Ut tempus ullamcorper ipsum. Donec egestas, enim sed accumsan efficitur, elit diam feugiat nunc, in pellentesque risus nulla ut felis. Nulla facilisi. Etiam sagittis consectetur urna, ac consectetur nisi hendrerit in. Aliquam eu purus mollis, commodo ipsum at, vestibulum nisi. Etiam et suscipit justo. Fusce at mauris at lectus bibendum porta in imperdiet leo.'
+            lorem: ['Lorem ipsum dolor sit amet','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec est ligula. Curabitur porta nibh quis convallis elementum. Praesent laoreet, lacus at tristique pretium, nisl metus luctus nibh, vel accumsan ante sapien eget ante. Nunc neque metus, iaculis ut velit at, facilisis posuere urna. Curabitur tempor quis felis commodo interdum. Ut tempus ullamcorper ipsum. Donec egestas, enim sed accumsan efficitur, elit diam feugiat nunc, in pellentesque risus nulla ut felis. Nulla facilisi. Etiam sagittis consectetur urna, ac consectetur nisi hendrerit in. Aliquam eu purus mollis, commodo ipsum at, vestibulum nisi. Etiam et suscipit justo. Fusce at mauris at lectus bibendum porta in imperdiet leo.']
         }
     },
 }
@@ -202,6 +212,7 @@ a
     text-overflow: ellipsis
     display: -webkit-box
     -webkit-box-orient: vertical
+    white-space: initial
 
 .bb
     border-bottom: solid
@@ -212,4 +223,26 @@ a
     border-top: solid
     border-top-color: $primary
     border-top-width: 2px
+
+.my-img .my-text
+    visibility: hidden
+    opacity: 0
+    transition: .3s
+.my-img:hover .my-text
+    visibility: visible
+    opacity: 1
+    transition: .3s
+
+//.my-img .my-text
+//    visibility: hidden
+//    opacity: 0
+//
+//.my-img:hover .my-text
+//    visibility: visible
+//    opacity: 1
+//
+//    animation: 1s forwards
+//    animation-name: flipInX
+//    -webkit-animation-name: flipInX
+
 </style>
