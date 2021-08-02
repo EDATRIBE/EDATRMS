@@ -207,7 +207,7 @@
 export default {
     name: "IPEdit",
     created() {
-        if (this.readyToInitialize) this.initPage()
+        if (this.readyToInitialize) this.initBuffer(this.$route.query.id)
     },
     data() {
         return {
@@ -236,8 +236,8 @@ export default {
     methods: {
         foo() {
         },
-        initPage() {
-            const ipId = this.$route.query.id
+        initBuffer(ipId) {
+            // const ipId = this.$route.query.id
             for (const ip of this.ips) {
                 if (ip.id === Number(ipId)) {
                     this.initIPEditBuffer(ip)
@@ -348,7 +348,7 @@ export default {
             if (this.readyToInitialize) {
                 console.log('readyToInitialize,this.ips:')
                 console.log(this.ips)
-                this.initPage()
+                this.initBuffer(this.$route.query.id)
             }
         }
     }

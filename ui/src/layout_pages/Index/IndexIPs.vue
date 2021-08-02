@@ -8,6 +8,14 @@
             :id.sync="animationDeleteBuffer.id"
             :is-deleting.sync="animationDeleteBuffer.isDeleting"
         />
+        <video-delete-dialog
+            :id.sync="videoDeleteBuffer.id"
+            :is-deleting.sync="videoDeleteBuffer.isDeleting"
+        />
+        <caption-delete-dialog
+            :id.sync="captionDeleteBuffer.id"
+            :is-deleting.sync="captionDeleteBuffer.isDeleting"
+        />
         <div class="q-col-gutter-y-sm" v-if="initialized">
             <!--Tools-->
             <div>
@@ -80,7 +88,7 @@
                             </div>
                             <q-space></q-space>
                             <q-btn
-                                flat color="primary" icon="add"
+                                flat color="accent" icon="add"
                                 @click="$router.push({
                                   path: '/animation/create',
                                   query: {
@@ -90,7 +98,7 @@
                             >
                                 animation
                             </q-btn>
-                            <q-btn flat color="secondary" icon="add">novel</q-btn>
+                            <q-btn flat color="accent" icon="add">novel</q-btn>
                             <q-btn
                                 flat color="accent"
                                 @click="$router.push({
@@ -194,7 +202,7 @@
                                                     <div class="row q-pl-md items-center text-body1 full-width text-weight-medium">
                                                         <q-icon name="fas fa-film" color="primary" size="1.3em"
                                                                 class="q-mr-md"></q-icon>
-                                                        {{ video.fileMeta.name || 'video' + i }}
+                                                        {{ video.fileMeta.name || 'video' }}
                                                         <div class="row q-mx-sm">
                                                             <q-chip outline
                                                                 size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
@@ -208,8 +216,23 @@
                                                             </q-chip>
                                                         </div>
                                                         <q-space></q-space>
-                                                        <q-btn flat color="primary">edit</q-btn>
-                                                        <q-btn flat color="red">delete</q-btn>
+                                                        <q-btn
+                                                            flat color="primary"
+                                                            @click="$router.push({
+                                                              path: '/animation/video/edit',
+                                                              query: {
+                                                                video_id: video.id
+                                                              }
+                                                            })"
+                                                        >
+                                                            edit
+                                                        </q-btn>
+                                                        <q-btn
+                                                            flat color="red"
+                                                            @click="videoDeleteBuffer.id=video.id; videoDeleteBuffer.isDeleting=true"
+                                                        >
+                                                            delete
+                                                        </q-btn>
                                                     </div>
                                                 </q-item>
                                             </div>
@@ -239,8 +262,23 @@
                                                             </q-chip>
                                                         </div>
                                                         <q-space></q-space>
-                                                        <q-btn flat color="primary">edit</q-btn>
-                                                        <q-btn flat color="red">delete</q-btn>
+                                                        <q-btn
+                                                            flat color="primary"
+                                                            @click="$router.push({
+                                                              path: '/animation/caption/edit',
+                                                              query: {
+                                                                caption_id: caption.id
+                                                              }
+                                                            })"
+                                                        >
+                                                            edit
+                                                        </q-btn>
+                                                        <q-btn
+                                                            flat color="red"
+                                                            @click="captionDeleteBuffer.id=caption.id; captionDeleteBuffer.isDeleting=true"
+                                                        >
+                                                            delete
+                                                        </q-btn>
                                                     </div>
                                                 </q-item>
                                             </div>
@@ -286,10 +324,12 @@
 <script>
 import IPDeleteDialog from "src/layout_pages/IP/IPDeleteDialog";
 import AnimationDeleteDialog from "src/layout_pages/Animation/AnimationDeleteDialog";
+import VideoDeleteDialog from "src/layout_pages/Animation/Video/VideoDeleteDialog";
+import CaptionDeleteDialog from "src/layout_pages/Animation/Caption/CaptionDeleteDialog";
 
 export default {
     name: "IndexIPs",
-    components: {AnimationDeleteDialog, IPDeleteDialog},
+    components: {CaptionDeleteDialog, VideoDeleteDialog, AnimationDeleteDialog, IPDeleteDialog},
     data() {
         return {
             model: '',
@@ -299,6 +339,14 @@ export default {
                 isDeleting: false
             },
             animationDeleteBuffer: {
+                id: null,
+                isDeleting: false
+            },
+            videoDeleteBuffer: {
+                id: null,
+                isDeleting: false
+            },
+            captionDeleteBuffer: {
                 id: null,
                 isDeleting: false
             },

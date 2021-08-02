@@ -70,6 +70,10 @@ const routes = [
                             {
                                 path: 'create',
                                 component:() => import('src/layout_pages/Animation/Caption/CaptionCreate')
+                            },
+                            {
+                                path: 'edit',
+                                component:() => import('src/layout_pages/Animation/Caption/CaptionEdit')
                             }
                         ]
                     },
@@ -80,6 +84,10 @@ const routes = [
                             {
                                 path: 'create',
                                 component:() => import('src/layout_pages/Animation/Video/VideoCreate')
+                            },
+                            {
+                                path: 'edit',
+                                component:() => import('src/layout_pages/Animation/Video/VideoEdit')
                             }
                         ]
                     }
