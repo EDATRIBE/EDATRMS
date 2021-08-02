@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em">
-    <div class="q-mx-auto" style="width: 95%">
+    <div class="q-mx-auto" style="width: 97%">
       <div
         class="row q-mb-md q-px-lg q-py-md bg-dark-light" style="border-radius: 3px"
         :class="{'no-wrap': $q.screen.gt.sm}"

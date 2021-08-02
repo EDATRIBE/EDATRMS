@@ -1,6 +1,6 @@
 <template v-if="initialized">
     <q-page padding class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em">
-        <div class="q-mx-auto" style="width: 95%">
+        <div class="q-mx-auto" style="width: 97%">
             <div class="column full-width">
 
                 <!--Title-->

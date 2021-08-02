@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div >
     <q-btn
       size="0.75em" flat class="no-border-radius"
       v-for="(opt,i) in options" :key="'opt'+i"

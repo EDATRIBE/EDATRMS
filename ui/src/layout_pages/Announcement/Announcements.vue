@@ -1,6 +1,6 @@
 <template>
     <q-page padding class=" bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em">
-        <div class="q-mx-auto" style="width: 95%">
+        <div class="q-mx-auto" style="width: 97%">
             <div class="row q-col-gutter-x-lg"><!--do not set margin-->
                 <!--LEFT-->
                 <div class="col-md-3 col-xs-12 q-pb-md"><!--do not set margin-->

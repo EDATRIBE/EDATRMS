@@ -1,7 +1,7 @@
 <template>
     <q-layout view="hHh lpr fFf">
-        <q-header class="bg-dark q-px-md" reveal :reveal-offset="0">
-            <q-toolbar style="width: 95%" class="q-py-md q-px-none q-mx-auto items-center">
+        <q-header class="bg-dark q-px-md">
+            <q-toolbar style="width: 97%" class="q-pt-md q-pb-md q-px-none q-mx-auto items-center">
                 <q-icon name="fas fa-atom" size="2.35em"/>
                 <div class="text-h4 q-ml-sm" v-if="$q.screen.gt.sm">EDATRMS</div>
                 <q-space/>

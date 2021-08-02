@@ -1,11 +1,11 @@
 <template>
   <q-page class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em" v-if="!LD">
     <q-scroll-observer @scroll="onScroll"/>
-    <div class="q-mx-auto" style="width: 95%">
+    <div class="q-mx-auto" style="width: 97%">
       <div class="column">
         <!--SEARCH-->
         <q-input
-          dense dark class="text-h5 bg-dark-light q-mb-md" style="width: 100%" standout=""
+          dense dark class="text-h5 bg-dark-light q-mb-lg" style="width: 100%" standout=""
           v-model="searchBuffer"
         >
           <template v-slot:append>
@@ -66,8 +66,8 @@
       </div>
     </div>
 
-    <q-page-sticky expand position="top" class="bg-dark q-px-md q-py-sm" v-show="scrollInfo.position>38">
-      <q-toolbar style="width: 95.2%" class="q-px-none">
+    <q-page-sticky expand position="top" class="bg-dark q-px-md q-pb-sm" v-show="scrollInfo.position>38">
+      <q-toolbar style="width: 97%" class="q-px-none">
         <q-input
           dense dark class="text-h5 bg-dark-light" style="width: 100%" standout=""
           v-model="searchBuffer"
