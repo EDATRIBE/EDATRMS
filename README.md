@@ -3,7 +3,7 @@
 <div align=center><img width="500" src="readme.assets/placeholder.png"/></div>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/progress-60%25-orange">
+    <img src="https://img.shields.io/badge/progress-70%25-orange">
     <img src="https://img.shields.io/badge/python-3.8-blue">
     <img src="https://img.shields.io/badge/sanic-19.12-blue">
 </p>
