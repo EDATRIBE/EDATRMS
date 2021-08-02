@@ -146,7 +146,7 @@
     <!--Content-->
     <div class="row q-col-gutter-x-md q-col-gutter-y-lg">
       <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
-        <q-card class="bg-dark-light" flat square>
+        <q-card class="bg-dark-deep" flat>
           <img :src="require('assets/aaa.jpg')">
           <q-card-section class="q-pa-xs text-white text-body1 text-weight-bold ov">
             {{ lorem }}
