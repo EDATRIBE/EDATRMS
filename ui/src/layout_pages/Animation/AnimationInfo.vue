@@ -1,7 +1,7 @@
 <template>
     <q-page v-if="initialized" padding class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em">
         <div class="q-mx-auto" style="width: 97%">
-            <div class="row q-col-gutter-x-lg justify-center">
+            <div class="row q-col-gutter-x-md justify-center">
                 <!--LEFT-->
                 <div class="column col-md-3 col-xs-12">
                     <q-img
@@ -9,7 +9,7 @@
                         :src="animation.images.vertical.url"
                         v-if="animation.images.vertical!==undefined"
                     />
-                    <q-btn dense class=" q-mt-sm" color="primary" text-color="white">
+                    <q-btn dense class=" q-mt-md" color="primary" text-color="white">
                         REPORT A PROBLEM
                         <q-icon class="q-pl-sm" name="construction" size="1.5em"/>
                     </q-btn>

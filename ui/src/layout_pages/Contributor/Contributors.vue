@@ -2,10 +2,17 @@
   <q-page class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em">
     <div class="q-mx-auto" style="width: 97%">
       <div
-        class="row q-mb-md q-px-lg q-py-md bg-dark-light" style="border-radius: 3px"
+        class="row q-mb-md q-px-lg q-py-md bg-dark-light" style="border-radius: 4px; position: relative"
         :class="{'no-wrap': $q.screen.gt.sm}"
         v-for="j in 10" :key="j"
       >
+          <q-chip
+              dense
+              class="absolute q-ma-none text-weight-medium cursor-pointer" color="white" text-color="dark"
+              style="right: -3px; top:-3px;  opacity: 1; border-radius: 4px 0px 4px 0px;">
+              TA 参与的作品
+              <q-icon size=".5em" class="q-mx-sm" name="fas fa-link"/>
+          </q-chip>
         <div>
           <q-avatar size="130px" v-ripple class="cursor-pointer q-mr-md q-mt-md">
             <img contain :src="require('assets/3333.png')">
