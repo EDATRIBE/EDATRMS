@@ -433,7 +433,6 @@ export default {
             this.animationEditBuffer.data.producedBy = animation.producedBy
             this.animationEditBuffer.data.releasedAt = animation.releasedAt
             this.animationEditBuffer.data.type = animation.type
-            this.animationEditBuffer.data.type = animation.type
             this.animationEditBuffer.data.episodesNum = animation.episodesNum
             this.animationEditBuffer.data.sharingAddresses.baiduCloud.url = animation.sharingAddresses.baiduCloud.url
             this.animationEditBuffer.data.sharingAddresses.baiduCloud.password = animation.sharingAddresses.baiduCloud.password

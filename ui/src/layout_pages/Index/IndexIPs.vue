@@ -16,6 +16,10 @@
             :id.sync="captionDeleteBuffer.id"
             :is-deleting.sync="captionDeleteBuffer.isDeleting"
         />
+        <novel-delete-dialog
+            :id.sync="novelDeleteBuffer.id"
+            :is-deleting.sync="novelDeleteBuffer.isDeleting"
+        />
         <div class="q-col-gutter-y-sm" v-if="initialized">
             <!--Tools-->
             <div>
@@ -98,7 +102,17 @@
                             >
                                 animation
                             </q-btn>
-                            <q-btn flat color="accent" icon="add">novel</q-btn>
+                            <q-btn
+                                flat color="accent" icon="add"
+                                @click="$router.push({
+                                  path: '/novel/create',
+                                  query: {
+                                    ip_id: ip.id
+                                  }
+                                })"
+                            >
+                                novel
+                            </q-btn>
                             <q-btn
                                 flat color="accent"
                                 @click="$router.push({
@@ -293,12 +307,47 @@
                                     dense dark class="bg-dark-light q-pa-none bl2" style="padding-right: 39.3px"
                                 >
                                     <div class="row q-pl-md items-center text-body1 full-width ">
-                                        <q-icon name="import_contacts" color="secondary" size="1.3em"
-                                                class="q-mr-md"></q-icon>
+                                        <q-icon
+                                            name="import_contacts" color="secondary" size="1.3em"
+                                            class="q-mr-md"
+                                        >
+                                        </q-icon>
                                         {{ novel.reservedNames[$i18n.locale] || novel.name }}
+                                        <q-icon
+                                            @click="$router.push({path:'/novel/info',query:{id:novel.id}})"
+                                            size="0.75em" color="secondary" class="cursor-pointer q-ml-sm"
+                                            name="fas fa-link"
+                                        />
+                                        <div class="row q-mx-sm">
+                                            <q-chip outline
+                                                    size="0.7em" square dense text-color="dark" color="secondary" class="q-py-none text-weight-medium"
+                                            >
+                                                {{ novel.integrated?'INTEGRATED':'UNINTEGRATED' }}
+                                            </q-chip>
+                                            <q-chip outline
+                                                    size="0.7em" square dense color="secondary" class="q-py-none text-weight-medium"
+                                            >
+                                                {{ novel.fileMeta.type }}
+                                            </q-chip>
+                                        </div>
                                         <q-space></q-space>
-                                        <q-btn flat color="secondary">edit</q-btn>
-                                        <q-btn flat color="red">delete</q-btn>
+                                        <q-btn
+                                            flat color="secondary"
+                                            @click="$router.push({
+                                                path: '/novel/edit',
+                                                query: {
+                                                    id: novel.id
+                                                }
+                                            })"
+                                        >
+                                            edit
+                                        </q-btn>
+                                        <q-btn
+                                            flat color="red"
+                                            @click="novelDeleteBuffer.id=novel.id; novelDeleteBuffer.isDeleting=true"
+                                        >
+                                            delete
+                                        </q-btn>
                                     </div>
                                 </q-item>
                             </div>
@@ -326,10 +375,11 @@ import IPDeleteDialog from "src/layout_pages/IP/IPDeleteDialog";
 import AnimationDeleteDialog from "src/layout_pages/Animation/AnimationDeleteDialog";
 import VideoDeleteDialog from "src/layout_pages/Animation/Video/VideoDeleteDialog";
 import CaptionDeleteDialog from "src/layout_pages/Animation/Caption/CaptionDeleteDialog";
+import NovelDeleteDialog from "src/layout_pages/Novel/NovelDeleteDialog";
 
 export default {
     name: "IndexIPs",
-    components: {CaptionDeleteDialog, VideoDeleteDialog, AnimationDeleteDialog, IPDeleteDialog},
+    components: {NovelDeleteDialog, CaptionDeleteDialog, VideoDeleteDialog, AnimationDeleteDialog, IPDeleteDialog},
     data() {
         return {
             model: '',

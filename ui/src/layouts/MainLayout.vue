@@ -7,6 +7,8 @@
                 <q-space/>
 
                 <nav-items v-if="$q.screen.gt.sm"/>
+
+<!--                <q-space/>-->
                 <q-separator vertical color="grey" inset="true" class="q-ml-md" v-if="$q.screen.gt.sm"/>
 
                 <q-btn-dropdown dense flat no-caps class="text-body1 q-ml-md" dropdown-icon="translate"

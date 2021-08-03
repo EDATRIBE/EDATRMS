@@ -147,17 +147,17 @@
         </div>
 
         <!--Content-->
-        <div class="row q-col-gutter-x-sm q-col-gutter-y-md">
+        <div class="row q-col-gutter-x-sm q-col-gutter-y-lg">
             <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
-                <q-card class="bg-dark cursor-pointer" flat  @click="()=>{}">
-                    <q-img :src="require('assets/aaa.jpg')" class="my-img" native-context-menu>
+                <q-card class="bg-dark cursor-pointer" flat style="border-radius: 0px"  @click="()=>{}">
+                    <q-img :src="require('assets/aaa.jpg')" class="my-img">
                         <div class="absolute-full text-subtitle2 flex flex-center my-text">
-                            <q-icon size="4em" name="fas fa-link"></q-icon>
+                            <q-icon class="shadow-3 mhc" size="4em" name="fas fa-link"></q-icon>
                         </div>
                         <q-chip
                             dense
-                            class="absolute q-ma-none text-weight-medium" color="primary"
-                            style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 6px;">
+                            class="absolute q-ma-none text-weight-medium shadow-5" color="primary"
+                            style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 12px;">
                             {{i%2?'EPS':'MOVIE'}}
                         </q-chip>
                     </q-img>
@@ -233,6 +233,18 @@ a
     visibility: visible
     opacity: 1
     transition: .3s
+.mhc
+    color: white
+    transition: .3s
+.mhc:hover
+    color: $primary
+    transition: .3s
+
+.mhs
+    transform: scale(1)
+    transition: transform 1s ease 0s
+.mhs:hover
+    transform: scale(1.05)
 
 //.my-img .my-text
 //    visibility: hidden
