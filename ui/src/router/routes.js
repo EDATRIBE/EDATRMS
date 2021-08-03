@@ -94,8 +94,22 @@ const routes = [
                 ]
             },
             {
-                path: 'nov',
-                component: () => import('src/layout_pages/Novel/Novel')
+                path: 'novel',
+                component: () => import('src/layout_pages/Novel/NovelLayout'),
+                children: [
+                    {
+                        path: 'info',
+                        component: () => import('src/layout_pages/Novel/NovelInfo')
+                    },
+                    {
+                        path: 'create',
+                        component: () => import('src/layout_pages/Novel/NovelCreate')
+                    },
+                    {
+                        path: 'edit',
+                        component: () => import('src/layout_pages/Novel/NovelEdit')
+                    },
+                ]
             },
             {
                 path: 'flab',
