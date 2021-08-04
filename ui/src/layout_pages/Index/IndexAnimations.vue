@@ -149,19 +149,31 @@
         <!--Content-->
         <div class="row q-col-gutter-x-sm q-col-gutter-y-lg">
             <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
-                <q-card class="bg-dark cursor-pointer" flat style="border-radius: 3px"  @click="()=>{}">
-                    <q-img :src="require('assets/aaa.jpg')" class="my-img">
-                        <div class="absolute-full text-subtitle2 flex flex-center my-text">
-                            <q-icon class="shadow-3 mhc" size="4em" name="fas fa-link"></q-icon>
+                <q-card class="bg-dark cursor-pointer my-card" flat style="border-radius: 3px"  @click="()=>{}">
+<!--                    <q-img :src="require('assets/aaa.jpg')" class="my-img">-->
+<!--                        <div class="absolute-full text-subtitle2 flex flex-center my-text">-->
+<!--                            <q-icon class="shadow-3 mhc" size="4em" name="fas fa-link"></q-icon>-->
+<!--                        </div>-->
+<!--                        <q-chip-->
+<!--                            dense-->
+<!--                            class="absolute q-ma-none text-weight-medium shadow-5" color="primary"-->
+<!--                            style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 12px;">-->
+<!--                            {{i%2?'EPS':'MOVIE'}}-->
+<!--                        </q-chip>-->
+<!--                    </q-img>-->
+                    <q-responsive :ratio="2/3">
+                        <div class="full-width" style="overflow: hidden; position: relative">
+                            <q-img :src="require('assets/'+i%3+'.jpg')" class="mhs">
+                            </q-img>
+                            <q-chip
+                                dense
+                                class="absolute q-ma-none q-pa-md text-weight-medium shadow-5" color="primary" text-color="white"
+                                style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 12px;">
+                                {{i%2?'EPS':'MOVIE'}}
+                            </q-chip>
                         </div>
-                        <q-chip
-                            dense
-                            class="absolute q-ma-none text-weight-medium shadow-5" color="primary"
-                            style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 12px;">
-                            {{i%2?'EPS':'MOVIE'}}
-                        </q-chip>
-                    </q-img>
-                    <q-card-section class="q-pa-none text-white text-body1 text-weight-bold ov">
+                    </q-responsive>
+                    <q-card-section class="q-py-xs q-px-none text-body1 text-weight-bold ov my-section">
                         <span class="mhc">{{ lorem[i%2] }}</span>
                     </q-card-section>
                 </q-card>
@@ -233,18 +245,23 @@ a
     visibility: visible
     opacity: 1
     transition: .3s
-.mhc
+
+.my-section .mhc
     color: white
     transition: .3s
-.mhc:hover
+.my-section:hover .mhc
     color: $primary
     transition: .3s
 
-.mhs
-    transform: scale(1)
-    transition: transform 1s ease 0s
-.mhs:hover
-    transform: scale(1.05)
+.my-card .mhs
+    -webkit-filter: brightness(.99)
+    filter: brightness(.99)
+    transform: translateZ(0) scale(1)
+    transition: transform .4s ease 0s
+.my-card:hover .mhs
+    -webkit-filter: brightness(1)
+    filter: brightness(1)
+    transform: translateZ(0) scale(1.3)
 
 //.my-img .my-text
 //    visibility: hidden
