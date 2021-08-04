@@ -149,7 +149,7 @@
         <!--Content-->
         <div class="row q-col-gutter-x-sm q-col-gutter-y-lg">
             <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
-                <q-card class="bg-dark cursor-pointer" flat style="border-radius: 0px"  @click="()=>{}">
+                <q-card class="bg-dark cursor-pointer" flat style="border-radius: 3px"  @click="()=>{}">
                     <q-img :src="require('assets/aaa.jpg')" class="my-img">
                         <div class="absolute-full text-subtitle2 flex flex-center my-text">
                             <q-icon class="shadow-3 mhc" size="4em" name="fas fa-link"></q-icon>
@@ -162,7 +162,7 @@
                         </q-chip>
                     </q-img>
                     <q-card-section class="q-pa-none text-white text-body1 text-weight-bold ov">
-                        {{ lorem[i%2] }}
+                        <span class="mhc">{{ lorem[i%2] }}</span>
                     </q-card-section>
                 </q-card>
             </div>
@@ -192,7 +192,7 @@ export default {
             videoType: 'all',
             hasCaption: 'all',
             ips: [],
-            lorem: ['Lorem ipsum dolor sit','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec est ligula. Curabitur porta nibh quis convallis elementum. Praesent laoreet, lacus at tristique pretium, nisl metus luctus nibh, vel accumsan ante sapien eget ante. Nunc neque metus, iaculis ut velit at, facilisis posuere urna. Curabitur tempor quis felis commodo interdum. Ut tempus ullamcorper ipsum. Donec egestas, enim sed accumsan efficitur, elit diam feugiat nunc, in pellentesque risus nulla ut felis. Nulla facilisi. Etiam sagittis consectetur urna, ac consectetur nisi hendrerit in. Aliquam eu purus mollis, commodo ipsum at, vestibulum nisi. Etiam et suscipit justo. Fusce at mauris at lectus bibendum porta in imperdiet leo.']
+            lorem: ['Lorem ipsum dolor sit','末日时在做什么？有没有空，可以来拯救么？','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec est ligula. Curabitur porta nibh quis convallis elementum. Praesent laoreet, lacus at tristique pretium, nisl metus luctus nibh, vel accumsan ante sapien eget ante. Nunc neque metus, iaculis ut velit at, facilisis posuere urna. Curabitur tempor quis felis commodo interdum. Ut tempus ullamcorper ipsum. Donec egestas, enim sed accumsan efficitur, elit diam feugiat nunc, in pellentesque risus nulla ut felis. Nulla facilisi. Etiam sagittis consectetur urna, ac consectetur nisi hendrerit in. Aliquam eu purus mollis, commodo ipsum at, vestibulum nisi. Etiam et suscipit justo. Fusce at mauris at lectus bibendum porta in imperdiet leo.']
         }
     },
 }

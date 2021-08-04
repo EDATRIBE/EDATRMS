@@ -26,3 +26,12 @@ body {
 }
 
 @import "~animate.css";
+
+@font-face {
+    font-family: ZCOOLXW;
+    src: url("fonts/zcoolxw.woff");
+}
+
+.zcoolxw-font {
+    font-family: 'ZCOOLXW', serif;
+}

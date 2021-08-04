@@ -51,7 +51,7 @@
           <q-separator class="q-mt-sm" color="grey-7"></q-separator>
           <div class="row q-pt-sm text-white text-justify text-body1">
             <div>
-              <q-icon size="1.2em" class="q-mr-sm" name="email"></q-icon>
+              <q-icon size="1em" class="q-mr-sm" name="fas fa-envelope"></q-icon>
             </div>
             <div class="text-justify">
               amaindex@outlook.com
@@ -59,19 +59,18 @@
           </div>
           <div class="row q-pt-sm text-white text-justify text-body1">
             <div>
-              <q-icon size="1.1em" class="q-mr-sm" name="fab fa-qq"></q-icon>
+              <q-icon size="1em" class="q-mr-sm" name="fab fa-qq"></q-icon>
             </div>
             <div class="text-justify">
               1136342931
             </div>
           </div>
           <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
-            <div>
-              <q-icon size="1.1em" class="q-mr-sm" name="fas fa-info"></q-icon>
+            <div class="q-pa-none">
+              <q-icon size="1em" class="q-mr-sm" name="fas fa-info"></q-icon>
             </div>
             <div class="text-justify">
               以中有足乐者，不知口体之奉不若人也
-
             </div>
           </div>
         </div>
