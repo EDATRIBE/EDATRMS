@@ -54,7 +54,7 @@ async def upload(request):
             async with aiofiles.open(os.path.join(save_dir, file_name), 'wb') as f:
                 await f.write(body)
 
-            file = await storage_service.create_file(
+            file = await storage_service.create(
                 region=region,
                 bucket=bucket,
                 path=os.path.join(path, file_name),
@@ -118,7 +118,7 @@ async def filepond_upload(request):
         await f.write(uploaded_file.body)
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
-    file = await storage_service.create_file(
+    file = await storage_service.create(
         region=region,
         bucket=bucket,
         path=os.path.join(path, file_name),

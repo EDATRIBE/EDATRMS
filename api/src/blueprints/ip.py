@@ -27,7 +27,13 @@ ip = Blueprint('ip', url_prefix='/ip')
 @authenticated_staff()
 async def create(request):
     data = IPSchema().load(request.json)
-    required_field_validation(data=data, required_field=['name','region'])
+    required_field_validation(
+        data=data,
+        required_field=[
+            'name',
+            'region'
+        ]
+    )
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
     ip = await ip_service.create(
@@ -68,7 +74,13 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=['name', 'reserved_names', 'region','written_by', 'comment']
+        allowed_key=[
+            'name',
+            'reserved_names',
+            'region',
+            'written_by',
+            'comment'
+        ]
     )
 
     ip = await ip_service.edit(
@@ -100,7 +112,7 @@ async def delete(request):
 async def list_all(request):
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
-    ips, total = await ip_service.list_ips()
+    ips, total = await ip_service.list_()
 
     return response_json(
         ips=await dump_ip_infos(request, ips),
@@ -111,7 +123,7 @@ async def list_all(request):
 async def list_(request, offset, limit):
 
     ip_service = IPService(request.app.config, request.app.db, request.app.cache)
-    ips, total = await ip_service.list_ips(limit=limit, offset=offset)
+    ips, total = await ip_service.list_(limit=limit, offset=offset)
 
     return response_json(
         ips=await dump_ip_infos(request, ips),

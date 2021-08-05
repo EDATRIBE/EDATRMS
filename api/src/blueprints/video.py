@@ -53,7 +53,10 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=['file_meta', 'comment']
+        allowed_key=[
+            'file_meta',
+            'comment'
+        ]
     )
 
     video = await video_service.edit(
@@ -82,7 +85,7 @@ async def delete(request):
 @video.get('/list')
 async def list_all(request):
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
-    videos, total = await video_service.list_videos()
+    videos, total = await video_service.list_()
 
     return response_json(
         videos=await dump_video_infos(request, videos),
@@ -93,7 +96,7 @@ async def list_all(request):
 async def list_(request, offset, limit):
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
-    videos, total = await video_service.list_videos(limit=limit, offset=offset)
+    videos, total = await video_service.list_(limit=limit, offset=offset)
 
     return response_json(
         videos=await dump_video_infos(request, videos),

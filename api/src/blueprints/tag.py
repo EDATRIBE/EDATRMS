@@ -79,7 +79,7 @@ async def delete(request):
 async def list_all(request):
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
-    tags, total = await tag_service.list_tags()
+    tags, total = await tag_service.list_()
 
     return response_json(
         tags=await dump_tag_infos(request, tags),
@@ -90,7 +90,7 @@ async def list_all(request):
 async def list_(request, offset, limit):
 
     tag_service = TagService(request.app.config, request.app.db, request.app.cache)
-    tags, total = await tag_service.list_tags(limit=limit, offset=offset)
+    tags, total = await tag_service.list_(limit=limit, offset=offset)
 
     return response_json(
         tags=await dump_tag_infos(request, tags),

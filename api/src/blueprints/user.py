@@ -9,7 +9,7 @@ user = Blueprint('user', url_prefix='/user')
 @user.get('/list')
 async def list_(request):
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    users, total = await user_service.list_users()
+    users, total = await user_service.list_()
 
     return response_json(
         users=await dump_user_infos(request, users),

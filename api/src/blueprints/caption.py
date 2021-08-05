@@ -13,7 +13,14 @@ caption = Blueprint('caption', url_prefix='/caption')
 @authenticated_staff()
 async def create(request):
     data = CaptionSchema().load(request.json)
-    required_field_validation(data=data, required_field=['animation_id', 'integrated', 'state'])
+    required_field_validation(
+        data=data,
+        required_field=[
+            'animation_id',
+            'integrated',
+            'state'
+        ]
+    )
 
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     caption = await caption_service.create(
@@ -27,8 +34,8 @@ async def create(request):
         comment=data.get('comment', '')
     )
 
-
     return response_json(caption=await dump_caption_info(request, caption))
+
 
 @caption.get('/info/<id:int>')
 async def info(request, id):
@@ -56,7 +63,13 @@ async def edit(request):
 
     allowed_data = sift_dict_by_key(
         data=data,
-        allowed_key=['integrated','state','released_at','file_meta', 'comment']
+        allowed_key=[
+            'integrated',
+            'state',
+            'released_at',
+            'file_meta',
+            'comment'
+        ]
     )
 
     caption = await caption_service.edit(
@@ -66,6 +79,7 @@ async def edit(request):
     )
 
     return response_json(caption=await dump_caption_info(request, caption))
+
 
 @caption.post('/delete')
 @authenticated_staff()
@@ -82,31 +96,38 @@ async def delete(request):
 
     return response_json(caption=await dump_caption_info(request, caption))
 
+
 @caption.get('/list')
 async def list_all(request):
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
-    captions, total = await caption_service.list_captions()
+    captions, total = await caption_service.list_()
 
     return response_json(
         captions=await dump_caption_infos(request, captions),
         total=total
     )
+
 
 @caption.get('/list/<limit:int>/<offset:int>')
 async def list_(request, offset, limit):
-
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
-    captions, total = await caption_service.list_captions(limit=limit, offset=offset)
+    captions, total = await caption_service.list_(limit=limit, offset=offset)
 
     return response_json(
         captions=await dump_caption_infos(request, captions),
         total=total
     )
+
 
 @caption.post('/set/contributors')
 async def caption_contributor_create(request):
     data = CaptionUsersSchema().load(request.json)
-    required_field_validation(data=data, required_field=['caption_id', 'user_ids'])
+    required_field_validation(
+        data=data,
+        required_field=[
+            'caption_id',
+            'user_ids']
+    )
 
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     caption = await caption_service.info(data['caption_id'])
@@ -133,6 +154,5 @@ async def caption_contributor_create(request):
         caption_user_items.append(caption_user_item)
 
     return response_json(
-        caption_user_items=await dump_caption_user_infos(request,caption_user_items)
+        caption_user_items=await dump_caption_user_infos(request, caption_user_items)
     )
-

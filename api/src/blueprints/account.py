@@ -38,7 +38,16 @@ async def info(request):
 @authenticated_user()
 async def edit(request):
     data = UserSchema().load(request.json)
-    data = sift_dict_by_key(data=data,allowed_key=['password', 'qq', 'email', 'intro', 'avatar_id'])
+    data = sift_dict_by_key(
+        data=data,
+        allowed_key=[
+            'password',
+            'qq',
+            'email',
+            'intro',
+            'avatar_id'
+        ]
+    )
 
     cond1 = data.get('avatar_id') is not None
     cond2 = (request.ctx.session['user'].get('avatar') is None or

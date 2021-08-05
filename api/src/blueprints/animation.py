@@ -155,7 +155,7 @@ async def delete(request):
 @animation.get('/list')
 async def list_all(request):
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
-    animations, total = await animation_service.list_animations()
+    animations, total = await animation_service.list_()
 
     return response_json(
         animations=await dump_animation_infos(request, animations),
@@ -166,7 +166,7 @@ async def list_all(request):
 @animation.get('/list/<limit:int>/<offset:int>')
 async def list_(request, offset, limit):
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
-    animations, total = await animation_service.list_animations(limit=limit, offset=offset)
+    animations, total = await animation_service.list_(limit=limit, offset=offset)
 
     return response_json(
         animations=await dump_animation_infos(request, animations),

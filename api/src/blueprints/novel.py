@@ -113,8 +113,14 @@ async def edit(request):
     allowed_data = sift_dict_by_key(
         data=data,
         allowed_key=[
-            'ip_id', 'name', 'reserved_names', 'intros', 'image_ids',
-            'volumes_num','integrated','file_meta','sharing_addresses',
+            'name',
+            'reserved_names',
+            'intros',
+            'image_ids',
+            'volumes_num',
+            'integrated',
+            'file_meta',
+            'sharing_addresses',
             'comment'
         ]
     )
@@ -146,7 +152,7 @@ async def delete(request):
 @novel.get('/list')
 async def list_all(request):
     novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
-    novels, total = await novel_service.list_novels()
+    novels, total = await novel_service.list_()
 
     return response_json(
         novels=await dump_novel_infos(request, novels),
@@ -157,7 +163,7 @@ async def list_all(request):
 @novel.get('/list/<limit:int>/<offset:int>')
 async def list_(request, offset, limit):
     novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
-    novels, total = await novel_service.list_novels(limit=limit, offset=offset)
+    novels, total = await novel_service.list_(limit=limit, offset=offset)
 
     return response_json(
         novels=await dump_novel_infos(request, novels),
