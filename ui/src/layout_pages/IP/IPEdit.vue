@@ -229,7 +229,8 @@ export default {
             },
             selectedTagModelsBuffer: {
                 loading: true,
-                data: []
+                data: [],
+                signature: ''
             },
         }
     },
@@ -241,7 +242,7 @@ export default {
             for (const ip of this.ips) {
                 if (ip.id === Number(ipId)) {
                     this.initIPEditBuffer(ip)
-                    this.initSelectedTagModelsBuffer(ip.tags)
+                    this.initSelectedTagModelsBuffer(ip.tagIds)
                 }
             }
         },
@@ -258,40 +259,56 @@ export default {
             this.IPEditBuffer.data.comment = ip.comment
             this.IPEditBuffer.loading = false
         },
-        initSelectedTagModelsBuffer(tags) {
-            for (const tag of tags) {
+        initSelectedTagModelsBuffer(tagIds) {
+            console.log(tagIds)
+            for (const tagId of tagIds) {
                 for (const tagModel of this.tagModels) {
-                    if (tagModel.value === tag.id) this.selectedTagModelsBuffer.data.push(tagModel)
+                    if (tagModel.value === tagId) this.selectedTagModelsBuffer.data.push(tagModel)
                 }
             }
+            this.selectedTagModelsBuffer.signature = JSON.stringify(this.selectedTagModelsBuffer.data)
             this.selectedTagModelsBuffer.loading = false
+
         },
         commitEdit() {
             this.$axios.post('api/ip/edit', this.IPEditBuffer.data).then((response) => {
                 let rd = response.data
                 if (rd.code === 'success') {
                     this.$q.notify({type: 'success', message: this.$t("messages.success")})
-                    let temp = {
-                        ipId: rd.data.ip.id,
-                        tagIds: []
-                    }
-                    for (const selectedTagModel of this.selectedTagModelsBuffer.data) {
-                        temp.tagIds.push(selectedTagModel.value)
-                    }
-                    this.$axios.post('api/ip/set/tags', temp).then((response) => {
-                        let rd = response.data
-                        if (rd.code === 'success') {
-                            this.$q.notify({type: 'success', message: this.$t("messages.success")})
-                        } else {
-                            console.log(response)
-                            this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
-                        }
+                    if (this.selectedTagModelsBuffer.signature === JSON.stringify(this.selectedTagModelsBuffer.data)){
                         this.$store.dispatch('getIPs').then(() => {
                             this.$router.push('/index/ips_and_tags')
                         })
-                    }).catch((error) => {
-                        console.log(error)
-                    })
+                    }else {
+                        console.log('=====')
+                        console.log(this.selectedTagModelsBuffer.signature)
+                        console.log(JSON.stringify(this.selectedTagModelsBuffer.data))
+                        console.log('=====')
+                        let temp = {
+                            ipId: rd.data.ip.id,
+                            tagIds: []
+                        }
+                        for (const selectedTagModel of this.selectedTagModelsBuffer.data) {
+                            temp.tagIds.push(selectedTagModel.value)
+                        }
+                        this.$axios.post('api/ip/set/tags', temp).then((response) => {
+                            let rd = response.data
+                            if (rd.code === 'success') {
+                                this.$q.notify({type: 'success', message: this.$t("messages.success")})
+                            } else {
+                                console.log(response)
+                                this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
+                            }
+                            this.$store.dispatch('getIPs').then(() => {
+                                this.$router.push('/index/ips_and_tags')
+                            })
+                        }).catch((error) => {
+                            console.log(error)
+                            this.$store.dispatch('getIPs').then(() => {
+                                this.$router.push('/index/ips_and_tags')
+                            })
+                        })
+                    }
                 } else {
                     console.log(response)
                     this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
@@ -348,6 +365,8 @@ export default {
             if (this.readyToInitialize) {
                 console.log('readyToInitialize,this.ips:')
                 console.log(this.ips)
+                console.log('readyToInitialize,this.tags:')
+                console.log(this.tags)
                 this.initBuffer(this.$route.query.id)
             }
         }

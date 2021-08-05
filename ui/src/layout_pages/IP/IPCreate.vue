@@ -236,39 +236,47 @@ export default {
         commitCreate() {
             this.$axios.post('api/ip/create', this.IPCreateBuffer.data).then((response) => {
                 let rd = response.data
-                if (rd.code === 'success') {//ip create s
+                if (rd.code === 'success') {
                     this.$q.notify({type: 'success', message: this.$t("messages.success")})
-                    let temp = {
-                        ipId: rd.data.ip.id,
-                        tagIds: []
-                    }
-                    for (const selectedTagModel of this.selectedTagModelsBuffer.data) {
-                        temp.tagIds.push(selectedTagModel.value)
-                    }
-                    this.$axios.post('api/ip/set/tags', temp).then((response) => {
-                        let rd = response.data
-                        if (rd.code === 'success') {//tag set s
-                            this.$q.notify({type: 'success', message: this.$t("messages.success")})
+                    if (this.selectedTagModelsBuffer.data.length === 0){
+                        this.$store.dispatch('getIPs').then(() => {
+                            this.$router.push('/index/ips_and_tags')
+                        })
+                    }else {
+                        let temp = {
+                            ipId: rd.data.ip.id,
+                            tagIds: []
+                        }
+                        for (const selectedTagModel of this.selectedTagModelsBuffer.data) {
+                            temp.tagIds.push(selectedTagModel.value)
+                        }
+                        this.$axios.post('api/ip/set/tags', temp).then((response) => {
+                            let rd = response.data
+                            if (rd.code === 'success') {//tag set s
+                                this.$q.notify({type: 'success', message: this.$t("messages.success")})
+
+                            } else {
+                                console.log(response)
+                                this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
+                            }
                             this.$store.dispatch('getIPs').then(() => {
                                 this.$router.push('/index/ips_and_tags')
                             })
-                        } else {//ip create s bug tag set f
-                            console.log(response)
+                        }).catch((error) => {
+                            console.log(error)
                             this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
                             this.$store.dispatch('getIPs').then(() => {
                                 this.$router.push('/index/ips_and_tags')
                             })
-                        }
-                    }).catch((error) => {//tag set requests f
-                        console.log(error)
-                        this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
-                    })
-                } else {//ip create requests
+                        })
+                    }
+                } else {
                     console.log(response)
                     this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
                 }
             }).catch((error) => {
                 console.log(error)
+                this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
             })
         }
     },
@@ -281,14 +289,14 @@ export default {
         },
         tagModels() {
             if (!this.tags) return []
-            const temp = []
+            const tagModels = []
             for (const tag of this.tags) {
-                temp.push({
+                tagModels.push({
                     label: tag.reservedNames[this.$i18n.locale] || tag.name,
                     value: tag.id
                 })
             }
-            return temp
+            return tagModels
         },
         regionModels() {
             return [

@@ -84,10 +84,10 @@
                                     {{ ip.region }}
                                 </q-chip>
                                 <q-chip
-                                    v-for="(tag,i) in ip.tags" :key="i+'tag'+ip.id+tag.id"
+                                    v-for="(tagId,i) in ip.tagIds" :key="i+'tag'"
                                     size="0.7em" square dense text-color="dark" color="accent" class="q-py-none text-weight-medium"
                                 >
-                                    {{ tag.reservedNames[$i18n.locale] || tag.name }}
+                                    {{ idTagDict[tagId].reservedNames[$i18n.locale] || idTagDict[tagId].name }}
                                 </q-chip>
                             </div>
                             <q-space></q-space>
@@ -417,6 +417,9 @@ export default {
         },
         initialized() {
             return this.$store.getters.ipsInitialized
+        },
+        idTagDict() {
+            return this.$store.getters.idTagDict
         }
     },
     watch: {
