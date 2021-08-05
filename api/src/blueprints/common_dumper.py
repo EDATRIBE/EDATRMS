@@ -16,8 +16,7 @@ async def dump_user_info(request, user):
 
     user_role_service = UserRoleService(request.app.config, request.app.db, request.app.cache)
     role_service = RoleService(request.app.config, request.app.db, request.app.cache)
-    user_role_items, total = await user_role_service.list_user_role_items(user_id=user['id'])
-    role_ids = [user_role_item['role_id'] for user_role_item in user_role_items]
+    role_ids = await user_role_service.role_ids_by_user_id(user['id'])
     roles = await role_service.infos(role_ids)
     user['roles'] = roles
 
@@ -43,8 +42,7 @@ async def dump_user_infos(request, users):
     user_role_service = UserRoleService(request.app.config, request.app.db, request.app.cache)
     role_service = RoleService(request.app.config, request.app.db, request.app.cache)
     for user in users:
-        user_role_items, total = await user_role_service.list_user_role_items(user_id=user['id'])
-        role_ids = [user_role_item['role_id'] for user_role_item in user_role_items]
+        role_ids = await user_role_service.role_ids_by_user_id(user['id'])
         roles = await role_service.infos(role_ids)
         user['roles'] = roles
 
@@ -58,30 +56,26 @@ async def dump_ip_info(request, ip):
         return None
 
     ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
-    tag_service = TagService(request.app.config, request.app.db, request.app.cache)
-    ip_tag_items, total = await ip_tag_service.list_ip_tag_items(ip_id=ip['id'])
-    tag_ids = [ip_tag_item['tag_id'] for ip_tag_item in ip_tag_items]
-    tags = await tag_service.infos(tag_ids)
-
-    ip['tags'] = tags
+    tag_ids = await ip_tag_service.tag_ids_by_ip_id(ip['id'])
+    ip['tag_ids'] = tag_ids
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
-    animations, total = await animation_service.list_animations(ip_id=ip['id'])
+    animations = await animation_service.infos_by_ip_id(ip['id'])
     for animation in animations:
         images = {}
         for key, value in animation['image_ids'].items():
             file = await storage_service.info(value)
             images[key] = file
         animation['images'] = images
-        videos, total = await video_service.list_videos(animation_id=animation['id'])
-        captions, total = await caption_service.list_captions(animation_id=animation['id'])
+        videos = await video_service.infos_by_animation_id(animation['id'])
+        captions = await caption_service.infos_by_animation_id(animation['id'])
         animation['videos'] = videos
         animation['captions'] = captions
-    novels, total = await novel_service.list_novels(ip_id=ip['id'])
+    novels = await novel_service.infos_by_ip_id(ip['id'])
     ip['animations'] = animations
     ip['novels'] = novels
     for novel in novels:
@@ -94,7 +88,7 @@ async def dump_ip_info(request, ip):
     visible_field = [
         'id', 'name', 'reservedNames', 'region', 'writtenBy',
         'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment',
-        'tags', 'animations', 'novels'
+        'tagIds', 'animations', 'novels'
     ]
     ip = IPSchema(only=visible_field).dump(ip)
     return ip
@@ -105,12 +99,9 @@ async def dump_ip_infos(request, ips):
         return []
 
     ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
-    tag_service = TagService(request.app.config, request.app.db, request.app.cache)
-    ip_tag_items_list = await ip_tag_service.info_by_ip_ids([ip['id'] for ip in ips ])
-    for ip,ip_tag_items in zip(ips,ip_tag_items_list):
-        tag_ids = [i['tag_id'] for i in ip_tag_items]
-        tags = await tag_service.infos(tag_ids)
-        ip['tags'] = tags
+    tag_ids_list = await ip_tag_service.tag_ids_list_by_ip_ids([ip['id'] for ip in ips])
+    for ip,tag_ids in zip(ips,tag_ids_list):
+        ip['tag_ids'] = tag_ids
 
     storage_service = StorageService(request.app.config, request.app.db, request.app.cache)
     animation_service = AnimationService(request.app.config, request.app.db, request.app.cache)
@@ -118,18 +109,18 @@ async def dump_ip_infos(request, ips):
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
     novel_service = NovelService(request.app.config, request.app.db, request.app.cache)
     for ip in ips:
-        animations, total = await animation_service.list_animations(ip_id=ip['id'])
+        animations = await animation_service.infos_by_ip_id(ip['id'])
         for animation in animations:
             images = {}
             for key, value in animation['image_ids'].items():
                 file = await storage_service.info(value)
                 images[key] = file
             animation['images'] = images
-            videos, total = await video_service.list_videos(animation_id=animation['id'])
-            captions, total = await caption_service.list_captions(animation_id=animation['id'])
+            videos = await video_service.infos_by_animation_id(animation['id'])
+            captions = await caption_service.infos_by_animation_id(animation['id'])
             animation['videos'] = videos
             animation['captions'] = captions
-        novels, total = await novel_service.list_novels(ip_id=ip['id'])
+        novels = await novel_service.infos_by_ip_id(ip['id'])
         for novel in novels:
             images = {}
             for key, value in novel['image_ids'].items():
@@ -143,7 +134,7 @@ async def dump_ip_infos(request, ips):
     visible_field = [
         'id', 'name', 'reservedNames', 'region', 'writtenBy',
         'createdBy', 'createdAt', 'updateBy', 'updateAt', 'comment',
-        'tags', 'animations', 'novels'
+        'tagIds', 'animations', 'novels'
     ]
     ips = [IPSchema(only=visible_field).dump(v) for v in ips]
     return ips
@@ -162,8 +153,8 @@ async def dump_animation_info(request, animation):
 
     video_service = VideoService(request.app.config, request.app.db, request.app.cache)
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
-    videos, total = await video_service.list_videos(animation_id=animation['id'])
-    captions, total = await caption_service.list_captions(animation_id=animation['id'])
+    videos = await video_service.infos_by_animation_id(animation['id'])
+    captions = await caption_service.infos_by_animation_id(animation['id'])
     animation['videos'] = videos
     animation['captions'] = captions
 
@@ -193,8 +184,8 @@ async def dump_animation_infos(request, animations):
     caption_service = CaptionService(request.app.config, request.app.db, request.app.cache)
 
     for animation in animations:
-        videos, total = await video_service.list_videos(animation_id=animation['id'])
-        captions, total = await caption_service.list_captions(animation_id=animation['id'])
+        videos = await video_service.infos_by_animation_id(animation['id'])
+        captions = await caption_service.infos_by_animation_id(animation['id'])
         animation['videos'] = videos
         animation['captions'] = captions
 
@@ -238,8 +229,7 @@ async def dump_caption_info(request, caption):
 
     caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
-    caption_user_items, total = await caption_user_service.list_caption_user_items(caption_id=caption['id'])
-    contributor_ids = [caption_user_item['user_id'] for caption_user_item in caption_user_items]
+    contributor_ids = await caption_user_service.user_ids_by_caption_id(caption['id'])
     contributor = await user_service.infos(contributor_ids)
     caption['contributor_ids'] = contributor_ids
     caption['contributors'] = contributor
@@ -259,8 +249,7 @@ async def dump_caption_infos(request, captions):
     user_service = UserService(request.app.config, request.app.db, request.app.cache)
 
     for caption in captions:
-        caption_user_items, total = await caption_user_service.list_caption_user_items(caption_id=caption['id'])
-        contributor_ids = [caption_user_item['user_id'] for caption_user_item in caption_user_items]
+        contributor_ids = await caption_user_service.user_ids_by_caption_id(caption['id'])
         contributor = await user_service.infos(contributor_ids)
         caption['contributor_ids'] = contributor_ids
         caption['contributors'] = contributor

@@ -125,7 +125,7 @@ async def copy_file(request, *, file, target_bucket, target_path):
         async with aiofiles.open(target_posi, 'wb') as f:
             await f.write(body)
 
-        new_file = await storage_service.create_file(
+        new_file = await storage_service.create(
             region=StorageRegion.LOCAL.value,
             bucket=target_bucket.value,
             path=os.path.join(target_path, new_file_name),

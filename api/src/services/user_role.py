@@ -3,87 +3,38 @@ import string
 import sqlalchemy.sql as sasql
 
 from ..models import UserRoleModel
+from .common import BaseService
 
-
-class UserRoleService:
+class UserRoleService(BaseService):
 
     def __init__(self, config, db, cache):
-        self.config = config
-        self.db = db
-        self.cache = cache
+        super().__init__(config, db, cache)
+        
+    def _init_model(self):
+        self.model = UserRoleModel
 
-    async def create(self, **data):
+    async def delete_by_user_id_and_role_id(self,*,user_id=None,role_id=None):
         async with self.db.acquire() as conn:
-            result = await conn.execute(sasql.insert(UserRoleModel).values(**data))
-            id = result.lastrowid
+            delete_sm = sasql.delete(self.model)
 
-        return await self.info(id)
+            if user_id is not None:
+                clause = self.model.c.user_id == user_id
+                delete_sm = delete_sm.where(clause)
+            if role_id is not None:
+                clause = self.model.c.role_id == role_id
+                delete_sm = delete_sm.where(clause)
 
-    async def edit(self, id, **data):
-        data = {k: v for k, v in data.items() if v is not None}
+            await conn.execute(delete_sm)
 
-        async with self.db.acquire() as conn:
-            await conn.execute(
-                sasql.update(UserRoleModel).where(UserRoleModel.c.id == id).
-                    values(**data)
-            )
-
-        return await self.info(id)
-
-    async def delete(self, id):
-        async with self.db.acquire() as conn:
-            await conn.execute(
-                sasql.delete(UserRoleModel).where(UserRoleModel.c.id == id))
-
-    async def info(self, id):
-        if id is None:
-            return None
+    async def role_ids_by_user_id(self, user_id):
+        if not user_id:
+            return []
 
         async with self.db.acquire() as conn:
             result = await conn.execute(
-                UserRoleModel.select().where(UserRoleModel.c.id == id)
+                self.model.select().where(self.model.c.user_id==user_id)
             )
-            row = await result.first()
+            rows = await result.fetchall()
 
-        return None if row is None else dict(row)
+        return [row['role_id'] for row in rows]
 
-    async def infos(self, ids):
-        valid_ids = [v for v in ids if v is not None]
-
-        if valid_ids:
-            async with self.db.acquire() as conn:
-                result = await conn.execute(
-                    UserRoleModel.select().where(UserRoleModel.c.id.in_(valid_ids))
-                )
-                d = {v['id']: dict(v) for v in await result.fetchall()}
-        else:
-            d = {}
-
-        return [d.get(v) for v in ids]
-
-    async def list_user_role_items(self, *, user_id=None,role_id=None,limit=None, offset=None):
-        select_sm = UserRoleModel.select()
-        count_sm = sasql.select([sasql.func.count()]). \
-            select_from(UserRoleModel)
-
-        if user_id is not None:
-            clause = UserRoleModel.c.user_id == user_id
-            select_sm = select_sm.where(clause)
-            count_sm = count_sm.where(clause)
-        if role_id is not None:
-            clause = UserRoleModel.c.role_id == role_id
-            select_sm = select_sm.where(clause)
-            count_sm = count_sm.where(clause)
-        if limit is not None:
-            select_sm = select_sm.limit(limit)
-        if offset is not None:
-            select_sm = select_sm.offset(offset)
-
-        async with self.db.acquire() as conn:
-            result = await conn.execute(select_sm)
-            rows = [dict(v) for v in await result.fetchall()]
-
-            result = await conn.execute(count_sm)
-            total = await result.scalar()
-
-        return (rows, total)

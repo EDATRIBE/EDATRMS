@@ -4,15 +4,17 @@ import string
 import sqlalchemy.sql as sasql
 
 from ..models import StaffModel, UserModel
+from .common import BaseService
 from ..utilities import random_string, sha256_hash
 
 
-class UserService:
+class UserService(BaseService):
 
     def __init__(self, config, db, cache):
-        self.config = config
-        self.db = db
-        self.cache = cache
+        super().__init__(config, db, cache)
+        
+    def _init_model(self):
+        self.model = UserModel
 
     async def force_logout(self,id):
         keys = await self.cache.keys(pattern=self.config.get('PREFIX')+'*')
@@ -30,7 +32,7 @@ class UserService:
         data['password'] = sha256_hash(data['password'], data['salt'])
 
         async with self.db.acquire() as conn:
-            result = await conn.execute(sasql.insert(UserModel).values(**data))
+            result = await conn.execute(sasql.insert(self.model).values(**data))
             id = result.lastrowid
 
         return await self.info(id)
@@ -44,37 +46,11 @@ class UserService:
 
         async with self.db.acquire() as conn:
             await conn.execute(
-                sasql.update(UserModel).where(UserModel.c.id == id).
+                sasql.update(self.model).where(self.model.c.id == id).
                     values(**data)
             )
 
         return await self.info(id)
-
-    async def info(self, id):
-        if id is None:
-            return None
-
-        async with self.db.acquire() as conn:
-            result = await conn.execute(
-                UserModel.select().where(UserModel.c.id == id)
-            )
-            row = await result.first()
-
-        return None if row is None else dict(row)
-
-    async def infos(self, ids):
-        valid_ids = [v for v in ids if v is not None]
-
-        if valid_ids:
-            async with self.db.acquire() as conn:
-                result = await conn.execute(
-                    UserModel.select().where(UserModel.c.id.in_(valid_ids))
-                )
-                d = {v['id']: dict(v) for v in await result.fetchall()}
-        else:
-            d = {}
-
-        return [d.get(v) for v in ids]
 
     async def info_by_name(self, name):
         if name is None:
@@ -82,7 +58,7 @@ class UserService:
 
         async with self.db.acquire() as conn:
             result = await conn.execute(
-                UserModel.select().where(UserModel.c.name == name)
+                self.model.select().where(self.model.c.name == name)
             )
             row = await result.first()
 
@@ -94,31 +70,11 @@ class UserService:
 
         async with self.db.acquire() as conn:
             result = await conn.execute(
-                UserModel.select().where(UserModel.c.email == email)
+                self.model.select().where(self.model.c.email == email)
             )
             row = await result.first()
 
         return None if row is None else dict(row)
-
-
-    async def list_users(self, *, limit=None, offset=None):
-        select_sm = UserModel.select()
-        count_sm = sasql.select([sasql.func.count()]). \
-            select_from(UserModel)
-
-        if limit is not None:
-            select_sm = select_sm.limit(limit)
-        if offset is not None:
-            select_sm = select_sm.offset(offset)
-
-        async with self.db.acquire() as conn:
-            result = await conn.execute(select_sm)
-            rows = [dict(v) for v in await result.fetchall()]
-
-            result = await conn.execute(count_sm)
-            total = await result.scalar()
-
-        return (rows, total)
 
     async def set_staff(self, id):
         async with self.db.acquire() as conn:
