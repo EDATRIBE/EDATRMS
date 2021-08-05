@@ -1,10 +1,12 @@
 import asyncio
+from collections import OrderedDict
 
 from marshmallow import Schema, ValidationError, fields
 from pymysql.err import DatabaseError
 from rich.console import Console
 from rich.table import Table
 from rich.theme import Theme
+from rich import box
 
 from ..blueprints.common import required_field_validation
 from ..models import RoleSchema, UserRoleSchema, UserSchema
@@ -34,16 +36,15 @@ class User:
             self.console.print('[ NULL! ]', style='info')
             return
 
-        table = Table(show_header=True, header_style='table header')
+        table = Table(show_header=True, header_style='table header',box=box.ROUNDED)
         for key in rows[0].keys():
             table.add_column(str(key))
 
         for row in rows:
-            values = [str(value) for key,value in row.items()]
+            values = [str(value) if value is not None else '' for key,value in row.items()]
             table.add_row(*values)
 
         self.console.print(table)
-
 
 
     def _print_dict_as_table(self,row):
@@ -51,12 +52,12 @@ class User:
             self.console.print('[ NULL! ]', style='info')
             return
 
-        table = Table(show_header=True,header_style='table header')
-        table.add_column('key', style='bold')
+        table = Table(show_header=True,header_style='table header',box=box.ROUNDED)
+        table.add_column('key')
         table.add_column('value', overflow='fold')
 
         for key, value in row.items():
-            table.add_row(str(key), str(value))
+            table.add_row(str(key), str(value) if value is not None else '')
 
         self.console.print(table)
 
@@ -64,37 +65,35 @@ class User:
     def list_users(self, **kwargs):
         try:
             rows, total = asyncio.get_event_loop().run_until_complete(
-                self.user_service.list_users()
+                self.user_service.list_()
             )
             staffs = asyncio.get_event_loop().run_until_complete(
                 self.user_service.is_staff_by_ids([r['id'] for r in rows])
+            )
+            role_ids_list = asyncio.get_event_loop().run_until_complete(
+                self.user_role_service.role_ids_list_by_user_ids(
+                    [r['id'] for r in rows]
+                )
             )
         except Exception as err:
             self.console.print(err, style='danger')
             return
 
-        for row, staff in zip(rows, staffs):
+        for row, staff ,role_ids in zip(rows, staffs,role_ids_list):
             row['staff'] = staff
-        if kwargs.get('staff_only') is True:
-            rows = list(filter(lambda x: x.get('staff'), rows))
-
-        visible_field = ['id', 'name', 'email', 'qq','createdAt', 'staff','comment']
-        users = []
-        for row in rows:
-            user_role_items, total = asyncio.get_event_loop().run_until_complete(
-                self.user_role_service.list_user_role_items(
-                    user_id=row['id'],
-                )
-            )
-            role_ids = [item.get('role_id') for item in user_role_items]
             roles = asyncio.get_event_loop().run_until_complete(
                 self.role_service.infos(role_ids)
             )
-            user = UserSchema(only=visible_field).dump(row)
-            user['roles'] = [(role['id'], role['name']) for role in roles]
-            user.move_to_end('comment')
+            row['roles'] = roles
 
-            users.append(user)
+        if kwargs.get('staff_only') is True:
+            rows = list(filter(lambda x: x.get('staff'), rows))
+
+        visible_field = ['id', 'name', 'staff','roles','comment']
+        users = [UserSchema(only=visible_field).dump(v) for v in rows]
+        for user in users:
+            roles = ['{}:{}'.format(role['id'], role['name']) for role in user['roles']]
+            user['roles'] = ' | '.join(roles)
 
         self._print_dicts_as_table(users)
 
@@ -115,12 +114,11 @@ class User:
             staff = asyncio.get_event_loop().run_until_complete(
                 self.user_service.is_staff_by_id(id)
             )
-            user_role_items, total = asyncio.get_event_loop().run_until_complete(
-                self.user_role_service.list_user_role_items(
+            role_ids = asyncio.get_event_loop().run_until_complete(
+                self.user_role_service.role_ids_by_user_id(
                     user_id=data['id'],
                 )
             )
-            role_ids = [item.get('role_id') for item in user_role_items]
             roles = asyncio.get_event_loop().run_until_complete(
                 self.role_service.infos(role_ids)
             )
@@ -128,12 +126,34 @@ class User:
             self.console.print(err, style='danger')
             return
         row['staff'] = staff
+        row['roles'] = roles
 
         user = UserSchema().dump(row)
-        user['roles'] = [(role['id'],role['name']) for role in roles]
-        user.move_to_end('comment')
+        roles = ['{}:{}'.format(role['id'], role['name']) for role in user['roles']]
+        user['roles'] = ' | '.join(roles)
         self._print_dict_as_table(user)
 
+    def comment_user(self,**kwargs):
+        try:
+            data = UserSchema().load(kwargs)
+            required_field_validation(data=data,required_field=['id','comment'])
+        except ValidationError as err:
+            self.console.print(err.messages, style='danger')
+            return
+
+        try:
+            row = asyncio.get_event_loop().run_until_complete(
+                self.user_service.edit(
+                    id=data['id'],
+                    comment=data['comment']
+                )
+            )
+            id = row.get('id')
+        except DatabaseError as err:
+            self.console.print(err, style='danger')
+            return
+
+        self.inspect_user(id=id)
 
     def create_user(self, **kwargs):
         try:
@@ -209,7 +229,7 @@ class User:
     def list_roles(self):
         try:
             rows, total = asyncio.get_event_loop().run_until_complete(
-                self.role_service.list_roles()
+                self.role_service.list_()
             )
         except Exception as err:
             self.console.print(err, style='danger')
@@ -267,6 +287,7 @@ class User:
 
         self.inspect_role(id=id)
 
+
     def delete_role(self, **kwargs):
         try:
             data = RoleSchema().load(kwargs)
@@ -318,18 +339,12 @@ class User:
             return
 
         try:
-            user_role_items,total = asyncio.get_event_loop().run_until_complete(
-                self.user_role_service.list_user_role_items(
+            asyncio.get_event_loop().run_until_complete(
+                self.user_role_service.delete_by_user_id_and_role_id(
                     user_id=data['user_id'],
                     role_id=data['role_id']
                 )
             )
-            if len(user_role_items)>0 :
-                asyncio.get_event_loop().run_until_complete(
-                    self.user_role_service.delete(
-                        id=user_role_items[0]['id']
-                    )
-                )
         except DatabaseError as err:
             self.console.print(err, style='danger')
             return

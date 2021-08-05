@@ -70,3 +70,17 @@ class Model:
             return
 
         self.console.print('[ Done! ]', style='info')
+
+    def drop_table(self,*table):
+        try:
+            temp_metadata = sa.MetaData()
+            temp_metadata.reflect(self.engine)
+
+            ts = [temp_metadata.tables[t] for t in table]
+
+            temp_metadata.drop_all(self.engine,ts)
+        except SQLAlchemyError as err:
+            self.console.print(err, style='danger')
+            return
+
+        self.console.print('[ Done! ]', style='info')
