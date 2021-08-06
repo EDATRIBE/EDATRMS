@@ -8,6 +8,7 @@ import tagStore from "src/store/tag";
 import ipStore from "src/store/ip";
 import announcementStore from "src/store/announcement";
 import userStore from "src/store/user";
+import roleStore from "src/store/role";
 
 export default new Vuex.Store({
     modules: {
@@ -15,6 +16,7 @@ export default new Vuex.Store({
         announcement: announcementStore,
         tag: tagStore,
         ip: ipStore,
-        user: userStore
+        user: userStore,
+        role: roleStore
     }
 })

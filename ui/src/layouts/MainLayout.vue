@@ -94,8 +94,9 @@ export default {
         NavItems
     },
     created() {
-        this.$store.dispatch('getUser').then(() => {})
+        this.$store.dispatch('getCurrentUser').then(() => {})
         this.$store.dispatch('getUsers').then(() => {})
+        this.$store.dispatch('getRoles').then(() => {})
         this.$store.dispatch('getTags')
         this.$store.dispatch('getIPs').then(() => {})
         this.$store.dispatch('getAnnouncements').then(() => {})

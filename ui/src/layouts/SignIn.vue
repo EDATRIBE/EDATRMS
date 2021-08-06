@@ -66,7 +66,7 @@ export default {
         if (rd.code === 'success') {
           console.log('rd.data.user')
           console.log(rd.data.user)
-          this.$store.commit('setUser',rd.data.user)
+          this.$store.commit('setCurrentUser',rd.data.user)
         }else {
           console.log(response)
         }

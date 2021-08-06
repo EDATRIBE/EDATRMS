@@ -276,7 +276,7 @@ export default {
                 if (rd.code === 'success') {
                     console.log('rd.data.user')
                     console.log(rd.data.user)
-                    this.$store.commit('setUser', rd.data.user)
+                    this.$store.commit('setCurrentUser', rd.data.user)
                     this.$q.notify({
                         type: 'success',
                         message: `New profile was submitted successfully.`
@@ -297,7 +297,7 @@ export default {
                 console.log('return data:')
                 console.log(rd)
                 if (rd.code === 'success') {
-                    this.$store.commit('setUser', null)
+                    this.$store.commit('setCurrentUser', null)
                     console.log('user:')
                     console.log(this.currentUser)
                 }

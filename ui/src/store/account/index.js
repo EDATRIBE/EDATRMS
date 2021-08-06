@@ -5,16 +5,16 @@ const accountStore = {
     user: null
   },
   mutations: {
-    setUser(state,user){
+    setCurrentUser(state,user){
       state.user=user
     }
   },
   actions: {
-    getUser(context){
+    getCurrentUser(context){
       axios.get('api/account/info').then((response) => {
         const rd = response.data
         if (rd.code === 'success') {
-          context.commit('setUser',rd.data.user)
+          context.commit('setCurrentUser',rd.data.user)
         }
       }).catch(function (error) {
         console.log(error)
