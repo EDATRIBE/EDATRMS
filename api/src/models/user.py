@@ -38,7 +38,6 @@ class UserSchema(Schema):
     avatar = fields.Nested('FileSchema')
     staff = fields.Boolean()
     roleIds = fields.List(fields.Integer(), attribute='role_ids')
-    roles = fields.List(fields.Nested('RoleSchema'))
 
     class Meta:
         ordered = True
