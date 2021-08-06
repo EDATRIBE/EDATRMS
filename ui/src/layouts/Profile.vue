@@ -1,5 +1,5 @@
 <template>
-    <div class="q-py-xl" style="width: 100%;">
+    <div class="q-py-xl" style="width: 100%; padding-top: 6em">
         <!--Common-->
         <div v-if="!userEditBuffer.isEditing">
             <div class="row justify-center">
@@ -174,7 +174,7 @@
             <div class="row q-mt-sm justify-center">
                 <q-btn
                     class="full-width text-weight-bold" color="white" text-color="dark"
-                    @click="userEditBuffer.isEditing=false"
+                    @click="userEditBuffer.isEditing=false;initUserEditBufferData()"
                 >
                     Cancel
                 </q-btn>

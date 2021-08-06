@@ -260,7 +260,6 @@ export default {
             this.IPEditBuffer.loading = false
         },
         initSelectedTagModelsBuffer(tagIds) {
-            console.log(tagIds)
             for (const tagId of tagIds) {
                 for (const tagModel of this.tagModels) {
                     if (tagModel.value === tagId) this.selectedTagModelsBuffer.data.push(tagModel)
@@ -280,10 +279,6 @@ export default {
                             this.$router.push('/index/ips_and_tags')
                         })
                     }else {
-                        console.log('=====')
-                        console.log(this.selectedTagModelsBuffer.signature)
-                        console.log(JSON.stringify(this.selectedTagModelsBuffer.data))
-                        console.log('=====')
                         let temp = {
                             ipId: rd.data.ip.id,
                             tagIds: []

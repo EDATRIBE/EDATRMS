@@ -1,5 +1,5 @@
 <template>
-  <div class="q-py-xl" style="width: 100%; padding-top: 7.5em">
+  <div class="q-py-xl" style="width: 100%; padding-top: 8em">
     <div class="row justify-center">
       <q-icon name="fas fa-users-cog" size="8em" color="white"></q-icon>
     </div>

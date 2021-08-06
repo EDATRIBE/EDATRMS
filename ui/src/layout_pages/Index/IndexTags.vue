@@ -196,6 +196,11 @@ export default {
     border-top-color: $accent
     border-top-width: 2px
 
+.bb
+    border-bottom: solid
+    border-bottom-color: $accent
+    border-bottom-width: 2px
+
 //border-bottom: solid
 //border-bottom-color: $accent
 //border-bottom-width: 2px

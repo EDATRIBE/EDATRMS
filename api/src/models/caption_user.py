@@ -30,7 +30,7 @@ CaptionUserModel = sa.Table(
 class CaptionUserSchema(Schema):
     id = fields.Integer()
     captionId = fields.Integer(attribute='caption_id')
-    contributorId = fields.Integer(attribute='contributor_id')
+    userId = fields.Integer(attribute='user_id')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
     updateBy = fields.Integer(attribute='updated_by')

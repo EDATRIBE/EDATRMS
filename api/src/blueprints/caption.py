@@ -119,8 +119,9 @@ async def list_(request, offset, limit):
     )
 
 
-@caption.post('/set/contributors')
-async def caption_contributor_create(request):
+@caption.post('/set/users')
+@authenticated_staff()
+async def caption_user_create(request):
     data = CaptionUsersSchema().load(request.json)
     required_field_validation(
         data=data,
