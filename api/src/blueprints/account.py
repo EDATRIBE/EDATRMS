@@ -30,9 +30,13 @@ async def login(request):
 @account.get('/info')
 @authenticated_user()
 async def info(request):
-    user_repr = request.ctx.session['user']
+    user_id = request.ctx.session['user']['id']
+    user_service = UserService(request.app.config, request.app.db, request.app.cache)
+    user = await user_service.info(user_id)
 
-    return response_json(user=user_repr)
+    request.ctx.session['user'] = await dump_user_info(request, user)
+
+    return response_json(user=request.ctx.session['user'])
 
 
 @account.post('/edit')
