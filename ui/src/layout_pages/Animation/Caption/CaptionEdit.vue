@@ -71,6 +71,45 @@
                             </q-select>
                         </div>
                     </div>
+                    <!--Users-->
+                    <div class="row items-center q-py-sm">
+                        <div class="col-md-2 col-xs-12">
+                            <p class="q-my-none text-grey text-body1 text-weight-medium">CONTRIBUTORS</p>
+                        </div>
+                        <div class="col-md-10 col-xs-12">
+                            <q-select
+                                class="bg-dark-light"
+                                dark
+                                dense
+                                options-dense
+                                options-selected-class="text-primary"
+                                standout=""
+                                v-model="selectedUserModelsBuffer.data"
+                                multiple
+                                hide-bottom-space
+                                :options="userModels"
+                                use-chips
+                                stack-label
+                            >
+                                <template v-slot:selected-item="scope">
+                                    <q-chip
+                                        square
+                                        removable
+                                        dark
+                                        dense
+                                        text-color="dark"
+                                        @remove="scope.removeAtIndex(scope.index)"
+                                        :tabindex="scope.tabindex"
+                                        color="primary"
+                                        class="q-my-xs q-mr-xs q-ml-none"
+                                        spellcheck="false"
+                                    >
+                                        {{ scope.opt.label }}
+                                    </q-chip>
+                                </template>
+                            </q-select>
+                        </div>
+                    </div>
                     <!--releasedAt-->
                     <div class="row items-center q-py-sm">
                         <div class="col-md-2 col-xs-12">
@@ -217,7 +256,12 @@ export default {
                     },
                     comment:''
                 }
-            }
+            },
+            selectedUserModelsBuffer: {
+                loading: true,
+                data: [],
+                signature: ''
+            },
         }
     },
     methods: {
@@ -230,6 +274,8 @@ export default {
                         if (caption.id === Number(captionId)){
                             this.animation = animation
                             this.initCaptionEditBuffer(caption)
+                            console.log(caption)
+                            this.initSelectedUserModelsBuffer(caption.userIds)
                         }
                     }
                 }
@@ -246,15 +292,54 @@ export default {
             this.captionEditBuffer.data.comment = caption.comment
             this.captionEditBuffer.loading = false
         },
+        initSelectedUserModelsBuffer(userIds) {
+            console.log(userIds)
+            for (const userId of userIds) {
+                for (const userModel of this.userModels) {
+                    if (userModel.value === userId) this.selectedUserModelsBuffer.data.push(userModel)
+                }
+            }
+            this.selectedUserModelsBuffer.signature = JSON.stringify(this.selectedUserModelsBuffer.data)
+            this.selectedUserModelsBuffer.loading = false
+
+        },
         commitEdit() {
             this.captionEditBuffer.data.animationId = this.animation.id
             this.$axios.post('api/caption/edit', this.captionEditBuffer.data).then((response) => {
                 let rd = response.data
                 if (rd.code === 'success') {
                     this.$q.notify({type: 'success', message: this.$t("messages.success")})
-                    this.$store.dispatch('getIPs').then(() => {
-                        this.$router.push('/index/ips_and_tags')
-                    })
+                    if (this.selectedUserModelsBuffer.signature === JSON.stringify(this.selectedUserModelsBuffer.data)){
+                        this.$store.dispatch('getIPs').then(() => {
+                            this.$router.push('/index/ips_and_tags')
+                        })
+                    }else {
+                        let temp = {
+                            captionId: rd.data.caption.id,
+                            userIds: []
+                        }
+                        for (const selectedUserModel of this.selectedUserModelsBuffer.data) {
+                            temp.userIds.push(selectedUserModel.value)
+                        }
+                        this.$axios.post('api/caption/set/users', temp).then((response) => {
+                            let rd = response.data
+                            if (rd.code === 'success') {
+                                this.$q.notify({type: 'success', message: this.$t("messages.success")})
+                            } else {
+                                console.log(response)
+                                this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
+                            }
+                            this.$store.dispatch('getIPs').then(() => {
+                                this.$router.push('/index/ips_and_tags')
+                            })
+                        }).catch((error) => {
+                            console.log(error)
+                            this.$store.dispatch('getIPs').then(() => {
+                                this.$router.push('/index/ips_and_tags')
+                            })
+                        })
+                    }
+
                 } else {
                     console.log(response)
                     this.$q.notify({type: 'failure', message: this.$t("messages.failure")})
@@ -266,10 +351,13 @@ export default {
     },
     computed: {
         readyToInitialize() {
-            return this.$store.getters.ipsInitialized
+            return this.$store.getters.ipsInitialized && this.$store.getters.usersInitialized
         },
         ips() {
             return this.$store.state.ip.ips
+        },
+        users(){
+            return this.$store.state.user.users
         },
         initialized(){
             return this.animation!==null
@@ -288,6 +376,17 @@ export default {
                     value: false
                 }
             ]
+        },
+        userModels() {
+            if (!this.users) return []
+            const userModels = []
+            for (const user of this.users) {
+                userModels.push({
+                    label: user.name,
+                    value: user.id
+                })
+            }
+            return userModels
         },
         stateModels() {
             return [

@@ -95,6 +95,7 @@ export default {
     },
     created() {
         this.$store.dispatch('getUser').then(() => {})
+        this.$store.dispatch('getUsers').then(() => {})
         this.$store.dispatch('getTags')
         this.$store.dispatch('getIPs').then(() => {})
         this.$store.dispatch('getAnnouncements').then(() => {})
