@@ -5,6 +5,7 @@ import sqlalchemy.sql as sasql
 from ..models import UserRoleModel
 from .common import BaseService
 
+
 class UserRoleService(BaseService):
 
     def __init__(self, config, db, cache):
@@ -37,4 +38,20 @@ class UserRoleService(BaseService):
             rows = await result.fetchall()
 
         return [row['role_id'] for row in rows]
+
+    async def role_ids_list_by_user_ids(self, user_ids):
+        valid_user_ids = [v for v in user_ids if v is not None]
+
+        if valid_user_ids:
+            d = {valid_user_id: [] for valid_user_id in valid_user_ids}
+            async with self.db.acquire() as conn:
+                result = await conn.execute(
+                    self.model.select().where(self.model.c.user_id.in_(valid_user_ids))
+                )
+                for row in await result.fetchall():
+                    d[row['user_id']].append(dict(row)['role_id'])
+        else:
+            d = {}
+
+        return [d.get(user_id) for user_id in user_ids]
 
