@@ -4,7 +4,7 @@ from sanic.exceptions import NotFound
 from ..models import IPSchema, IPTagsSchema
 from ..services import IPService, IPTagService, TagService
 from .common import ResponseCode, authenticated_staff, required_field_validation, response_json, sift_dict_by_key
-from .common_dumper import dump_ip_info, dump_ip_infos, dump_ip_tag_infos
+from .dupmer import dump_ip_info, dump_ip_infos, dump_ip_tag_infos
 
 ip = Blueprint('ip', url_prefix='/ip')
 

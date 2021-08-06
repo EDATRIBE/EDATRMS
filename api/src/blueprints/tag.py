@@ -4,7 +4,7 @@ from sanic.exceptions import NotFound
 from ..models import TagSchema
 from ..services import TagService
 from .common import ResponseCode, authenticated_staff, required_field_validation, response_json, sift_dict_by_key
-from .common_dumper import dump_tag_info, dump_tag_infos
+from .dupmer import dump_tag_info, dump_tag_infos
 
 tag = Blueprint('tag', url_prefix='/tag')
 

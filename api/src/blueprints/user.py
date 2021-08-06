@@ -2,7 +2,7 @@ from sanic import Blueprint
 
 from ..services import UserService
 from .common import response_json
-from .common_dumper import dump_user_info, dump_user_infos
+from .dupmer import dump_user_info, dump_user_infos
 
 user = Blueprint('user', url_prefix='/user')
 

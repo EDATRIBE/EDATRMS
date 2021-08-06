@@ -5,7 +5,7 @@ from sanic import Blueprint
 
 from ..models import AnnouncementModel
 from .common import response_json
-from .common_dumper import dump_announcement_infos
+from .dupmer import dump_announcement_infos
 
 semi_static = Blueprint('semi_static', url_prefix='/semi_static')
 

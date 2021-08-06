@@ -5,7 +5,7 @@ from ..models import NovelSchema, StorageBucket
 from ..services import NovelService, StorageService
 from .common import (ResponseCode, authenticated_staff, copy_file, required_field_validation, response_json,
                      sift_dict_by_key)
-from .common_dumper import dump_novel_info, dump_novel_infos
+from .dupmer import dump_novel_info, dump_novel_infos
 
 novel = Blueprint('novel', url_prefix='/novel')
 
