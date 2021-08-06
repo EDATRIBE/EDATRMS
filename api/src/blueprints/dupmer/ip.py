@@ -65,23 +65,7 @@ async def dump_ip_info(request, ip):
     for caption, user_ids in zip(all_captions, user_ids_list):
         caption['user_ids'] = user_ids
 
-
-    visible_field = [
-        'id',
-        'name',
-        'reservedNames',
-        'region',
-        'writtenBy',
-        'createdBy',
-        'createdAt',
-        'updateBy',
-        'updateAt',
-        'comment',
-        'tagIds',
-        'animations',
-        'novels'
-    ]
-    ip = IPSchema(only=visible_field).dump(ip)
+    ip = IPSchema().dump(ip)
     return ip
 
 
@@ -149,20 +133,5 @@ async def dump_ip_infos(request, ips):
     for caption, user_ids in zip(all_captions, user_ids_list):
         caption['user_ids'] = user_ids
 
-    visible_field = [
-        'id',
-        'name',
-        'reservedNames',
-        'region',
-        'writtenBy',
-        'createdBy',
-        'createdAt',
-        'updateBy',
-        'updateAt',
-        'comment',
-        'tagIds',
-        'animations',
-        'novels'
-    ]
-    ips = [IPSchema(only=visible_field).dump(v) for v in ips]
+    ips = [IPSchema().dump(v) for v in ips]
     return ips

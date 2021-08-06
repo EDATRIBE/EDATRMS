@@ -8,3 +8,4 @@ from .semi_static import *
 from .tag import *
 from .user import *
 from .video import *
+from .role import *
