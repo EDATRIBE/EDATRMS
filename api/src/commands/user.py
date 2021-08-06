@@ -3,10 +3,10 @@ from collections import OrderedDict
 
 from marshmallow import Schema, ValidationError, fields
 from pymysql.err import DatabaseError
+from rich import box
 from rich.console import Console
 from rich.table import Table
 from rich.theme import Theme
-from rich import box
 
 from ..blueprints.common import required_field_validation
 from ..models import RoleSchema, UserRoleSchema, UserSchema

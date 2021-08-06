@@ -3,7 +3,8 @@ from aiomysql.sa import create_engine
 
 from .animation import AnimationModel, AnimationSchema
 from .caption import CaptionModel, CaptionSchema
-from .caption_user import CaptionUserModel, CaptionUserSchema, CaptionUsersSchema
+from .caption_user import (CaptionUserModel, CaptionUserSchema,
+                           CaptionUsersSchema)
 from .common import metadata
 from .ip import IPModel, IPSchema
 from .ip_tag import IPTagModel, IPTagSchema, IPTagsSchema

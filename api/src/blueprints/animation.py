@@ -3,7 +3,8 @@ from sanic.exceptions import NotFound
 
 from ..models import AnimationSchema, StorageBucket
 from ..services import AnimationService, StorageService
-from .common import (ResponseCode, authenticated_staff, copy_file, required_field_validation, response_json,
+from .common import (ResponseCode, authenticated_staff, copy_file,
+                     required_field_validation, response_json,
                      sift_dict_by_key)
 from .dupmer import dump_animation_info, dump_animation_infos
 

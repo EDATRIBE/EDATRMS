@@ -5,6 +5,7 @@ import sqlalchemy.sql as sasql
 from ..models import IPTagModel
 from .common import BaseService
 
+
 class IPTagService(BaseService):
 
     def __init__(self, config, db, cache):

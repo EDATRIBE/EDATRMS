@@ -3,6 +3,7 @@ import string
 from ..models import IPModel
 from .common import BaseService
 
+
 class IPService(BaseService):
 
     def __init__(self, config, db, cache):

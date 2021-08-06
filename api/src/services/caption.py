@@ -3,6 +3,7 @@ import string
 from ..models import CaptionModel
 from .common import BaseService
 
+
 class CaptionService(BaseService):
 
     def __init__(self, config, db, cache):

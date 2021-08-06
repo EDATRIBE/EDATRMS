@@ -5,6 +5,7 @@ import sqlalchemy.sql as sasql
 from ..models import RoleModel
 from .common import BaseService
 
+
 class RoleService(BaseService):
 
     def __init__(self, config, db, cache):

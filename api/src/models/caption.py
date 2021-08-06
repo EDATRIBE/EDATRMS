@@ -49,6 +49,7 @@ class CaptionSchema(Schema):
     comment = fields.String(validate=validate.Length(0, 300))
 
     contributors = fields.List(fields.Nested('UserSchema'))
+    userIds = fields.List(fields.Integer(), attribute='user_ids')
 
     class Meta:
         ordered = True

@@ -3,8 +3,11 @@ from sanic.exceptions import NotFound
 
 from ..models import CaptionSchema, CaptionUsersSchema
 from ..services import CaptionService, CaptionUserService, UserService
-from .common import ResponseCode, authenticated_staff, required_field_validation, response_json, sift_dict_by_key
-from .dupmer import dump_caption_info, dump_caption_infos, dump_caption_user_infos
+from .common import (ResponseCode, authenticated_staff,
+                     required_field_validation, response_json,
+                     sift_dict_by_key)
+from .dupmer import (dump_caption_info, dump_caption_infos,
+                     dump_caption_user_infos)
 
 caption = Blueprint('caption', url_prefix='/caption')
 

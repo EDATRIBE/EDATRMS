@@ -3,6 +3,7 @@ import string
 from ..models import TagModel
 from .common import BaseService
 
+
 class TagService(BaseService):
 
     def __init__(self, config, db, cache):

@@ -3,6 +3,7 @@ import string
 from ..models import VideoModel
 from .common import BaseService
 
+
 class VideoService(BaseService):
 
     def __init__(self, config, db, cache):

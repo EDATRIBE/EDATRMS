@@ -3,7 +3,8 @@ from sanic.exceptions import NotFound
 
 from ..models import NovelSchema, StorageBucket
 from ..services import NovelService, StorageService
-from .common import (ResponseCode, authenticated_staff, copy_file, required_field_validation, response_json,
+from .common import (ResponseCode, authenticated_staff, copy_file,
+                     required_field_validation, response_json,
                      sift_dict_by_key)
 from .dupmer import dump_novel_info, dump_novel_infos
 

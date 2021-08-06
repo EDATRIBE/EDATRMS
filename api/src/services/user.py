@@ -4,8 +4,8 @@ import string
 import sqlalchemy.sql as sasql
 
 from ..models import StaffModel, UserModel
-from .common import BaseService
 from ..utilities import random_string, sha256_hash
+from .common import BaseService
 
 
 class UserService(BaseService):

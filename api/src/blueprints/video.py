@@ -3,7 +3,9 @@ from sanic.exceptions import NotFound
 
 from ..models import VideoSchema
 from ..services import VideoService
-from .common import ResponseCode, authenticated_staff, required_field_validation, response_json, sift_dict_by_key
+from .common import (ResponseCode, authenticated_staff,
+                     required_field_validation, response_json,
+                     sift_dict_by_key)
 from .dupmer import dump_video_info, dump_video_infos
 
 video = Blueprint('video', url_prefix='/video')

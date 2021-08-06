@@ -3,7 +3,8 @@ from sanic import Blueprint
 from ..models import StorageBucket, UserSchema
 from ..services import StorageService, UserService
 from ..utilities import sha256_hash
-from .common import (ResponseCode, authenticated_user, copy_file, required_field_validation, response_json,
+from .common import (ResponseCode, authenticated_user, copy_file,
+                     required_field_validation, response_json,
                      sift_dict_by_key)
 from .dupmer import dump_user_info
 

@@ -3,6 +3,7 @@ import string
 from ..models import AnimationModel
 from .common import BaseService
 
+
 class AnimationService(BaseService):
 
     def __init__(self, config, db, cache):

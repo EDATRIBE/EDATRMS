@@ -3,6 +3,7 @@ import string
 from ..models import NovelModel
 from .common import BaseService
 
+
 class NovelService(BaseService):
 
     def __init__(self, config, db, cache):
