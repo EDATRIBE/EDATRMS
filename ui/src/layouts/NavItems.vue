@@ -21,8 +21,12 @@
       </q-btn>
 
     </div>
-    <div v-if="!$q.screen.gt.sm" class="bg-dark no-border-radius">
-      <q-btn-dropdown   flat dense no-caps class="text-body1 q-ml-sm" dropdown-icon="menu" no-icon-animation content-class="bg-dark-light">
+    <div v-if="!$q.screen.gt.sm" class="no-border-radius">
+      <q-btn-dropdown
+          flat dense no-caps class="text-body1 q-ml-sm"
+          dropdown-icon="menu" no-icon-animation
+          content-class="bg-dark-light"
+      >
         <div class="column q-pa-sm">
           <q-btn align="left" flat dense no-caps class="text-body1 text-white">{{$t("ui.navItems.index")}}</q-btn>
           <q-btn align="left" flat dense no-caps class="text-body1 text-white">{{$t("ui.navItems.contributors")}}</q-btn>

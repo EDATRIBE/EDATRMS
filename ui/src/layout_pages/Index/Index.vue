@@ -66,7 +66,7 @@
       </div>
     </div>
 
-    <q-page-sticky expand position="top" class="bg-dark q-px-md q-pb-sm" v-show="scrollInfo.position>38">
+    <q-page-sticky expand position="top" class="bg-dark q-px-md q-py-sm" v-show="scrollInfo.position>112">
       <q-toolbar style="width: 97%" class="q-px-none">
         <q-input
           dense dark class="text-h5 bg-dark-light" style="width: 100%" standout=""
