@@ -1,55 +1,5 @@
 <template>
     <q-layout view="hHh lpr fFf">
-<!--        <q-header reveal reveal-offset="0px" class="bg-dark q-px-md">-->
-<!--            <q-toolbar style="width: 97%" class="q-pt-md q-pb-md q-px-none q-mx-auto items-center">-->
-<!--                <q-icon name="fas fa-atom" size="2.35em"/>-->
-<!--                <div class="text-h4 q-ml-sm" v-if="$q.screen.gt.sm">EDATRMS</div>-->
-<!--                <q-space/>-->
-
-<!--                <nav-items v-if="$q.screen.gt.sm"/>-->
-
-<!--&lt;!&ndash;                <q-space/>&ndash;&gt;-->
-<!--                <q-separator vertical color="grey" inset="true" class="q-ml-md" v-if="$q.screen.gt.sm"/>-->
-
-<!--                <q-btn-dropdown dense flat no-caps class="text-body1 q-ml-md" dropdown-icon="translate"-->
-<!--                                no-icon-animation content-class="bg-dark-light">-->
-<!--                    <div class="column q-pa-sm">-->
-<!--                        <q-btn-->
-<!--                            align="left" flat dense no-caps class="text-body1 text-white"-->
-<!--                            @click="$i18n.locale='en'"-->
-<!--                        >-->
-<!--                            English-->
-<!--                        </q-btn>-->
-<!--                        <q-btn-->
-<!--                            align="left" flat dense no-caps class="text-body1 text-white"-->
-<!--                            @click="$i18n.locale='cn'"-->
-<!--                        >-->
-<!--                            简体中文-->
-<!--                        </q-btn>-->
-<!--                    </div>-->
-<!--                </q-btn-dropdown>-->
-
-<!--                <q-separator vertical color="grey" inset="true" class="q-ml-md" v-if="!$q.screen.gt.sm"/>-->
-<!--                <nav-items v-if="!$q.screen.gt.sm"/>-->
-
-<!--                <q-separator vertical color="grey" inset="true" class="q-ml-md" v-if="$q.screen.gt.sm"/>-->
-<!--                <div v-if="$q.screen.gt.sm">-->
-<!--                    <q-btn-->
-<!--                        round outline class="q-ml-md"-->
-<!--                        size="0.78em" icon="mdi-badge-account-horizontal-outline"-->
-<!--                        v-if="currentUser === null"-->
-<!--                        @click="accountDrawer = !accountDrawer"-->
-<!--                    />-->
-<!--                    <q-avatar-->
-<!--                        size="2.35em" v-ripple class="cursor-pointer q-ml-md"-->
-<!--                        v-if="currentUser !== null"-->
-<!--                    >-->
-<!--                        <img @click="accountDrawer = !accountDrawer"-->
-<!--                             :src="currentUser.avatar?currentUser.avatar.url:GenAvatar(currentUser.name)">-->
-<!--                    </q-avatar>-->
-<!--                </div>-->
-<!--            </q-toolbar>-->
-<!--        </q-header>-->
         <div class="q-px-md my-bg">
             <q-toolbar style="width: 97%" class="q-py-md q-px-none q-mx-auto text-white items-center">
                 <q-icon name="fas fa-atom" size="2.35em"/>
@@ -58,7 +8,6 @@
 
                 <nav-items v-if="$q.screen.gt.sm"/>
 
-                <!--                <q-space/>-->
                 <q-separator vertical color="grey" inset="true" class="q-ml-md" v-if="$q.screen.gt.sm"/>
 
                 <q-btn-dropdown dense flat no-caps class="text-body1 q-ml-md" dropdown-icon="translate"
@@ -108,7 +57,7 @@
             :width="350"
             dark
             overlay
-            content-class="bg-dark"
+            content-class="bg-dark-deep"
             bordered
             class="q-pa-none full-height"
             :breakpoint="9999"
@@ -125,7 +74,7 @@
                 <router-view/>
             </keep-alive>
         </q-page-container>
-        <div class="bg-dark-deep q-ma-none q-pa-none" style="width: 100%; height: 300px">
+        <div class="bg-dark-deep q-ma-none q-pa-none" style="width: 100%; height: 500px">
         </div>
     </q-layout>
 </template>

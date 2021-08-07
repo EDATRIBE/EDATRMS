@@ -1,279 +1,287 @@
 <template>
-    <q-page v-if="initialized" padding class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em">
-        <div class="q-mx-auto " style="width: 97%; border-radius: 0px">
-            <div class="row q-col-gutter-x-md justify-center">
-                <!--LEFT-->
-                <div class="column col-md-3 col-xs-12">
-                    <q-img
-                        class="shadow-2 q-mb-md"
-                        style="border-radius: 4px"
-                        :src="animation.images.vertical.url"
-                        v-if="animation.images.vertical!==undefined"
-                    />
-                    <q-btn dense class="q-mb-md shadow-2" color="primary" text-color="white">
-                        REPORT A PROBLEM
-                        <q-icon class="q-pl-sm" name="construction" size="1.5em"/>
-                    </q-btn>
-                </div>
-                <!--RIGHT-->
-                <div class="column col-md-9 col-xs-12 q-pb-md">
-                    <!--TITLE-->
-                    <div style="width: 100%" class="q-px-md q-pb-md bl">
-                        <p class="q-my-none text-primary  text-h4">
-                            {{ animation.reservedNames[$i18n.locale] || animation.name }}
-                        </p>
+    <div>
+        <div :style="{'--bgImageUrl':'url('+bgImageUrl+')'}" class="my-background-img"/>
+        <q-page v-if="initialized" padding class="q-px-md q-pb-xl" style="padding-top: 3.5em">
+            <div class="q-mx-auto" style="width: 97%; border-radius: 0px">
+                <div class="row q-col-gutter-x-md justify-center">
+                    <!--LEFT-->
+                    <div class="column col-md-3 col-xs-12">
+                        <q-img
+                            class="q-mb-sm"
+                            style="border-radius: 4px"
+                            :src="animation.images.vertical.url"
+                            v-if="animation.images.vertical"
+                        />
+                        <q-btn dense class="q-mb-sm" color="primary" text-color="white">
+                            REPORT A PROBLEM
+                            <q-icon class="q-pl-sm" name="construction" size="1.5em"/>
+                        </q-btn>
                     </div>
-                    <!--INFOS-->
-                    <div style="width: 100%" class="q-px-md q-pt-md bl">
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <q-icon color="primary" name="fas fa-info-circle" size="2.5em"></q-icon>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-primary  text-h4"></p>
-                            </div>
+                    <!--RIGHT-->
+                    <div class="column col-md-9 col-xs-12 q-pb-md">
+                        <!--TITLE-->
+                        <div style="width: 100%" class="q-px-md q-py-md">
+                            <p class="q-my-none text-white text-h3">
+                                {{ animation.reservedNames[$i18n.locale] || animation.name }}
+                            </p>
                         </div>
-                        <q-separator color="grey" style="opacity: 30%"/>
-                        <div class="row q-py-md ">
-                            <div class="col-md-2 col-xs-12"><p
-                                class="q-my-none text-grey text-body1 text-weight-medium">INTRO</p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1 text-justify">
-                                    {{ animation.intros[$i18n.locale] }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12"><p
-                                class="q-my-none text-grey text-body1 text-weight-medium">TYPE</p>
-                            </div>
-                            <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">
-                                {{ animation.type }}</p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12"><p
-                                class="q-my-none text-grey text-body1 text-weight-medium">EPS NUM</p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ animation.episodesNum }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                    PRODUCED BY
-                                </p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ animation.producedBy }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                    WRITTEN BY
-                                </p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ animation.writtenBy }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                    RELEASED AT
-                                </p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ animation.releasedAt }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!--VIDEOS-->
-                    <div style="width: 100%" class="q-px-md q-pt-md bl" v-for="(video,i) in animation.videos"
-                         :key="'video'+i">
-                        <div class="row q-py-md ">
-                            <div class="col-md-2 col-xs-12">
-                                <q-icon color="primary" name="fas fa-film" size="2.5em"></q-icon>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-white text-h4"></p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12"><p
-                                class="q-my-none text-grey text-body1 text-weight-medium">TYPE</p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ video.fileMeta.type }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"/>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12"><p
-                                class="q-my-none text-grey text-body1 text-weight-medium">SIZE</p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ video.fileMeta.size }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"/>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12"><p
-                                class="q-my-none text-grey text-body1 text-weight-medium">QUALITY</p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ video.fileMeta.quality }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!--CPATIONS-->
-                    <div style="width: 100%" class="q-px-md q-pt-md bl" v-for="(caption,i) in animation.captions"
-                         :key="'caption'+i">
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <q-icon color="primary" name="fas fa-closed-captioning" size="2.7em"></q-icon>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-white text-h2"></p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"/>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">TYPE</p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ caption.fileMeta.type }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                    SIZE
-                                </p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ caption.fileMeta.size }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                    INTEGRATED
-                                </p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ caption.integrated }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                    STATE
-                                </p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ caption.state }}
-                                </p>
-                            </div>
-                        </div>
-                        <q-separator color="grey" style="opacity: 20%"></q-separator>
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                    RELEASED AT
-                                </p>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-body1">
-                                    {{ caption.releasedAt }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Address-->
-                    <div style="width: 100%" class="q-px-md q-pt-md bl">
-                        <div class="row q-py-md">
-                            <div class="col-md-2 col-xs-12">
-                                <q-icon color="primary" name="cloud_download" size="2.7em"></q-icon>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <p class="q-my-none text-white text-white text-h2"></p>
-                            </div>
-                        </div>
-                        <div
-                            v-if="animation.sharingAddresses.aliCloud !== undefined &&
-                             animation.sharingAddresses.aliCloud.url!==''"
-                        >
-                            <q-separator color="grey" style="opacity: 20%"/>
+                        <!--INFOS-->
+                        <div style="width: 100%" class="q-px-md q-pt-md">
                             <div class="row q-py-md">
                                 <div class="col-md-2 col-xs-12">
-                                    <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                        ALI CLOUD
+                                    <q-icon
+                                        color="white"
+                                        name="fas fa-info-circle"
+                                        class="my-opacity-70"
+                                        size="2.5em"
+                                    />
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-primary  text-h4"></p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"/>
+                            <div class="row q-py-md ">
+                                <div class="col-md-2 col-xs-12"><p
+                                    class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">INTRO</p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1 text-justify">
+                                        {{ animation.intros[$i18n.locale] }}
                                     </p>
                                 </div>
-                                <div class="col-md-10 col-xs-12 row">
-                                    <div class="q-mr-lg">
-                                        <a :href="animation.sharingAddresses.aliCloud.url">
-                                            <p class="q-my-none text-primary text-body1">
-                                                {{ animation.sharingAddresses.aliCloud.password }}
-                                            </p>
-                                        </a>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12"><p
+                                    class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">TYPE</p>
+                                </div>
+                                <div class="col-md-10 col-xs-12"><p class="q-my-none text-white text-body1">
+                                    {{ animation.type }}</p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12"><p
+                                    class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">EPS NUM</p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ animation.episodesNum }}
+                                    </p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                        PRODUCED BY
+                                    </p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ animation.producedBy }}
+                                    </p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                        WRITTEN BY
+                                    </p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ animation.writtenBy }}
+                                    </p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                        RELEASED AT
+                                    </p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ animation.releasedAt }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--VIDEOS-->
+                        <div style="width: 100%" class="q-px-md q-pt-md" v-for="(video,i) in animation.videos"
+                             :key="'video'+i">
+                            <div class="row q-py-md ">
+                                <div class="col-md-2 col-xs-12">
+                                    <q-icon color="grey" name="fas fa-film" size="2.5em"></q-icon>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-white text-h4"></p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12"><p
+                                    class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">TYPE</p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ video.fileMeta.type }}
+                                    </p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"/>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12"><p
+                                    class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">SIZE</p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ video.fileMeta.size }}
+                                    </p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"/>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12"><p
+                                    class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">QUALITY</p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ video.fileMeta.quality }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--CPATIONS-->
+                        <div style="width: 100%" class="q-px-md q-pt-md" v-for="(caption,i) in animation.captions"
+                             :key="'caption'+i">
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <q-icon color="grey" name="fas fa-closed-captioning" size="2.7em"></q-icon>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-white text-h2"></p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"/>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">TYPE</p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ caption.fileMeta.type }}
+                                    </p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                        SIZE
+                                    </p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ caption.fileMeta.size }}
+                                    </p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                        INTEGRATED
+                                    </p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ caption.integrated }}
+                                    </p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                        STATE
+                                    </p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ caption.state }}
+                                    </p>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                        RELEASED AT
+                                    </p>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-body1">
+                                        {{ caption.releasedAt }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Address-->
+                        <div style="width: 100%" class="q-px-md q-pt-md">
+                            <div class="row q-py-md">
+                                <div class="col-md-2 col-xs-12">
+                                    <q-icon color="grey" name="cloud_download" size="2.7em"></q-icon>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <p class="q-my-none text-white text-white text-h2"></p>
+                                </div>
+                            </div>
+                            <div
+                                v-if="animation.sharingAddresses.aliCloud !== undefined &&
+                                            animation.sharingAddresses.aliCloud.url!==''"
+                            >
+                                <q-separator class="bg-white my-opacity-20"/>
+                                <div class="row q-py-md">
+                                    <div class="col-md-2 col-xs-12">
+                                        <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                            ALI CLOUD
+                                        </p>
+                                    </div>
+                                    <div class="col-md-10 col-xs-12 row">
+                                        <div class="q-mr-lg">
+                                            <a :href="animation.sharingAddresses.aliCloud.url">
+                                                <p class="q-my-none text-primary text-body1">
+                                                    {{ animation.sharingAddresses.aliCloud.password }}
+                                                </p>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div
-                            v-if="animation.sharingAddresses.baiduCloud !== undefined &&
-                             animation.sharingAddresses.baiduCloud.url!==''"
-                        >
-                            <q-separator color="grey" style="opacity: 20%"/>
-                            <div class="row q-py-md">
-                                <div class="col-md-2 col-xs-12">
-                                    <p class="q-my-none text-grey text-body1 text-weight-medium">
-                                        BAIDU CLOUD
-                                    </p>
-                                </div>
-                                <div class="col-md-10 col-xs-12 row">
-                                    <div class="q-mr-lg">
-                                        <a :href="animation.sharingAddresses.baiduCloud.url">
-                                            <p class="q-my-none text-primary text-body1">
-                                                {{ animation.sharingAddresses.baiduCloud.password }}
-                                            </p>
-                                        </a>
+                            <div
+                                v-if="animation.sharingAddresses.baiduCloud !== undefined &&
+                                            animation.sharingAddresses.baiduCloud.url!==''"
+                            >
+                                <q-separator class="bg-white my-opacity-20"/>
+                                <div class="row q-py-md">
+                                    <div class="col-md-2 col-xs-12">
+                                        <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                            BAIDU CLOUD
+                                        </p>
+                                    </div>
+                                    <div class="col-md-10 col-xs-12 row">
+                                        <div class="q-mr-lg">
+                                            <a :href="animation.sharingAddresses.baiduCloud.url">
+                                                <p class="q-my-none text-primary text-body1">
+                                                    {{ animation.sharingAddresses.baiduCloud.password }}
+                                                </p>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -281,8 +289,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </q-page>
+        </q-page>
+    </div>
 </template>
 
 <script>
@@ -322,6 +330,20 @@ export default {
         initialized() {
             return this.animation !== null
         },
+        showBgImage(){
+            if(!this.initialized){
+                return false
+            }else {
+                return this.animation.images.horizontal !== null && this.animation.images.horizontal !==undefined
+            }
+        },
+        bgImageUrl(){
+            if(!this.showBgImage){
+                return null
+            }else {
+                return this.animation.images.horizontal.url
+            }
+        }
     },
     watch: {
         readyToInitialize() {
@@ -353,4 +375,17 @@ a
     border-left: solid
     border-left-color: $primary
     border-width: 3px
+
+
+.my-background-img
+    position: absolute
+    top: 0px
+    width: 100%
+    z-index: -1
+    padding-top: 60%
+    background-position-x: 50%
+    background-repeat: no-repeat
+    background-size: cover
+    background-repeat: no-repeat
+    background-image: linear-gradient(to top, rgb(38, 38, 45), rgba(38, 38, 45, 0.4) 70%, rgba(38, 38, 45, 0.2)), var(--bgImageUrl)
 </style>
