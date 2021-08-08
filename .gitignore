@@ -1,5 +1,5 @@
 .idea/
-api/src/test/test.py
+api/test/test.py
 api/api_data/
 
 # Byte-compiled / optimized / DLL files
@@ -147,4 +147,4 @@ ui/src/pages/flab.vue
 ui/dev_proxy.js
 api/api_doc/test
 .DS_Store
-api/src/test
+api/test
