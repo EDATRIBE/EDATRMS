@@ -8,6 +8,16 @@ const userStore = {
     getters:{
         usersInitialized(state){
             return state.users !== null
+        },
+        idUserDict(state) {
+            if(state.users){
+                let d = {}
+                for (const user of state.users) {
+                    d[user.id] = user
+                }
+                return d
+            }
+            return null
         }
     },
     mutations: {

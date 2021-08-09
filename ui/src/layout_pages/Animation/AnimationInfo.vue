@@ -1,7 +1,7 @@
 <template>
     <div>
         <div :style="{'--bgImageUrl':'url('+bgImageUrl+')'}" class="my-background-img"/>
-        <q-page v-if="initialized" padding class="q-px-md q-pb-xl" style="padding-top: 3.5em">
+        <q-page v-if="initialized" padding class="q-px-md q-pb-xl" style="padding-top: 3.5em; ">
             <div class="q-mx-auto" style="width: 97%; border-radius: 0px">
                 <div class="row q-col-gutter-x-md justify-center">
                     <!--LEFT-->
@@ -218,6 +218,23 @@
                                 </div>
                             </div>
                             <q-separator class="bg-white my-opacity-20"></q-separator>
+                            <div class="row q-py-md items-center">
+                                <div class="col-md-2 col-xs-12">
+                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                        CONTRIBUTORS
+                                    </p>
+                                </div>
+                                <div class="col-md-10 col-xs-12 row">
+                                    <q-chip
+                                        square dense text-color="dark" color="primary"
+                                        class="q-py-none q-ml-none q-mr-sm text-weight-medium"
+                                        v-for="(userId,i) in caption.userIds" :key="'userid'+i"
+                                    >
+                                        {{ usersDict[userId]['name'] }}
+                                    </q-chip>
+                                </div>
+                            </div>
+                            <q-separator class="bg-white my-opacity-20"></q-separator>
                             <div class="row q-py-md">
                                 <div class="col-md-2 col-xs-12">
                                     <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
@@ -230,6 +247,7 @@
                                     </p>
                                 </div>
                             </div>
+
                         </div>
                         <!--Address-->
                         <div style="width: 100%" class="q-px-md q-pt-md">
@@ -252,12 +270,13 @@
                                             ALI CLOUD
                                         </p>
                                     </div>
-                                    <div class="col-md-10 col-xs-12 row">
+                                    <div class="col-md-10 col-xs-12">
                                         <div class="q-mr-lg">
-                                            <a :href="animation.sharingAddresses.aliCloud.url">
+                                            <a :href="animation.sharingAddresses.aliCloud.url" class=" row items-center">
                                                 <p class="q-my-none text-primary text-body1">
                                                     {{ animation.sharingAddresses.aliCloud.password }}
                                                 </p>
+                                                <q-icon name="fas fa-link" size="0.75em" color="primary" class="q-mx-sm"/>
                                             </a>
                                         </div>
                                     </div>
@@ -274,12 +293,13 @@
                                             BAIDU CLOUD
                                         </p>
                                     </div>
-                                    <div class="col-md-10 col-xs-12 row">
+                                    <div class="col-md-10 col-xs-12">
                                         <div class="q-mr-lg">
-                                            <a :href="animation.sharingAddresses.baiduCloud.url">
+                                            <a :href="animation.sharingAddresses.baiduCloud.url" class=" row items-center">
                                                 <p class="q-my-none text-primary text-body1">
                                                     {{ animation.sharingAddresses.baiduCloud.password }}
                                                 </p>
+                                                <q-icon name="fas fa-link" size="0.75em" color="primary" class="q-mx-sm"/>
                                             </a>
                                         </div>
                                     </div>
@@ -327,20 +347,23 @@ export default {
         ips() {
             return this.$store.state.ip.ips
         },
+        usersDict() {
+            return this.$store.getters.idUserDict
+        },
         initialized() {
             return this.animation !== null
         },
-        showBgImage(){
-            if(!this.initialized){
+        showBgImage() {
+            if (!this.initialized) {
                 return false
-            }else {
-                return this.animation.images.horizontal !== null && this.animation.images.horizontal !==undefined
+            } else {
+                return this.animation.images.horizontal !== null && this.animation.images.horizontal !== undefined
             }
         },
-        bgImageUrl(){
-            if(!this.showBgImage){
+        bgImageUrl() {
+            if (!this.showBgImage) {
                 return null
-            }else {
+            } else {
                 return this.animation.images.horizontal.url
             }
         }
