@@ -22,7 +22,9 @@ export default {
     event: 'choice'
   },
   props: {
-    value: String,
+    value: {
+        type: [Number, String]
+    },
     options: Array,
     textClass: String,
     activeTextClass: String,
