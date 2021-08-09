@@ -22,8 +22,9 @@
         />
         <div class="q-col-gutter-y-sm" v-if="initialized">
             <!--Tools-->
-            <div>
+            <div @mouseleave="toolbarExpanded=false">
                 <q-expansion-item
+                    v-model="toolbarExpanded"
                     id="tool"
                     dense
                     dark
@@ -34,7 +35,7 @@
                     expanded-icon="filter_alt"
                     :duration="200"
                 >
-                    <!--Header-->
+                    <!--ToolsHeader-->
                     <template v-slot:header>
                         <div class="row  items-center text-body1 full-width ">
                             <q-btn-toggle
@@ -42,12 +43,12 @@
                                 size="0.75em"
                                 unelevated
                                 class="no-border-radius bg-dark-light"
-                                v-model="model"
+                                v-model="filterBuffer.order"
                                 toggle-color="accent"
                                 toggle-text-color="dark"
                                 :options="[
-                                  {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'one'},
-                                  {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'two'}
+                                  {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'date'},
+                                  {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'alphabet'}
                                 ]"
                             />
                             <q-space></q-space>
@@ -58,10 +59,50 @@
                         </div>
                     </template>
 
+                    <!--ToolsContent-->
+                    <div class="q-pt-sm">
+                        <!--region-->
+                        <q-item dense dark class="q-pa-none">
+                            <multiple-choice
+                                class="text-body1"
+                                :options="regionOptions"
+                                v-model="filterBuffer.region"
+                                text-class="text-grey-7"
+                                b-g-class="bg-dark-light"
+                                active-text-class="text-dark"
+                                active-b-g-class="bg-accent"
+                            />
+                        </q-item>
+<!--                        &lt;!&ndash;animationType&ndash;&gt;-->
+<!--                        <q-item dense dark class="q-pa-none  q-mt-sm">-->
+<!--                            <multiple-choice-->
+<!--                                class="text-body1"-->
+<!--                                :options="animationTypeOptions"-->
+<!--                                v-model="filterBuffer.animationType"-->
+<!--                                text-class="text-grey-7"-->
+<!--                                b-g-class="bg-dark-light"-->
+<!--                                active-text-class="text-dark"-->
+<!--                                active-b-g-class="bg-accent"-->
+<!--                            />-->
+<!--                        </q-item>-->
+                        <!--tagId-->
+                        <q-item dense dark class="q-pa-none q-mt-sm">
+                            <multiple-choice
+                                class="text-body1"
+                                :options="tagOptions"
+                                v-model="filterBuffer.tagId"
+                                text-class="text-grey-7"
+                                b-g-class="bg-dark-light"
+                                active-text-class="text-dark"
+                                active-b-g-class="bg-accent"
+                            />
+                        </q-item>
+                    </div>
+
                 </q-expansion-item>
             </div>
             <!--Content-->
-            <div v-for="(ip,i) in searchResultIPs.slice((pageNum-1)*pageLen,pageNum*pageLen)" :key="i+'ip'+ip.id">
+            <div v-for="(ip,i) in filterResultIPs.slice((pageNum-1)*pageLen,pageNum*pageLen)" :key="i+'ip'+ip.id">
                 <!--IPS-->
                 <q-expansion-item
                     dense
@@ -79,13 +120,15 @@
                             {{ ip.reservedNames[$i18n.locale] || ip.name }}
                             <div class="row q-mx-sm">
                                 <q-chip
-                                    size="0.7em" square dense text-color="dark" color="accent" class="q-py-none text-weight-medium"
+                                    size="0.7em" square dense text-color="dark" color="accent"
+                                    class="q-py-none text-weight-medium"
                                 >
                                     {{ ip.region }}
                                 </q-chip>
                                 <q-chip
                                     v-for="(tagId,i) in ip.tagIds" :key="i+'tag'"
-                                    size="0.7em" square dense text-color="dark" color="accent" class="q-py-none text-weight-medium"
+                                    size="0.7em" square dense text-color="dark" color="accent"
+                                    class="q-py-none text-weight-medium"
                                 >
                                     {{ idTagDict[tagId].reservedNames[$i18n.locale] || idTagDict[tagId].name }}
                                 </q-chip>
@@ -160,12 +203,14 @@
                                             />
                                             <div class="row q-mx-sm">
                                                 <q-chip outline
-                                                    size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
+                                                        size="0.7em" square dense text-color="dark" color="primary"
+                                                        class="q-py-none text-weight-medium"
                                                 >
                                                     {{ animation.type }}
                                                 </q-chip>
                                                 <q-chip outline
-                                                    size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
+                                                        size="0.7em" square dense text-color="dark" color="primary"
+                                                        class="q-py-none text-weight-medium"
                                                 >
                                                     {{ animation.episodesNum }} EPS
                                                 </q-chip>
@@ -213,18 +258,21 @@
                                                     dense dark class="bg-dark-light q-pa-none bl1"
                                                     style="padding-right: 39.3px"
                                                 >
-                                                    <div class="row q-pl-md items-center text-body1 full-width text-weight-medium">
+                                                    <div
+                                                        class="row q-pl-md items-center text-body1 full-width text-weight-medium">
                                                         <q-icon name="fas fa-film" color="primary" size="1.3em"
                                                                 class="q-mr-md"></q-icon>
                                                         {{ video.fileMeta.name || 'video' }}
                                                         <div class="row q-mx-sm">
                                                             <q-chip outline
-                                                                size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
+                                                                    size="0.7em" square dense text-color="dark"
+                                                                    color="primary" class="q-py-none text-weight-medium"
                                                             >
                                                                 {{ video.fileMeta.type }}
                                                             </q-chip>
                                                             <q-chip outline
-                                                                size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
+                                                                    size="0.7em" square dense text-color="dark"
+                                                                    color="primary" class="q-py-none text-weight-medium"
                                                             >
                                                                 {{ video.fileMeta.quality }}
                                                             </q-chip>
@@ -258,19 +306,22 @@
                                                     dense dark class="bg-dark-light q-pa-none bl1"
                                                     style="padding-right: 39.3px"
                                                 >
-                                                    <div class="row q-pl-md items-center text-body1 full-width text-weight-medium">
+                                                    <div
+                                                        class="row q-pl-md items-center text-body1 full-width text-weight-medium">
                                                         <q-icon name="fas fa-closed-captioning" color="primary"
                                                                 size="1.3em"
                                                                 class="q-mr-md"></q-icon>
-                                                        {{ caption.fileMeta.name || 'caption'  }}
+                                                        {{ caption.fileMeta.name || 'caption' }}
                                                         <div class="row q-mx-sm">
                                                             <q-chip outline
-                                                                size="0.7em" square dense text-color="dark" color="primary" class="q-py-none text-weight-medium"
+                                                                    size="0.7em" square dense text-color="dark"
+                                                                    color="primary" class="q-py-none text-weight-medium"
                                                             >
                                                                 {{ caption.state }}
                                                             </q-chip>
                                                             <q-chip outline
-                                                                size="0.7em" square dense color="primary" class="q-py-none text-weight-medium"
+                                                                    size="0.7em" square dense color="primary"
+                                                                    class="q-py-none text-weight-medium"
                                                             >
                                                                 {{ caption.fileMeta.type }}
                                                             </q-chip>
@@ -320,12 +371,14 @@
                                         />
                                         <div class="row q-mx-sm">
                                             <q-chip outline
-                                                    size="0.7em" square dense text-color="dark" color="secondary" class="q-py-none text-weight-medium"
+                                                    size="0.7em" square dense text-color="dark" color="secondary"
+                                                    class="q-py-none text-weight-medium"
                                             >
-                                                {{ novel.integrated?'INTEGRATED':'UNINTEGRATED' }}
+                                                {{ novel.integrated ? 'INTEGRATED' : 'UNINTEGRATED' }}
                                             </q-chip>
                                             <q-chip outline
-                                                    size="0.7em" square dense color="secondary" class="q-py-none text-weight-medium"
+                                                    size="0.7em" square dense color="secondary"
+                                                    class="q-py-none text-weight-medium"
                                             >
                                                 {{ novel.fileMeta.type }}
                                             </q-chip>
@@ -358,13 +411,22 @@
             </div>
         </div>
         <!--pagination-->
-        <div class="full-width row justify-center q-my-xs">
+        <div class="full-width row justify-center q-my-sm">
+<!--            <q-pagination-->
+<!--                v-model="pageNum"-->
+<!--                :max="Math.ceil(filterResultIPs.length/pageLen)"-->
+<!--                color="accent"-->
+<!--                input-->
+<!--                input-class="text-accent text-weight-medium"-->
+<!--            />-->
             <q-pagination
                 v-model="pageNum"
-                :max="Math.ceil(searchResultIPs.length/pageLen)"
                 color="accent"
-                input
-                input-class="text-accent text-weight-medium"
+                active-color="accent"
+                active-text-color="dark"
+                :max="Math.ceil(filterResultIPs.length/pageLen)"
+                :max-pages="10"
+                boundary-links
             />
         </div>
     </div>
@@ -376,15 +438,29 @@ import AnimationDeleteDialog from "src/layout_pages/Animation/AnimationDeleteDia
 import VideoDeleteDialog from "src/layout_pages/Animation/Video/VideoDeleteDialog";
 import CaptionDeleteDialog from "src/layout_pages/Animation/Caption/CaptionDeleteDialog";
 import NovelDeleteDialog from "src/layout_pages/Novel/NovelDeleteDialog";
+import MultipleChoice from "components/MultipleChoice";
 
 export default {
     name: "IndexIPs",
-    components: {NovelDeleteDialog, CaptionDeleteDialog, VideoDeleteDialog, AnimationDeleteDialog, IPDeleteDialog},
+    components: {
+        NovelDeleteDialog,
+        CaptionDeleteDialog,
+        VideoDeleteDialog,
+        AnimationDeleteDialog,
+        IPDeleteDialog,
+        MultipleChoice
+    },
     data() {
         return {
-            model: '',
+            toolbarExpanded: false,
             pageNum: 1,
             pageLen: 10,
+            filterBuffer:{
+                tagId: -1,
+                order: 'date',
+                region: 'ALL',
+                animationType: 'ALL'
+            },
             ipDeleteBuffer: {
                 id: null,
                 isDeleting: false
@@ -413,14 +489,95 @@ export default {
         },
     },
     computed: {
-        searchResultIPs() {
-            return this.$store.state.ip.ips
-        },
         initialized() {
-            return this.$store.getters.ipsInitialized
+            return this.$store.getters.ipsInitialized && this.$store.getters.tagsInitialized
+        },
+        searchResultIPs() {
+            return this.$store.state.ip.searchResults
+        },
+        tags() {
+            return this.$store.state.tag.tags
         },
         idTagDict() {
             return this.$store.getters.idTagDict
+        },
+        filterResultIPs() {
+            if (!this.searchResultIPs) {
+                return []
+            } else {
+                let filterResultIPs = this.searchResultIPs
+                const regionFilter = (ip) => {
+                    if (this.filterBuffer.region === 'ALL') {
+                        return true
+                    } else {
+                        return ip.region === this.filterBuffer.region
+                    }
+                }
+                filterResultIPs = filterResultIPs.filter(regionFilter)
+                const tagFilter = (ip) => {
+                    if (this.filterBuffer.tagId === -1) {
+                        return true
+                    } else {
+                        return ip.tagIds.includes(this.filterBuffer.tagId)
+                    }
+                }
+                filterResultIPs = filterResultIPs.filter(tagFilter)
+                // const animationTypeFilter = (ip) => {
+                //     if (this.filterBuffer.animationType === 'ALL') {
+                //         return true
+                //     } else {
+                //         for (const animation of ip.animations) {
+                //             if (animation.type === this.filterBuffer.animationType){
+                //                 return true
+                //             }
+                //         }
+                //         return false
+                //     }
+                // }
+                // filterResultIPs = filterResultIPs.filter(animationTypeFilter)
+                return filterResultIPs
+            }
+        },
+
+        regionOptions() {
+            return [
+                {label: 'ALL', value: 'ALL'},
+                {label: 'CN', value: 'CN'},
+                {label: 'JP', value: 'JP'},
+                {label: 'OTHER', value: 'OTHER'},
+            ]
+        },
+        animationTypeOptions() {
+            return [
+                {label:'ALL',value: 'ALL'},
+                {label:'TV',value: 'TV'},
+                {label:'MOVIE',  value: 'MOVIE'},
+                {label:'SP',value: 'SP'},
+                {label:'OVA',value: 'OVA'},
+                {label:'OAD',  value: 'OAD'}
+            ]
+        },
+        tagOptions() {
+            if (!this.tags) {
+                return []
+            } else {
+                const tagOptions = []
+                tagOptions.push(
+                    {
+                        label: 'ALL',
+                        value: -1
+                    }
+                )
+                for (const tag of this.tags) {
+                    tagOptions.push(
+                        {
+                            label: tag.reservedNames[this.$i18n.locale] || tag.name,
+                            value: tag.id
+                        }
+                    )
+                }
+                return tagOptions
+            }
         }
     },
     watch: {
@@ -459,6 +616,10 @@ export default {
     border-top-color: $accent
     border-top-width: 2px
 
+.bb
+    border-bottom: solid
+    border-bottom-color: $accent
+    border-width: 2px
 //border-bottom: solid
 //border-bottom-color: $accent
 //border-bottom-width: 2px
