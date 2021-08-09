@@ -1,10 +1,8 @@
-import string
-
 from ..models import NovelModel
-from .common import BaseService
+from .common import BaseService,SearchKeywordInNameMixin
 
 
-class NovelService(BaseService):
+class NovelService(BaseService,SearchKeywordInNameMixin):
 
     def __init__(self, config, db, cache):
         super().__init__(config, db, cache)

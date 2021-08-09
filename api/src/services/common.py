@@ -1,5 +1,5 @@
 import sqlalchemy.sql as sasql
-
+import sqlalchemy as sa
 
 class ServiceException(Exception):
     def __init__(self, message, code=None):
@@ -10,6 +10,7 @@ class ServiceException(Exception):
 
 
 class BaseService:
+    model: sa.Table
 
     def __init__(self, config, db, cache):
         self.config = config
@@ -18,7 +19,6 @@ class BaseService:
         self._init_model()
 
     def _init_model(self):
-        self.model = None
         raise NotImplementedError
 
     async def create(self, **data):
@@ -89,3 +89,23 @@ class BaseService:
             total = await result.scalar()
 
         return (rows, total)
+
+class SearchKeywordInNameMixin(object):
+    model:sa.Table
+
+    async def search_keyword_in_names(self,keyword):
+        if not keyword:
+            return []
+
+        async with self.db.acquire() as conn:
+            result = await conn.execute(
+                self.model.select().where(
+                    sasql.or_(
+                        self.model.c.name.like('%'+keyword+'%'),
+                        sasql.func.json_search(self.model.c.reserved_names, 'all', '%'+keyword+'%') != None
+                    )
+                )
+            )
+            rows = await result.fetchall()
+
+            return [dict(row) for row in rows]

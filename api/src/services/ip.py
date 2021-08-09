@@ -1,10 +1,8 @@
-import string
-
 from ..models import IPModel
-from .common import BaseService
+from .common import BaseService,SearchKeywordInNameMixin
 
 
-class IPService(BaseService):
+class IPService(BaseService,SearchKeywordInNameMixin):
 
     def __init__(self, config, db, cache):
         super().__init__(config, db, cache)

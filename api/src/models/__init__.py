@@ -16,6 +16,7 @@ from .tag import TagModel, TagSchema
 from .user import StaffModel, UserModel, UserSchema
 from .user_role import UserRoleModel, UserRoleSchema
 from .video import VideoModel, VideoSchema
+from .search import SearchLoadSchema
 
 
 async def init_db(config):

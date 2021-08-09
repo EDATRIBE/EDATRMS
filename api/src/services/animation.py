@@ -1,10 +1,8 @@
-import string
-
 from ..models import AnimationModel
-from .common import BaseService
+from .common import BaseService,SearchKeywordInNameMixin
 
 
-class AnimationService(BaseService):
+class AnimationService(BaseService,SearchKeywordInNameMixin):
 
     def __init__(self, config, db, cache):
         super().__init__(config, db, cache)

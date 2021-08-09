@@ -10,3 +10,4 @@ from .tag import tag
 from .user import user
 from .video import video
 from .role import role
+from .search import search
