@@ -63,7 +63,7 @@ async def dump_animation_infos(request, animations):
             'horizontal': horizontal_image
         }
 
-    all_captions = reduce(lambda l1, l2: l1 + l2, captions_list)
+    all_captions = reduce(lambda l1, l2: l1 + l2, captions_list, [])
     all_caption_ids = [caption['id'] for caption in all_captions]
     user_ids_list = await caption_user_service.user_ids_list_by_caption_ids(all_caption_ids)
     for caption, user_ids in zip(all_captions, user_ids_list):

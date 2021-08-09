@@ -59,7 +59,7 @@ async def dump_ip_info(request, ip):
             'horizontal': novel_horizontal_image
         }
 
-    all_captions = reduce(lambda l1, l2: l1 + l2, captions_list)
+    all_captions = reduce(lambda l1, l2: l1 + l2, captions_list, [])
     all_caption_ids = [caption['id'] for caption in all_captions]
     user_ids_list = await caption_user_service.user_ids_list_by_caption_ids(all_caption_ids)
     for caption, user_ids in zip(all_captions, user_ids_list):
@@ -90,7 +90,7 @@ async def dump_ip_infos(request, ips):
         ip['animations'] = animations
         ip['novels'] = novels
 
-    all_animations = reduce(lambda l1, l2: l1 + l2, animations_list)
+    all_animations = reduce(lambda l1, l2: l1 + l2, animations_list, [])
     all_animation_ids = [animation['id'] for animation in all_animations]
     videos_list = await video_service.infos_list_by_animations_ids(all_animation_ids)
     captions_list = await caption_service.infos_list_by_animations_ids(all_animation_ids)
@@ -112,7 +112,7 @@ async def dump_ip_infos(request, ips):
             'horizontal':animation_horizontal_image
         }
 
-    all_novels = reduce(lambda l1, l2: l1 + l2, novels_list)
+    all_novels = reduce(lambda l1, l2: l1 + l2, novels_list, [])
     all_novel_vertical_image_ids = [novel['image_ids'].get('vertical') for novel in all_novels]
     all_novel_horizontal_image_ids = [novel['image_ids'].get('horizontal') for novel in all_novels]
     all_novel_vertical_images = await storage_service.infos(all_novel_vertical_image_ids)
@@ -127,7 +127,7 @@ async def dump_ip_infos(request, ips):
             'horizontal':novel_horizontal_image
         }
 
-    all_captions = reduce(lambda l1, l2: l1 + l2, captions_list)
+    all_captions = reduce(lambda l1, l2: l1 + l2, captions_list, [])
     all_caption_ids = [caption['id'] for caption in all_captions]
     user_ids_list = await caption_user_service.user_ids_list_by_caption_ids(all_caption_ids)
     for caption, user_ids in zip(all_captions, user_ids_list):
