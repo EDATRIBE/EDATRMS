@@ -68,7 +68,7 @@
         <div class="q-col-gutter-y-sm">
             <div>
                 <div
-                    class="row q-pt-md q-pb-sm q-px-md bg-dark-light bt"
+                    class="row q-pt-md q-pb-sm q-px-md bg-dark-light bl"
                     v-if="initialized"
                 >
                     <q-chip
@@ -195,6 +195,12 @@ export default {
     border-top: solid
     border-top-color: $accent
     border-top-width: 2px
+
+.br
+    border-right: solid
+    border-right-color: $accent
+    border-right-width: 2px
+
 
 .bb
     border-bottom: solid

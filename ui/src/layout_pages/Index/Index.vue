@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-dark q-px-md q-pb-xl" style="padding-top: 3.5em" v-if="!LD">
+  <q-page class="q-px-md q-pb-xl" style="padding-top: 3.5em" v-if="!LD">
     <q-scroll-observer @scroll="onScroll"/>
     <div class="q-mx-auto" style="width: 97%">
       <div class="column">

@@ -61,7 +61,7 @@
                 </q-expansion-item>
             </div>
             <!--Content-->
-            <div v-for="(ip,i) in currentIPS" :key="i+'ip'+ip.id">
+            <div v-for="(ip,i) in searchResultIPs.slice((pageNum-1)*pageLen,pageNum*pageLen)" :key="i+'ip'+ip.id">
                 <!--IPS-->
                 <q-expansion-item
                     dense
@@ -360,8 +360,8 @@
         <!--pagination-->
         <div class="full-width row justify-center q-my-xs">
             <q-pagination
-                v-model="current"
-                :max="100"
+                v-model="pageNum"
+                :max="Math.ceil(searchResultIPs.length/pageLen)"
                 color="accent"
                 input
                 input-class="text-accent text-weight-medium"
@@ -383,7 +383,8 @@ export default {
     data() {
         return {
             model: '',
-            current: 3,
+            pageNum: 1,
+            pageLen: 10,
             ipDeleteBuffer: {
                 id: null,
                 isDeleting: false
@@ -412,7 +413,7 @@ export default {
         },
     },
     computed: {
-        currentIPS() {
+        searchResultIPs() {
             return this.$store.state.ip.ips
         },
         initialized() {
@@ -423,7 +424,7 @@ export default {
         }
     },
     watch: {
-        current() {
+        pageNum() {
             window.scrollTo(0, 0)
             // const element = document.getElementById("tool");
             // element.scrollIntoView();

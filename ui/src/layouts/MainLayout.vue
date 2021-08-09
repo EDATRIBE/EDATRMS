@@ -1,5 +1,5 @@
 <template>
-    <q-layout view="hHh lpr fFf">
+    <q-layout view="hHh lpr fFf" class="bg-dark" style="z-index: 1">
         <div class="q-px-md my-bg">
             <q-toolbar style="width: 97%" class="q-py-md q-px-none q-mx-auto text-white items-center">
                 <q-icon name="fas fa-atom" size="2.35em"/>
@@ -121,7 +121,7 @@ export default {
 
 <style lang="scss">
 .my-bg {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0), rgb(32, 32, 39,0.4) 50%, rgb(32, 32, 39,0.7) 90%)
+    background: linear-gradient(to top, rgba(0, 0, 0, 0),rgb(32, 32, 39,0) 20%, rgb(32, 32, 39,0.3) 50%, rgb(32, 32, 39,0.7) 90%)
 }
 
 .filepond--drop-label {
