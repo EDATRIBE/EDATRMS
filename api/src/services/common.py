@@ -102,7 +102,11 @@ class SearchKeywordInNameMixin(object):
                 self.model.select().where(
                     sasql.or_(
                         self.model.c.name.like('%'+keyword+'%'),
-                        sasql.func.json_search(self.model.c.reserved_names, 'all', '%'+keyword+'%') != None
+                        sasql.func.json_search(
+                            sasql.func.upper(self.model.c.reserved_names),
+                            'all',
+                            sasql.func.upper('%'+keyword+'%')
+                        ) != None
                     )
                 )
             )
