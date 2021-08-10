@@ -46,10 +46,7 @@
                                 v-model="filterBuffer.order"
                                 toggle-color="accent"
                                 toggle-text-color="dark"
-                                :options="[
-                                  {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'date'},
-                                  {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'alphabet'}
-                                ]"
+                                :options="orderOptions"
                             />
                             <q-space></q-space>
                             <q-icon
@@ -535,10 +532,39 @@ export default {
                 //     }
                 // }
                 // filterResultIPs = filterResultIPs.filter(animationTypeFilter)
+
+                const compareIPByUpdatedAt = (ipA, ipB) => {
+                    const dA = new Date(ipA.updatedAt)
+                    const dB = new Date(ipB.updatedAt)
+                    return dA < dB ? 1:-1
+                }
+
+                const compareIPByName= (ipA, ipB) => {
+                    if (this.$i18n.locale == 'en'){
+                        return (ipA.reservedNames[this.$i18n.locale] || ipA.name) >
+                        (ipB.reservedNames[this.$i18n.locale] || ipB.name)? 1:-1
+                    }else if(this.$i18n.locale == 'cn'){
+                        return (ipA.reservedNames[this.$i18n.locale] || ipA.name).localeCompare(
+                            (ipB.reservedNames[this.$i18n.locale] || ipB.name),'zh'
+                        )
+                    }
+                }
+
+                if (this.filterBuffer.order==='date'){
+                    filterResultIPs.sort(compareIPByUpdatedAt)
+                }else if (this.filterBuffer.order==='alphabet'){
+                    filterResultIPs.sort(compareIPByName)
+                }
+
                 return filterResultIPs
             }
         },
-
+        orderOptions(){
+            return [
+                {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'date'},
+                {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'alphabet'}
+            ]
+        },
         regionOptions() {
             return [
                 {label: 'ALL', value: 'ALL'},

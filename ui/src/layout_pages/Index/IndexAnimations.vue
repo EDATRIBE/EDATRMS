@@ -132,24 +132,26 @@
         <!--Content-->
         <div class="row q-col-gutter-x-sm q-col-gutter-y-lg">
             <div class="col-md-2 col-sm-3 col-xs-6 col-lg-2 col-xl-2"
-                 v-for="(animation,i) in filterResultAnimations.slice((pageNum-1)*pageLen,pageNum*pageLen)" :key="i+'aniiiii'+animation.id"
+                 v-for="(animation,i) in filterResultAnimations.slice((pageNum-1)*pageLen,pageNum*pageLen)"
+                 :key="i+'aniiiii'+animation.id"
             >
                 <q-card
+                    dark
                     class="bg-dark cursor-pointer my-card"
                     flat style="border-radius: 3px"
                     @click="$router.push({path:'/animation/info',query:{id:animation.id}})"
                 >
-<!--                    <q-img :src="require('assets/aaa.jpg')" class="my-img">-->
-<!--                        <div class="absolute-full text-subtitle2 flex flex-center my-text">-->
-<!--                            <q-icon class="shadow-3 mhc" size="4em" name="fas fa-link"></q-icon>-->
-<!--                        </div>-->
-<!--                        <q-chip-->
-<!--                            dense-->
-<!--                            class="absolute q-ma-none text-weight-medium shadow-5" color="primary"-->
-<!--                            style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 12px;">-->
-<!--                            {{i%2?'EPS':'MOVIE'}}-->
-<!--                        </q-chip>-->
-<!--                    </q-img>-->
+                    <!--                    <q-img :src="require('assets/aaa.jpg')" class="my-img">-->
+                    <!--                        <div class="absolute-full text-subtitle2 flex flex-center my-text">-->
+                    <!--                            <q-icon class="shadow-3 mhc" size="4em" name="fas fa-link"></q-icon>-->
+                    <!--                        </div>-->
+                    <!--                        <q-chip-->
+                    <!--                            dense-->
+                    <!--                            class="absolute q-ma-none text-weight-medium shadow-5" color="primary"-->
+                    <!--                            style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 12px;">-->
+                    <!--                            {{i%2?'EPS':'MOVIE'}}-->
+                    <!--                        </q-chip>-->
+                    <!--                    </q-img>-->
                     <q-responsive :ratio="2/3">
                         <div class="full-width" style="overflow: hidden; position: relative">
                             <q-img
@@ -161,9 +163,10 @@
                             </q-img>
                             <q-chip
                                 dense
-                                class="absolute q-ma-none q-pa-md text-weight-medium shadow-5" color="primary" text-color="white"
+                                class="absolute q-ma-none q-pa-md text-weight-medium shadow-5" color="primary"
+                                text-color="white"
                                 style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 12px;">
-                                {{animation.type}}
+                                {{ animation.type }}
                             </q-chip>
                         </div>
                     </q-responsive>
@@ -175,14 +178,7 @@
         </div>
 
         <!--pagination-->
-        <div class="full-width row justify-center q-my-md">
-<!--            <q-pagination-->
-<!--                v-model="pageNum"-->
-<!--                :max="Math.ceil(filterResultAnimations.length/pageLen)"-->
-<!--                color="white"-->
-<!--                input-->
-<!--                input-class="text-white text-weight-medium"-->
-<!--            />-->
+        <div class="full-width row justify-center q-py-lg">
             <q-pagination
                 v-model="pageNum"
                 color="primary"
@@ -207,7 +203,7 @@ export default {
             toolbarExpanded: false,
             pageNum: 1,
             pageLen: 24,
-            filterBuffer:{
+            filterBuffer: {
                 tagId: -1,
                 order: 'date',
                 region: 'ALL',
@@ -217,15 +213,7 @@ export default {
                 videoType: 'ALL',
                 captionType: 'ALL',
                 captionState: 'ALL'
-            },
-            order: 'date',
-            region: 'all',
-            type: 'all',
-            date: 'all',
-            quality: 'all',
-            videoType: 'all',
-            hasCaption: 'all',
-            lorem: ['Lorem ipsum dolor sit','末日时在做什么？有没有空，可以来拯救么？','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec est ligula. Curabitur porta nibh quis convallis elementum. Praesent laoreet, lacus at tristique pretium, nisl metus luctus nibh, vel accumsan ante sapien eget ante. Nunc neque metus, iaculis ut velit at, facilisis posuere urna. Curabitur tempor quis felis commodo interdum. Ut tempus ullamcorper ipsum. Donec egestas, enim sed accumsan efficitur, elit diam feugiat nunc, in pellentesque risus nulla ut felis. Nulla facilisi. Etiam sagittis consectetur urna, ac consectetur nisi hendrerit in. Aliquam eu purus mollis, commodo ipsum at, vestibulum nisi. Etiam et suscipit justo. Fusce at mauris at lectus bibendum porta in imperdiet leo.']
+            }
         }
     },
     computed: {
@@ -273,21 +261,117 @@ export default {
                     if (this.filterBuffer.animationType === 'ALL') {
                         return true
                     } else {
-                        if (animation.type === this.filterBuffer.animationType){
+                        if (animation.type === this.filterBuffer.animationType) {
                             return true
-                        }else {
+                        } else {
                             return false
                         }
                     }
                 }
                 filterResultAnimations = filterResultAnimations.filter(animationTypeFilter)
+
+                const releasedAtFilter = (animation) => {
+                    if (this.filterBuffer.releasedAt === 'ALL') {
+                        return true
+                    } else {
+                        const releasedAt = new Date(animation.releasedAt)
+                        const lb = new Date(this.filterBuffer.releasedAt, 0, 0)
+                        const rb = new Date(Number(this.filterBuffer.releasedAt) + 10, 0, 0)
+                        if (lb <= releasedAt && releasedAt < rb) {
+                            return true
+                        } else {
+                            return false
+                        }
+                    }
+                }
+                filterResultAnimations = filterResultAnimations.filter(releasedAtFilter)
+
+                const videoTypeFilter = (animation) => {
+                    if (this.filterBuffer.videoType === 'ALL') {
+                        return true
+                    } else {
+                        for (const video of animation.videos) {
+                            if (video.fileMeta.type === this.filterBuffer.videoType) {
+                                return true
+                            }
+                        }
+                        return false
+                    }
+                }
+                filterResultAnimations = filterResultAnimations.filter(videoTypeFilter)
+
+                const qualityFilter = (animation) => {
+                    if (this.filterBuffer.quality === 'ALL') {
+                        return true
+                    } else {
+                        for (const video of animation.videos) {
+                            if (video.fileMeta.quality === this.filterBuffer.quality) {
+                                return true
+                            }
+                        }
+                        return false
+                    }
+                }
+                filterResultAnimations = filterResultAnimations.filter(qualityFilter)
+
+                const captionTypeFilter = (animation) => {
+                    if (this.filterBuffer.captionType === 'ALL') {
+                        return true
+                    } else {
+                        for (const caption of animation.captions) {
+                            if (caption.fileMeta.type === this.filterBuffer.captionType) {
+                                return true
+                            }
+                        }
+                        return false
+                    }
+                }
+                filterResultAnimations = filterResultAnimations.filter(captionTypeFilter)
+
+                const captionStateFilter = (animation) => {
+                    if (this.filterBuffer.captionState === 'ALL') {
+                        return true
+                    } else {
+                        for (const caption of animation.captions) {
+                            if (caption.state === this.filterBuffer.captionState) {
+                                return true
+                            }
+                        }
+                        return false
+                    }
+                }
+                filterResultAnimations = filterResultAnimations.filter(captionStateFilter)
+
+                const compareAnimationByUpdatedAt = (aniA, aniB) => {
+                    const dA = new Date(aniA.updatedAt)
+                    const dB = new Date(aniB.updatedAt)
+                    return dA < dB ? 1:-1
+                }
+
+                const compareAnimationByName= (aniA, aniB) => {
+                    if (this.$i18n.locale == 'en'){
+                        return (aniA.reservedNames[this.$i18n.locale] || aniA.name) >
+                        (aniB.reservedNames[this.$i18n.locale] || aniB.name)? 1:-1
+                    }else if(this.$i18n.locale == 'cn'){
+                        return (aniA.reservedNames[this.$i18n.locale] || aniA.name).localeCompare(
+                            (aniB.reservedNames[this.$i18n.locale] || aniB.name),'zh'
+                        )
+                    }
+                }
+
+                if (this.filterBuffer.order==='date'){
+                    filterResultAnimations.sort(compareAnimationByUpdatedAt)
+                }else if (this.filterBuffer.order==='alphabet'){
+                    filterResultAnimations.sort(compareAnimationByName)
+                }
+
                 return filterResultAnimations
             }
         },
         orderOptions() {
             return [
-                {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'date'},
-                {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'alphabet'}
+                {label: 'date', icon: 'fas fa-sort-numeric-down-alt', value: 'date'},
+                {label: 'alphabet', icon: 'fas fa-sort-alpha-down', value: 'alphabet'}
             ]
         },
         regionOptions() {
@@ -300,61 +384,61 @@ export default {
         },
         animationTypeOptions() {
             return [
-                {label:'ALL',value: 'ALL'},
-                {label:'TV',value: 'TV'},
-                {label:'MOVIE',  value: 'MOVIE'},
-                {label:'SP',value: 'SP'},
-                {label:'OVA',value: 'OVA'},
-                {label:'OAD',  value: 'OAD'}
+                {label: 'ALL', value: 'ALL'},
+                {label: 'TV', value: 'TV'},
+                {label: 'MOVIE', value: 'MOVIE'},
+                {label: 'SP', value: 'SP'},
+                {label: 'OVA', value: 'OVA'},
+                {label: 'OAD', value: 'OAD'}
             ]
         },
         releasedAtOptions() {
             return [
-                {label:'ALL',value: 'ALL'},
-                {label:'1960s', value: 1600},
-                {label:'1970s', value: 1700},
-                {label:'1980s', value: 1800},
-                {label:'1990s', value: 1900},
-                {label:'2000s', value: 2000},
-                {label:'2010s', value: 2010},
-                {label:'2020s', value: 2020}
+                {label: 'ALL', value: 'ALL'},
+                {label: '1960s', value: 1600},
+                {label: '1970s', value: 1700},
+                {label: '1980s', value: 1800},
+                {label: '1990s', value: 1900},
+                {label: '2000s', value: 2000},
+                {label: '2010s', value: 2010},
+                {label: '2020s', value: 2020}
             ]
         },
         qualityOptions() {
             return [
-                {label:'ALL',value: 'ALL'},
-                {label:'360P', value: '360P'},
-                {label:'640P', value: '640P'},
-                {label:'720P', value: '720P'},
-                {label:'960P', value: '960P'},
-                {label:'1080P', value: '1080P'}
+                {label: 'ALL', value: 'ALL'},
+                {label: '360P', value: '360P'},
+                {label: '640P', value: '640P'},
+                {label: '720P', value: '720P'},
+                {label: '960P', value: '960P'},
+                {label: '1080P', value: '1080P'}
             ]
         },
         videoTypeOptions() {
             return [
-                {label:'ALL',value: 'ALL'},
-                {label:'MP4',value: 'MP4'},
-                {label:'MKV',value: 'MKV'},
-                {label:'AV1',  value: 'AV1'},
-                {label:'OGG',value: 'OGG'}
+                {label: 'ALL', value: 'ALL'},
+                {label: 'MP4', value: 'MP4'},
+                {label: 'MKV', value: 'MKV'},
+                {label: 'AV1', value: 'AV1'},
+                {label: 'OGG', value: 'OGG'}
             ]
         },
         captionTypeOptions() {
             return [
-                {label:'ALL',value: 'ALL'},
-                {label:'SRT',value: 'SRT'},
-                {label:'ASS',value: 'ASS'},
-                {label:'VTT',  value: 'VTT'},
-                {label:'SUP',value: 'SUP'},
-                {label:'SSA',value: 'SSA'}
+                {label: 'ALL', value: 'ALL'},
+                {label: 'SRT', value: 'SRT'},
+                {label: 'ASS', value: 'ASS'},
+                {label: 'VTT', value: 'VTT'},
+                {label: 'SUP', value: 'SUP'},
+                {label: 'SSA', value: 'SSA'}
             ]
         },
         captionStateOptions() {
             return [
-                {label:'ALL',value: 'ALL'},
-                {label:'TODO',value: 'TODO'},
-                {label:'DOING',value: 'DOING'},
-                {label:'DONE',  value: 'DONE'}
+                {label: 'ALL', value: 'ALL'},
+                {label: 'TODO', value: 'TODO'},
+                {label: 'DOING', value: 'DOING'},
+                {label: 'DONE', value: 'DONE'}
             ]
         },
         tagOptions() {
@@ -421,6 +505,7 @@ a
     visibility: hidden
     opacity: 0
     transition: .3s
+
 .my-img:hover .my-text
     visibility: visible
     opacity: 1
@@ -429,6 +514,7 @@ a
 .my-section .mhc
     color: white
     transition: .3s
+
 .my-section:hover .mhc
     color: $primary
     transition: .3s
@@ -438,6 +524,7 @@ a
     filter: brightness(.99)
     transform: translateZ(0) scale(1)
     transition: transform .4s ease 0s
+
 .my-card:hover .mhs
     -webkit-filter: brightness(1)
     filter: brightness(1)
