@@ -36,8 +36,8 @@ class TagSchema(Schema):
     reservedNames = fields.Nested('TagReservedNamesSchema', attribute='reserved_names')
     createdBy = fields.Integer(attribute='created_by')
     createdAt = fields.DateTime(attribute='created_at')
-    updateBy = fields.Integer(attribute='updated_by')
-    updateAt = fields.DateTime(attribute='updated_at')
+    updatedBy = fields.Integer(attribute='updated_by')
+    updatedAt = fields.DateTime(attribute='updated_at')
     comment = fields.String(validate=validate.Length(0, 300))
 
     class Meta:
