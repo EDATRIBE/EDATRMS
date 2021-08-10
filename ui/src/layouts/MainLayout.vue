@@ -2,8 +2,22 @@
     <q-layout view="hHh lpr fFf" class="bg-dark" style="z-index: 1">
         <div class="q-px-md my-bg">
             <q-toolbar style="width: 97%" class="q-py-md q-px-none q-mx-auto text-white items-center">
-                <q-icon name="fas fa-atom" size="2.35em"/>
-                <div class="text-h4 q-ml-sm" v-if="$q.screen.gt.sm">EDATRMS</div>
+<!--                <q-icon name="fas fa-atom" size="2.35em"/>-->
+<!--                <div class="text-h4 q-ml-sm" v-if="$q.screen.gt.sm">EDATRMS</div>-->
+<!--                <q-img-->
+<!--                    class="q-mx-xs"-->
+<!--                    contain-->
+<!--                    width="53px"-->
+<!--                    :src="require('assets/LOGO.png')"-->
+<!--                >-->
+<!--                </q-img>-->
+                <q-img
+                    contain
+                    width="230px"
+                    :src="require('assets/LOGO3.png')"
+                >
+                </q-img>
+<!--                <div class="q-ml-sm" style="font-size: 42px" v-if="$q.screen.gt.sm">IMS</div>-->
                 <q-space/>
 
                 <nav-items v-if="$q.screen.gt.sm"/>
