@@ -10,14 +10,13 @@ const tagStore = {
             return state.tags !== null
         },
         idTagDict(state) {
-            if(state.tags){
-                let d = {}
+            let d = {}
+            if (state.tags) {
                 for (const tag of state.tags) {
                     d[tag.id] = tag
                 }
-                return d
             }
-            return null
+            return d
         }
     },
     mutations: {

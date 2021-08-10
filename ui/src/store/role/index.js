@@ -8,6 +8,15 @@ const roleStore = {
     getters:{
         rolesInitialized(state){
             return state.roles !== null
+        },
+        idRoleDict(state) {
+            let d = {}
+            if (state.roles) {
+                for (const role of state.roles) {
+                    d[role.id] = role
+                }
+            }
+            return d
         }
     },
     mutations: {

@@ -8,7 +8,18 @@ const ipStore = {
     },
     getters: {
         ipsInitialized(state) {
-            return state.ips !== null && state.searchResults !== null
+            return state.ips !== null
+        },
+        idAnimationDict(state) {
+            let d = {}
+            if (state.ips) {
+                for (const ip of state.ips) {
+                    for (const animation of ip.animations) {
+                        d[animation.id] = animation
+                    }
+                }
+            }
+            return d
         }
     },
     mutations: {

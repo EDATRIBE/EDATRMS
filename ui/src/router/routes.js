@@ -44,10 +44,6 @@ const routes = [
                 ]
             },
             {
-                path: 'ann',
-                component: () => import('src/layout_pages/Announcement/Announcements')
-            },
-            {
                 path: 'animation',
                 component: () => import('src/layout_pages/Animation/AnimationLayout'),
                 children: [
@@ -116,9 +112,23 @@ const routes = [
                 component: () => import('pages/flab')
             },
             {
-                path: 'con',
-                component: () => import('src/layout_pages/Contributor/Contributors')
-            }
+                path: 'contributor',
+                component: () => import('src/layout_pages/Contributor/ContributorLayout'),
+                children: [
+                    {
+                        path: 'index',
+                        component: () => import('src/layout_pages/Contributor/ContributorIndex')
+                    },
+                    {
+                        path: 'info',
+                        component: () => import('src/layout_pages/Contributor/ContributorInfo')
+                    },
+                ]
+            },
+            {
+                path: 'announcements',
+                component: () => import('src/layout_pages/Announcement/Announcements')
+            },
         ]
     },
 
