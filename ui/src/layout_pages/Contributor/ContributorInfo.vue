@@ -6,9 +6,8 @@
                 :class="{'no-wrap': $q.screen.gt.sm}"
             >
                 <div>
-                    <q-avatar size="150px" v-ripple class="cursor-pointer q-mr-md q-mt-sm">
-                        <q-img
-                            contain
+                    <q-avatar size="150px" class="q-mr-md q-mt-sm">
+                        <img
                             :src="user.avatar?user.avatar.url:GenAvatar(user.name)"
                         />
                     </q-avatar>

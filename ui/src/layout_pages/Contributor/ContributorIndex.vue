@@ -20,10 +20,8 @@
                     </q-chip>
                 </div>
                 <div>
-                    <q-avatar size="150px" v-ripple class="cursor-pointer q-mr-md q-mt-sm">
-                        <q-img
-                            @click="$router.push({path:'/contributor/info',query:{user_id:user.id}})"
-                            contain
+                    <q-avatar size="150px" class="q-mr-md q-mt-sm">
+                        <img
                             :src="user.avatar?user.avatar.url:GenAvatar(user.name)"
                         />
                     </q-avatar>
