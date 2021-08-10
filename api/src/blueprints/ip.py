@@ -11,20 +11,6 @@ from .dupmer import dump_ip_info, dump_ip_infos, dump_ip_tag_infos
 ip = Blueprint('ip', url_prefix='/ip')
 
 
-# @ip.post('/foo')
-# @authenticated_staff()
-# async def foo(request):
-#     data = IPSchema().load(request.json)
-#     required_field_validation(data=data, required_field=['id'])
-#
-#     ip_tag_service = IPTagService(request.app.config, request.app.db, request.app.cache)
-#     ip_tag_items = await ip_tag_service.info_by_ip_ids([data['id']])
-#
-#     print(ip_tag_items)
-#     return response_json(
-#         ip_tag_items=await dump_ip_tag_infos(request, ip_tag_items[0])
-#     )
-
 @ip.post('/create')
 @authenticated_staff()
 async def create(request):

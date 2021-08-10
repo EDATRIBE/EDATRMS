@@ -30,7 +30,7 @@ async def main():
                 'name': fake3l.unique.text(max_nb_chars=10),
                 'type': fake3l.random_element(elements=['MP4','MKV','AV1','OGG']),
                 'size': fake3l.random_element(elements=[12434123, 2314, 124, 44325]),
-                'quality': fake3l.random_element(elements=['360p','640P','720P','960P','1080P'])
+                'quality': fake3l.random_element(elements=['360P','640P','720P','960P','1080P'])
             },
             'created_by': fake3l.random_element(elements=staff_ids),
             'updated_by': fake3l.random_element(elements=staff_ids),
