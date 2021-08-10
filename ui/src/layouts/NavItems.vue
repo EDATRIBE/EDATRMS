@@ -9,13 +9,13 @@
       </q-btn>
       <q-btn
         dense flat  no-caps class="btn-fixed-width text-h6 q-ml-sm"
-        @click="$router.push('/con')"
+        @click="$router.push('/contributor/index')"
       >
         {{$t("ui.navItems.contributors")}}
       </q-btn>
       <q-btn
         dense flat  no-caps class="btn-fixed-width text-h6 q-ml-sm"
-        @click="$router.push('/ann')"
+        @click="$router.push('/announcements')"
       >
         {{$t("ui.navItems.announcements")}}
       </q-btn>
@@ -28,9 +28,24 @@
           content-class="bg-dark-light"
       >
         <div class="column q-pa-sm">
-          <q-btn align="left" flat dense no-caps class="text-body1 text-white">{{$t("ui.navItems.index")}}</q-btn>
-          <q-btn align="left" flat dense no-caps class="text-body1 text-white">{{$t("ui.navItems.contributors")}}</q-btn>
-          <q-btn align="left" flat dense no-caps class="text-body1 text-white">{{$t("ui.navItems.announcements")}}</q-btn>
+          <q-btn
+              align="left" flat dense no-caps class="text-body1 text-white"
+              @click="$router.push('/')"
+          >
+              {{$t("ui.navItems.index")}}
+          </q-btn>
+          <q-btn
+              align="left" flat dense no-caps class="text-body1 text-white"
+              @click="$router.push('/contributor/index')"
+          >
+              {{$t("ui.navItems.contributors")}}
+          </q-btn>
+          <q-btn
+              align="left" flat dense no-caps class="text-body1 text-white"
+              @click="$router.push('/announcements')"
+          >
+              {{$t("ui.navItems.announcements")}}
+          </q-btn>
         </div>
       </q-btn-dropdown>
     </div>

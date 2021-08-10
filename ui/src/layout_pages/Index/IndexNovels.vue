@@ -95,7 +95,7 @@
                     @click="$router.push({path:'/novel/info',query:{id:novel.id}})"
                 >
                     <q-responsive :ratio="2/3">
-                        <div class="full-width" style="overflow: hidden; position: relative">
+                        <div class="full-width" style="overflow: hidden; position: relative;border-radius: 3px">
                             <q-img
                                 :src="novel.images.vertical?
                                     novel.images.vertical.url:

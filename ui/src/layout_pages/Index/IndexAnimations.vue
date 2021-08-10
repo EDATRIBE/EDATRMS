@@ -130,7 +130,7 @@
         </div>
 
         <!--Content-->
-        <div class="row q-col-gutter-x-sm q-col-gutter-y-lg">
+        <div class="row q-col-gutter-x-sm q-col-gutter-y-lg" v-if="initialized">
             <div class="col-md-2 col-sm-3 col-xs-6 col-lg-2 col-xl-2"
                  v-for="(animation,i) in filterResultAnimations.slice((pageNum-1)*pageLen,pageNum*pageLen)"
                  :key="i+animation.id+animation.name"
@@ -138,7 +138,6 @@
                 <q-card
                     dark flat
                     class="bg-dark cursor-pointer my-card"
-                    style="border-radius: 3px"
                     @click="$router.push({path:'/animation/info',query:{id:animation.id}})"
                 >
                     <!--                    <q-img :src="require('assets/aaa.jpg')" class="my-img">-->
@@ -153,7 +152,7 @@
                     <!--                        </q-chip>-->
                     <!--                    </q-img>-->
                     <q-responsive :ratio="2/3">
-                        <div class="full-width" style="overflow: hidden; position: relative">
+                        <div class="full-width" style="overflow: hidden; position: relative; border-radius: 3px">
                             <q-img
                                 :src="animation.images.vertical?
                                     animation.images.vertical.url:

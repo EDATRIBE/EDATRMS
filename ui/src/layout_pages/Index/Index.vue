@@ -83,12 +83,7 @@ import IndexAnimations from "src/layout_pages/Index/IndexAnimations";
 export default {
     name: "Index",
     activated() {
-        if (this.$route.query.tab) {
-            this.tab = this.$route.query.tab
-        }
-        if (this.$route.query.search) {
-            this.searchBuffer = this.$route.query.search
-        }
+        this.$store.dispatch('searchKeywords',this.searchBuffer)
     },
     data() {
         return {

@@ -10,7 +10,7 @@
                                 clickable v-ripple
                                 v-for="(ann,i) in announcements" :key="'ann'+i"
                                 class="q-mb-none text-body1 text-weight-medium"
-                                @click="$router.push({path:'/ann',query:{title:ann.title}})"
+                                @click="$router.push({path:'/announcements',query:{title:ann.title}})"
                                 active-class="acann"
                                 :active="i===currentId"
                             >
@@ -64,7 +64,7 @@ export default {
     methods: {
         selectAnnouncement(title) {
             if(title===undefined){
-                this.$router.push({path:'/ann',query:{title:this.announcements[0].title}})
+                this.$router.push({path:'/announcements',query:{title:this.announcements[0].title}})
             }
             this.currentId =0
             for (const i in this.announcements) {
