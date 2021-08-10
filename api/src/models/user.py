@@ -38,6 +38,7 @@ class UserSchema(Schema):
     avatar = fields.Nested('FileSchema')
     staff = fields.Boolean()
     roleIds = fields.List(fields.Integer(), attribute='role_ids')
+    animationIds = fields.List(fields.Integer(), attribute='animation_ids')
 
     class Meta:
         ordered = True

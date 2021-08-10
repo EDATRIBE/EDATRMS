@@ -46,3 +46,31 @@ class CaptionUserService(BaseService):
             d = {}
 
         return [d.get(caption_id) for caption_id in caption_ids]
+
+    async def caption_ids_by_user_id(self, user_id):
+        if not user_id:
+            return []
+
+        async with self.db.acquire() as conn:
+            result = await conn.execute(
+                self.model.select().where(self.model.c.user_id==user_id)
+            )
+            rows = await result.fetchall()
+
+        return [row['caption_id'] for row in rows]
+
+    async def caption_ids_list_by_user_ids(self, user_ids):
+        valid_user_ids = [v for v in user_ids if v is not None]
+
+        if valid_user_ids:
+            d = {valid_user_id: [] for valid_user_id in valid_user_ids}
+            async with self.db.acquire() as conn:
+                result = await conn.execute(
+                    self.model.select().where(self.model.c.user_id.in_(valid_user_ids))
+                )
+                for row in await result.fetchall():
+                    d[row['user_id']].append(dict(row)['caption_id'])
+        else:
+            d = {}
+
+        return [d.get(user_id) for user_id in user_ids]
