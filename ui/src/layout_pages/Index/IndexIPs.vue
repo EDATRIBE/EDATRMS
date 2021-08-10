@@ -99,7 +99,7 @@
                 </q-expansion-item>
             </div>
             <!--Content-->
-            <div v-for="(ip,i) in filterResultIPs.slice((pageNum-1)*pageLen,pageNum*pageLen)" :key="i+'ip'+ip.id">
+            <div v-for="(ip,i) in filterResultIPs.slice((pageNum-1)*pageLen,pageNum*pageLen)" :key="i+ip.id+ip.name">
                 <!--IPS-->
                 <q-expansion-item
                     dense
@@ -123,7 +123,7 @@
                                     {{ ip.region }}
                                 </q-chip>
                                 <q-chip
-                                    v-for="(tagId,i) in ip.tagIds" :key="i+'tag'"
+                                    v-for="(tagId,i) in ip.tagIds" :key="i+tagId+'tagId'"
                                     size="0.7em" square dense text-color="dark" color="accent"
                                     class="q-py-none text-weight-medium"
                                 >
@@ -177,7 +177,7 @@
                     <div class="q-pl-lg q-py-sm"><!--DONT SET MARGIN!-->
                         <div class="q-col-gutter-y-sm"><!--DONT SET MARGIN!-->
                             <!--Animations-->
-                            <div v-for="(animation,i) in ip.animations" :key="i+'ani'+ip.id+animation.id">
+                            <div v-for="(animation,i) in ip.animations" :key="i+animation.id+animation.name">
                                 <!--DONT SET MARGIN!-->
                                 <q-expansion-item
                                     dense
@@ -250,7 +250,7 @@
                                         <div class="q-col-gutter-y-xs"><!--DONT SET MARGIN!-->
                                             <!--AnimationsVideo-->
                                             <div v-for="(video,i) in animation.videos"
-                                                 :key="i+'vid'+animation.id+video.id">
+                                                 :key="i+animation.name+video.id">
                                                 <q-item
                                                     dense dark class="bg-dark-light q-pa-none bl1"
                                                     style="padding-right: 39.3px"
@@ -298,7 +298,7 @@
 
                                             <!--AnimationsCaption-->
                                             <div v-for="(caption,i) in animation.captions"
-                                                 :key="i+'cap'+animation.id+caption.id">
+                                                 :key="i+'cap'+animation.id+'captionId'+caption.id">
                                                 <q-item
                                                     dense dark class="bg-dark-light q-pa-none bl1"
                                                     style="padding-right: 39.3px"
@@ -350,7 +350,9 @@
                             </div>
 
                             <!--Novel-->
-                            <div v-for="(novel,i) in ip.novels" :key="i+'nov'+ip.id+novel.id">
+                            <div v-for="(novel,i) in ip.novels"
+                                 :key="i+novel.id+novel.name"
+                            >
                                 <q-item
                                     dense dark class="bg-dark-light q-pa-none bl2" style="padding-right: 39.3px"
                                 >

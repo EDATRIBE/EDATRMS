@@ -2,9 +2,9 @@
     <div class="q-pt-sm">
 
         <!--Tools-->
-        <div @mouseleave="expanded=false">
+        <div @mouseleave="toolbarExpanded=false">
             <q-expansion-item
-                v-model="expanded"
+                v-model="toolbarExpanded"
                 dense
                 dark
                 expand-icon-toggle
@@ -20,27 +20,19 @@
                         <q-btn-toggle
                             text-color="grey-7" size="0.75em" unelevated
                             class="no-border-radius bg-dark-light" toggle-color="secondary" toggle-text-color="dark"
-                            v-model="order"
-                            :options="[
-                              {label:'date', icon: 'fas fa-sort-numeric-down-alt', value: 'date'},
-                              {label:'alphabet', icon: 'fas fa-sort-alpha-down', value: 'alphabet'}
-                            ]"
+                            v-model="filterBuffer.order"
+                            :options="orderOptions"
                         />
                     </div>
                 </template>
                 <!--ToolsContent-->
                 <div class="q-pt-sm q-pb-sm bb">
                     <!--region-->
-                    <q-item dense dark class="q-pa-none bl1">
+                    <q-item dense dark class="q-pa-none ">
                         <multiple-choice
                             class="text-body1"
-                            :options="[
-                                {label:'All', value: 'all'},
-                                {label:'CN', value: 'cn'},
-                                {label:'JP', value: 'jp'},
-                                {label:'OTHER', value: 'other'},
-                            ]"
-                            v-model="region"
+                            :options="regionOptions"
+                            v-model="filterBuffer.region"
                             text-class="text-grey-7"
                             b-g-class="bg-dark-light"
                             active-text-class="text-dark"
@@ -49,15 +41,11 @@
                     </q-item>
 
                     <!--type-->
-                    <q-item dense dark class="q-pa-none bl1 q-mt-sm">
+                    <q-item dense dark class="q-pa-none  q-mt-sm">
                         <multiple-choice
                             class="text-body1"
-                            :options="[
-                                {label:'ALL',value: 'all'},
-                                {label:'TV',value: 'tv'},
-                                {label:'EPS',  value: 'eps'}
-                            ]"
-                            v-model="type"
+                            :options="novelTypeOptions"
+                            v-model="filterBuffer.novelType"
                             text-class="text-grey-7"
                             b-g-class="bg-dark-light"
                             active-text-class="text-dark"
@@ -65,21 +53,12 @@
                         />
                     </q-item>
 
-                    <!--date-->
-                    <q-item dense dark class="q-pa-none bl1 q-mt-sm">
+                    <!--integrated-->
+                    <q-item dense dark class="q-pa-none  q-mt-sm">
                         <multiple-choice
                             class="text-body1"
-                            :options="[
-                {label:'ALL',value: 'all'},
-                {label:'1960s', value: '1960s'},
-                {label:'1970s', value: '1970s'},
-                {label:'1980s', value: '1980s'},
-                {label:'1990s', value: '1990s'},
-                {label:'2000s', value: '2000s'},
-                {label:'2010s', value: '2010s'},
-                {label:'2020s', value: '2020s'}
-              ]"
-                            v-model="date"
+                            :options="integratedOptions"
+                            v-model="filterBuffer.integrated"
                             text-class="text-grey-7"
                             b-g-class="bg-dark-light"
                             active-text-class="text-dark"
@@ -87,55 +66,12 @@
                         />
                     </q-item>
 
-                    <!--quality-->
-                    <q-item dense dark class="q-pa-none bl1 q-mt-sm">
+                    <!--tagId-->
+                    <q-item dense dark class="q-pa-none q-mt-sm">
                         <multiple-choice
                             class="text-body1"
-                            :options="[
-                {label:'ALL',value: 'all'},
-                {label:'360P', value: '360P'},
-                {label:'640P', value: '640P'},
-                {label:'720P', value: '720P'},
-                {label:'960P', value: '960P'},
-                {label:'1080P', value: '1080P'}
-              ]"
-                            v-model="quality"
-                            text-class="text-grey-7"
-                            b-g-class="bg-dark-light"
-                            active-text-class="text-dark"
-                            active-b-g-class="bg-secondary"
-                        />
-                    </q-item>
-
-                    <!--videoType-->
-                    <q-item dense dark class="q-pa-none bl1 q-mt-sm">
-                        <multiple-choice
-                            class="text-body1"
-                            :options="[
-                {label:'ALL',value: 'all'},
-                {label:'MP4', value: '360P'},
-                {label:'MKV', value: '640P'},
-                {label:'AV1', value: '720P'},
-                {label:'OGG', value: '960P'}
-              ]"
-                            v-model="videoType"
-                            text-class="text-grey-7"
-                            b-g-class="bg-dark-light"
-                            active-text-class="text-dark"
-                            active-b-g-class="bg-secondary"
-                        />
-                    </q-item>
-
-                    <!--captions-->
-                    <q-item dense dark class="q-pa-none bl1 q-mt-sm">
-                        <multiple-choice
-                            class="text-body1"
-                            :options="[
-                {label:'ALL',value: 'all'},
-                {label:'CLOSED CAPTION', value: 'true'},
-                {label:'NO CAPTION', value: 'false'},
-              ]"
-                            v-model="hasCaption"
+                            :options="tagOptions"
+                            v-model="filterBuffer.tagId"
                             text-class="text-grey-7"
                             b-g-class="bg-dark-light"
                             active-text-class="text-dark"
@@ -148,36 +84,52 @@
 
         <!--Content-->
         <div class="row q-col-gutter-x-sm q-col-gutter-y-lg">
-            <div class="col-md-2 col-sm-3 col-xs-6" v-for="i in 20" :key="i">
-                <q-card class="bg-dark cursor-pointer my-card" flat style="border-radius: 3px"  @click="()=>{}">
-                    <!--                    <q-img :src="require('assets/aaa.jpg')" class="my-img">-->
-                    <!--                        <div class="absolute-full text-subtitle2 flex flex-center my-text">-->
-                    <!--                            <q-icon class="shadow-3 mhc" size="4em" name="fas fa-link"></q-icon>-->
-                    <!--                        </div>-->
-                    <!--                        <q-chip-->
-                    <!--                            dense-->
-                    <!--                            class="absolute q-ma-none text-weight-medium shadow-5" color="secondary"-->
-                    <!--                            style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 12px;">-->
-                    <!--                            {{i%2?'EPS':'MOVIE'}}-->
-                    <!--                        </q-chip>-->
-                    <!--                    </q-img>-->
+            <div class="col-md-2 col-sm-3 col-xs-6 col-lg-2 col-xl-2"
+                 v-for="(novel,i) in filterResultNovels.slice((pageNum-1)*pageLen,pageNum*pageLen)"
+                 :key="i+novel.id+novel.name"
+            >
+                <q-card
+                    dark
+                    class="bg-dark cursor-pointer my-card"
+                    flat style="border-radius: 3px"
+                    @click="$router.push({path:'/novel/info',query:{id:novel.id}})"
+                >
                     <q-responsive :ratio="2/3">
                         <div class="full-width" style="overflow: hidden; position: relative">
-                            <q-img :src="require('assets/'+(i+1)%3+'.jpg')" class="mhs">
+                            <q-img
+                                :src="novel.images.vertical?
+                                    novel.images.vertical.url:
+                                    require('assets/1.jpg')"
+                                class="mhs"
+                            >
                             </q-img>
                             <q-chip
                                 dense
-                                class="absolute q-ma-none q-pa-md text-weight-medium shadow-5" color="secondary" text-color="white"
+                                class="absolute q-ma-none q-pa-md text-weight-medium shadow-5" color="secondary"
+                                text-color="white"
                                 style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 12px;">
-                                {{i%2?'EPS':'MOVIE'}}
+                                {{ novel.fileMeta.type }}
                             </q-chip>
                         </div>
                     </q-responsive>
                     <q-card-section class="q-py-xs q-px-none text-body1 text-weight-bold ov my-section">
-                        <span class="mhc">{{ lorem[i%2] }}</span>
+                        <span class="mhc">{{ novel.reservedNames[$i18n.locale] || novel.name }}</span>
                     </q-card-section>
                 </q-card>
             </div>
+        </div>
+
+        <!--pagination-->
+        <div class="full-width row justify-center q-py-lg">
+            <q-pagination
+                v-model="pageNum"
+                color="secondary"
+                active-color="secondary"
+                active-text-color="dark"
+                :max="Math.ceil(filterResultNovels.length/pageLen)"
+                :max-pages="10"
+                boundary-links
+            />
         </div>
     </div>
 </template>
@@ -190,23 +142,170 @@ export default {
     components: {MultipleChoice},
     data() {
         return {
-            tab: 'Animations',
-            text: '',
-            LD: true,
-            expanded: false,
-            scrollInfo: {},
-            soo: false,
-            order: 'date',
-            region: 'all',
-            type: 'all',
-            date: 'all',
-            quality: 'all',
-            videoType: 'all',
-            hasCaption: 'all',
-            ips: [],
-            lorem: ['Lorem ipsum dolor sit','末日时在做什么？有没有空，可以来拯救么？','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec est ligula. Curabitur porta nibh quis convallis elementum. Praesent laoreet, lacus at tristique pretium, nisl metus luctus nibh, vel accumsan ante sapien eget ante. Nunc neque metus, iaculis ut velit at, facilisis posuere urna. Curabitur tempor quis felis commodo interdum. Ut tempus ullamcorper ipsum. Donec egestas, enim sed accumsan efficitur, elit diam feugiat nunc, in pellentesque risus nulla ut felis. Nulla facilisi. Etiam sagittis consectetur urna, ac consectetur nisi hendrerit in. Aliquam eu purus mollis, commodo ipsum at, vestibulum nisi. Etiam et suscipit justo. Fusce at mauris at lectus bibendum porta in imperdiet leo.']
+            toolbarExpanded: false,
+            pageNum: 1,
+            pageLen: 24,
+            filterBuffer: {
+                tagId: -1,
+                order: 'date',
+                region: 'ALL',
+                novelType: 'ALL',
+                integrated: 'ALL',
+            }
         }
     },
+    computed: {
+        initialized() {
+            return this.$store.getters.ipsInitialized && this.$store.getters.tagsInitialized
+        },
+        searchResultIPs() {
+            return this.$store.state.ip.searchResults
+        },
+        tags() {
+            return this.$store.state.tag.tags
+        },
+        filterResultNovels() {
+            if (!this.searchResultIPs) {
+                return []
+            } else {
+
+                let filterResultIPs = this.searchResultIPs
+                const regionFilter = (ip) => {
+                    if (this.filterBuffer.region === 'ALL') {
+                        return true
+                    } else {
+                        return ip.region === this.filterBuffer.region
+                    }
+                }
+                filterResultIPs = filterResultIPs.filter(regionFilter)
+                const tagFilter = (ip) => {
+                    if (this.filterBuffer.tagId === -1) {
+                        return true
+                    } else {
+                        return ip.tagIds.includes(this.filterBuffer.tagId)
+                    }
+                }
+                filterResultIPs = filterResultIPs.filter(tagFilter)
+
+
+                let filterResultNovels = []
+                for (const ip of filterResultIPs) {
+                    for (const novel of ip.novels) {
+                        filterResultNovels.push(novel)
+                    }
+                }
+
+                const novelTypeFilter = (novel) => {
+                    if (this.filterBuffer.novelType === 'ALL') {
+                        return true
+                    } else {
+                        if (novel.fileMeta.type === this.filterBuffer.novelType) {
+                            return true
+                        } else {
+                            return false
+                        }
+                    }
+                }
+                filterResultNovels = filterResultNovels.filter(novelTypeFilter)
+
+                const integratedFilter = (novel) => {
+                    if (this.filterBuffer.integrated === 'ALL') {
+                        return true
+                    } else {
+                        if (novel.integrated === this.filterBuffer.integrated) {
+                            return true
+                        } else {
+                            return false
+                        }
+                    }
+                }
+                filterResultNovels = filterResultNovels.filter(integratedFilter)
+
+                const compareNovelByUpdatedAt = (aniA, aniB) => {
+                    const dA = new Date(aniA.updatedAt)
+                    const dB = new Date(aniB.updatedAt)
+                    return dA < dB ? 1:-1
+                }
+
+                const compareNovelByName= (aniA, aniB) => {
+                    if (this.$i18n.locale == 'en'){
+                        return (aniA.reservedNames[this.$i18n.locale] || aniA.name) >
+                        (aniB.reservedNames[this.$i18n.locale] || aniB.name)? 1:-1
+                    }else if(this.$i18n.locale == 'cn'){
+                        return (aniA.reservedNames[this.$i18n.locale] || aniA.name).localeCompare(
+                            (aniB.reservedNames[this.$i18n.locale] || aniB.name),'zh'
+                        )
+                    }
+                }
+
+                if (this.filterBuffer.order==='date'){
+                    filterResultNovels.sort(compareNovelByUpdatedAt)
+                }else if (this.filterBuffer.order==='alphabet'){
+                    filterResultNovels.sort(compareNovelByName)
+                }
+
+                return filterResultNovels
+            }
+        },
+        orderOptions() {
+            return [
+                {label: 'date', icon: 'fas fa-sort-numeric-down-alt', value: 'date'},
+                {label: 'alphabet', icon: 'fas fa-sort-alpha-down', value: 'alphabet'}
+            ]
+        },
+        regionOptions() {
+            return [
+                {label: 'ALL', value: 'ALL'},
+                {label: 'CN', value: 'CN'},
+                {label: 'JP', value: 'JP'},
+                {label: 'OTHER', value: 'OTHER'},
+            ]
+        },
+        novelTypeOptions() {
+            return [
+                {label: 'ALL', value: 'ALL'},
+                {label: 'TXT', value: 'TXT'},
+                {label: 'PDF', value: 'PDF'},
+                {label: 'EPUB', value: 'EPUB'}
+            ]
+        },
+        integratedOptions() {
+            return [
+                {label: 'ALL', value: 'ALL'},
+                {label: 'INTEGRATED', value: true},
+                {label: 'UNINTEGRATED', value: false}
+            ]
+        },
+        tagOptions() {
+            if (!this.tags) {
+                return []
+            } else {
+                const tagOptions = []
+                tagOptions.push(
+                    {
+                        label: 'ALL',
+                        value: -1
+                    }
+                )
+                for (const tag of this.tags) {
+                    tagOptions.push(
+                        {
+                            label: tag.reservedNames[this.$i18n.locale] || tag.name,
+                            value: tag.id
+                        }
+                    )
+                }
+                return tagOptions
+            }
+        },
+    },
+    watch: {
+        pageNum() {
+            window.scrollTo(0, 0)
+            // const element = document.getElementById("tool");
+            // element.scrollIntoView();
+        }
+    }
 }
 </script>
 
@@ -241,6 +340,7 @@ a
     visibility: hidden
     opacity: 0
     transition: .3s
+
 .my-img:hover .my-text
     visibility: visible
     opacity: 1
@@ -249,6 +349,7 @@ a
 .my-section .mhc
     color: white
     transition: .3s
+
 .my-section:hover .mhc
     color: $secondary
     transition: .3s
@@ -258,6 +359,7 @@ a
     filter: brightness(.99)
     transform: translateZ(0) scale(1)
     transition: transform .4s ease 0s
+
 .my-card:hover .mhs
     -webkit-filter: brightness(1)
     filter: brightness(1)
@@ -271,8 +373,8 @@ a
 //    visibility: visible
 //    opacity: 1
 //
-//    animation: 1s forwards
-//    animation-name: flipInX
-//    -webkit-animation-name: flipInX
+//    novel: 1s forwards
+//    novel-name: flipInX
+//    -webkit-novel-name: flipInX
 
 </style>

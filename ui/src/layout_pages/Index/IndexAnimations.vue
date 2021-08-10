@@ -133,12 +133,12 @@
         <div class="row q-col-gutter-x-sm q-col-gutter-y-lg">
             <div class="col-md-2 col-sm-3 col-xs-6 col-lg-2 col-xl-2"
                  v-for="(animation,i) in filterResultAnimations.slice((pageNum-1)*pageLen,pageNum*pageLen)"
-                 :key="i+'aniiiii'+animation.id"
+                 :key="i+animation.id+animation.name"
             >
                 <q-card
-                    dark
+                    dark flat
                     class="bg-dark cursor-pointer my-card"
-                    flat style="border-radius: 3px"
+                    style="border-radius: 3px"
                     @click="$router.push({path:'/animation/info',query:{id:animation.id}})"
                 >
                     <!--                    <q-img :src="require('assets/aaa.jpg')" class="my-img">-->
