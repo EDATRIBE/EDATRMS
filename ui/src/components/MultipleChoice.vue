@@ -23,7 +23,7 @@ export default {
   },
   props: {
     value: {
-        type: [Number, String]
+        type: [Number, String, Boolean]
     },
     options: Array,
     textClass: String,
