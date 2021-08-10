@@ -26,7 +26,6 @@ const roleStore = {
             axios.get('api/role/list').then((response) => {
                 const rd = response.data
                 if (rd.code === 'success') {
-                    console.log(rd.data.roles)
                     context.commit('setRoles',rd.data.roles)
                     context.commit('setLoading',false)
                 }

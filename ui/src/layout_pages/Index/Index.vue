@@ -7,7 +7,7 @@
                 dense dark class="text-h5 bg-dark-light q-mb-lg" style="width: 100%" standout=""
                 v-model="searchBuffer"
                 debounce="300"
-                autocomplete="false"
+                :autocomplete="false"
             >
                 <template v-slot:append>
                     <q-spinner-grid
@@ -63,7 +63,7 @@
                     dense dark class="text-h5 bg-dark-light" style="width: 100%" standout=""
                     v-model="searchBuffer"
                     debounce="300"
-                    autocomplete="false"
+                    :autocomplete="false"
                 >
                     <template v-slot:append>
                         <q-spinner-grid

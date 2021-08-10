@@ -121,7 +121,7 @@ export default {
 
 <style lang="scss">
 .my-bg {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0),rgb(32, 32, 39,0) 20%, rgb(32, 32, 39,0.3) 50%, rgb(32, 32, 39,0.7) 90%)
+    background: linear-gradient(to top, rgba(0, 0, 0, 0),rgb(32, 32, 39,0) 20%, rgb(32, 32, 39,0.5) 60%, rgb(32, 32, 39,0.8) 80%, rgb(32, 32, 39))
 }
 
 .filepond--drop-label {
