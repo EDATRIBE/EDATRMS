@@ -156,13 +156,13 @@
                             <q-img
                                 :src="animation.images.vertical?
                                     animation.images.vertical.url:
-                                    require('assets/1.jpg')"
+                                    require('src/assets/placeholder.jpg')"
                                 class="mhs"
                             >
                             </q-img>
                             <q-chip
                                 dense
-                                class="absolute q-ma-none q-pa-md text-weight-medium shadow-5" color="primary"
+                                class="absolute q-ma-none q-pa-md text-weight-medium shadow-1" color="primary"
                                 text-color="white"
                                 style="right: 0px; top:0px;  opacity: .9; border-radius: 0px 0px 0px 12px;">
                                 {{ animation.type }}
@@ -436,9 +436,9 @@ export default {
         captionStateOptions() {
             return [
                 {label: 'ALL', value: 'ALL'},
-                {label: 'TODO', value: 'TODO'},
-                {label: 'DOING', value: 'DOING'},
-                {label: 'DONE', value: 'DONE'}
+                {label: 'SUBTITLE: TODO', value: 'TODO'},
+                {label: 'SUBTITLE: DOING', value: 'DOING'},
+                {label: 'SUBTITLE: DONE', value: 'DONE'}
             ]
         },
         tagOptions() {

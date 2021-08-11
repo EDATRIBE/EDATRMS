@@ -207,12 +207,11 @@
     | image_ids                           | json           | True      |              |
     | [ image_ids.horizontal_image_id ]   | json.attr: int | Necessary | 横向图id     |
     | [ image_ids.vertical_image_id ]     | json.attr: int | Necessary | 竖向图id     |
-    | written_by                          | varchar(300)   | False     | 作者         |
     | volumes_num                         | integer        | False     | 卷数         |
     | integrated                          | bool           | False     | 完整性       |
-   | file_meta                           | json           | False     | 文件元信息   |
+    | file_meta                           | json           | False     | 文件元信息   |
    | [ file_meta.name ]                  | json.attr: str | Optional  | 文件原名     |
-   | [ file_meta.format ]                | json.attr: str | Optional  | 格式/txt/pdf |
+   | [ file_meta.type ]                  | json.attr: str | Optional  | 格式/txt/pdf |
    | [ file_meta.size ]                  | json.attr: int | Optional  | 文件大小     |
    | sharing_address                     | json           | False     | 分享地址     |
    | [ sharing_addresses.baidu.url ]     | json.attr: str | Necessary |              |

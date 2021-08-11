@@ -9,8 +9,9 @@
                         <q-img
                             class="q-mb-sm"
                             style="border-radius: 4px"
-                            :src="novel.images.vertical.url"
-                            v-if="novel.images.vertical!==undefined"
+                            :src="novel.images.vertical?
+                                    novel.images.vertical.url:
+                                    require('src/assets/placeholder.jpg')"
                         />
                         <q-btn dense class="q-mb-sm" color="secondary" text-color="white">
                             REPORT A PROBLEM

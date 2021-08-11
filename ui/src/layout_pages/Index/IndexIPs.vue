@@ -426,6 +426,7 @@
                 :max="Math.ceil(filterResultIPs.length/pageLen)"
                 :max-pages="10"
                 boundary-links
+                unelevated
             />
         </div>
     </div>

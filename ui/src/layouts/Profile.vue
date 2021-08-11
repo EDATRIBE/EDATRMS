@@ -18,7 +18,7 @@
                     <q-icon size="1.2em" class="q-mr-sm" name="email"></q-icon>
                 </div>
                 <div class="text-justify">
-                    {{ currentUser.email }}
+                    {{ currentUser.email || '[Secret ~]' }}
                 </div>
             </div>
             <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
@@ -26,7 +26,7 @@
                     <q-icon size="1.1em" class="q-mr-sm" name="fab fa-qq"></q-icon>
                 </div>
                 <div class="text-justify">
-                    {{ currentUser.qq }}
+                    {{ currentUser.qq || '[Secret ~]'}}
                 </div>
             </div>
             <div class="row no-wrap q-pt-sm text-white text-justify text-body1">
@@ -34,7 +34,7 @@
                     <q-icon size="1.1em" class="q-mr-sm" name="fas fa-info"></q-icon>
                 </div>
                 <div class="text-justify">
-                    {{ currentUser.intro }}
+                    {{ currentUser.intro || '[ He/She didn\'t write anything ~ ]'}}
                 </div>
             </div>
             <q-separator class="q-mt-sm" color="white"></q-separator>

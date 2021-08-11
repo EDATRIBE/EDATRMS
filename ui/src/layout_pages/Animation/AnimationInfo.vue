@@ -9,8 +9,9 @@
                         <q-img
                             class="q-mb-sm"
                             style="border-radius: 4px"
-                            :src="animation.images.vertical.url"
-                            v-if="animation.images.vertical"
+                            :src="animation.images.vertical?
+                                    animation.images.vertical.url:
+                                    require('src/assets/placeholder.jpg')"
                         />
                         <q-btn dense class="q-mb-sm" color="primary" text-color="white">
                             REPORT A PROBLEM

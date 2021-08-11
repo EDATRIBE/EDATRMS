@@ -6,7 +6,7 @@
                 <!--Title-->
                 <div style="width: 100%" class="q-pl-md bl">
                     <div class="row q-pb-md">
-                        <p class="q-my-none text-primary text-h4 ">NEW VIDEO</p>
+                        <p class="q-my-none text-primary text-h4 ">EDIT VIDEO</p>
                     </div>
                 </div>
 

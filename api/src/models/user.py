@@ -29,7 +29,7 @@ class UserSchema(Schema):
     name = fields.String(validate=validate.Length(1,300))
     password = fields.String(validate=validate.Regexp(r'[a-zA-Z0-9_]{6,18}$'))
     email = fields.String(validate=validate.Email())
-    qq = fields.String(validate=validate.Length(1,20))
+    qq = fields.String(validate=validate.Length(0,20))
     intro = fields.String(validate=validate.Length(0,300))
     avatarId = fields.Integer(attribute='avatar_id')
     createdAt = fields.DateTime(attribute='created_at')
@@ -37,6 +37,7 @@ class UserSchema(Schema):
 
     avatar = fields.Nested('FileSchema')
     staff = fields.Boolean()
+    roles = fields.List(fields.Nested('RoleSchema'))
     roleIds = fields.List(fields.Integer(), attribute='role_ids')
     animationIds = fields.List(fields.Integer(), attribute='animation_ids')
 

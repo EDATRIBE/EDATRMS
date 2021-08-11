@@ -1,13 +1,13 @@
 <template>
     <q-layout view="hHh lpr fFf" class="bg-dark" style="z-index: 1">
         <div class="q-px-md my-bg">
-            <q-toolbar style="width: 97%" class="q-py-md q-px-none q-mx-auto text-white items-center">
+            <q-toolbar style="width: 97%" class="q-py-md q-px-none q-mx-auto text-white">
 <!--                <q-icon name="fas fa-atom" size="2.35em"/>-->
 <!--                <div class="text-h4 q-ml-sm" v-if="$q.screen.gt.sm">EDATRMS</div>-->
 <!--                <q-img-->
 <!--                    class="q-mx-xs"-->
 <!--                    contain-->
-<!--                    width="53px"-->
+<!--                    width="52px"-->
 <!--                    :src="require('assets/LOGO.png')"-->
 <!--                >-->
 <!--                </q-img>-->
@@ -17,7 +17,9 @@
                     :src="require('assets/LOGO3.png')"
                 >
                 </q-img>
-<!--                <div class="q-ml-sm" style="font-size: 42px" v-if="$q.screen.gt.sm">IMS</div>-->
+<!--                <div class="q-ml-xs q-py-none" style="font-size: 30px; line-height: 0" v-if="$q.screen.gt.sm">-->
+<!--                    EDAT-RMS-->
+<!--                </div>-->
                 <q-space/>
 
                 <nav-items v-if="$q.screen.gt.sm"/>
@@ -192,11 +194,11 @@ export default {
     padding: 8px;
     border-width: 1px;
     border-style: solid;
-    background: #282D33;
+    background: #2D2D34;
 }
 
 .q-markdown--table tbody {
-    background: #282D33;
+    background: #2D2D34;
 }
 
 .q-markdown--table tbody td, .q-markdown--table tbody th {
@@ -206,7 +208,7 @@ export default {
 }
 
 .q-markdown--table tbody tr:nth-child(odd) {
-    background: #282D33;
+    background: #2D2D34;
 }
 
 .q-input .text-negative {

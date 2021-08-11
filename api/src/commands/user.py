@@ -235,7 +235,7 @@ class User:
             self.console.print(err, style='danger')
             return
 
-        visible_field = ['id', 'name','reservedNames','style', 'comment']
+        visible_field = ['id', 'name']
         roles = [RoleSchema(only=visible_field).dump(v) for v in rows]
         self._print_dicts_as_table(roles)
 
@@ -265,7 +265,7 @@ class User:
         print(kwargs)
         try:
             data = RoleSchema().load(kwargs)
-            required_field_validation(data=data, required_field=['name'])
+            required_field_validation(data=data, required_field=['id','name'])
 
         except ValidationError as err:
             self.console.print(err.messages, style='danger')
@@ -274,6 +274,7 @@ class User:
         try:
             row = asyncio.get_event_loop().run_until_complete(
                 self.role_service.create(
+                    id=data['id'],
                     name=data['name'],
                     reserved_names=data.get('reserved_names', {}),
                     style=data.get('style', {}),
