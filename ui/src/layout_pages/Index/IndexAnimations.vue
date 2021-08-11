@@ -152,7 +152,7 @@
                     <!--                        </q-chip>-->
                     <!--                    </q-img>-->
                     <q-responsive :ratio="2/3">
-                        <div class="full-width" style="overflow: hidden; position: relative; border-radius: 3px">
+                        <div class="full-width" style="overflow: hidden; position: relative; ">
                             <q-img
                                 :src="animation.images.vertical?
                                     animation.images.vertical.url:
@@ -186,6 +186,7 @@
                 :max="Math.ceil(filterResultAnimations.length/pageLen)"
                 :max-pages="10"
                 boundary-links
+                unelevated
             />
         </div>
     </div>
