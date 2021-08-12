@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div :style="{'--bgImageUrl':'url('+bgImageUrl+')'}" class="my-background-img"/>
+        <div v-if="showBgImage" :style="{'--bgImageUrl':'url('+bgImageUrl+')'}" class="my-background-img"/>
         <q-page v-if="initialized" padding class="q-px-md q-pb-xl" style="padding-top: 3.5em; ">
             <div class="q-mx-auto" style="width: 97%; border-radius: 0px">
                 <div class="row q-col-gutter-x-md justify-center">
