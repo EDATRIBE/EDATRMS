@@ -1,0 +1,47 @@
+version: '3'
+services:
+  server:
+    image: edatrms-api
+    environment:
+      TZ: Asia/Shanghai
+      EDATRMS_DATA_PATH: /data
+      EDATRMS_LOCAL_FILES_URL_BASE: 'http://123.57.162.123:7000/local/'
+      EDATRMS_DEBUG: 'false'
+      EDATRMS_AUTO_RELOAD: 'false'
+      EDATRMS_MYSQL_HOST: mysql
+      EDATRMS_MYSQL_PORT: 3306
+      EDATRMS_MYSQL_DB: edatrms
+      EDATRMS_MYSQL_USER: edatrms
+      EDATRMS_MYSQL_PASSWORD: 123456
+      EDATRMS_REDIS_URI: redis://@redis:6379/1
+    ports:
+      - 7000:7000
+    volumes:
+      - ./api/api_data:/data
+    command: sh -c './wait-for.sh mysql:3306 -- python -u -m src.app'
+    restart: always
+  mysql:
+    image: mysql/mysql-server:8.0
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: edatrms
+      MYSQL_USER: edatrms
+      MYSQL_PASSWORD: 123456
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  redis:
+    image: redis:6.0
+    environment:
+      TZ: Asia/Shanghai
+  ui:
+    image: nginx
+    environment:
+        TZ: Asia/Shanghai
+    volumes:
+        - ./ui/dist/spa:/ui/spa
+        - ./ui/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+        - 8080:80
+    restart: always
+
+    

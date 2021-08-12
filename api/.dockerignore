@@ -1,0 +1,5 @@
+.DS_Store
+api_data/
+venv/
+__pycache__/
+api_doc/
