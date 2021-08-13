@@ -227,9 +227,11 @@
                                 </div>
                                 <div class="col-md-10 col-xs-12 row">
                                     <q-chip
+                                        clickable
                                         square dense text-color="dark" color="primary"
                                         class="q-py-none q-ml-none q-mr-sm text-weight-medium"
                                         v-for="(userId,i) in caption.userIds" :key="'userid'+i"
+                                        @click="$router.push({path:'/contributor/info',query:{user_id:userId}})"
                                     >
                                         {{ usersDict[userId]['name'] }}
                                     </q-chip>
@@ -272,13 +274,14 @@
                                         </p>
                                     </div>
                                     <div class="col-md-10 col-xs-12">
-                                        <div class="q-mr-lg">
-                                            <a :href="animation.sharingAddresses.aliCloud.url" class=" row items-center">
+                                        <div
+                                            class="q-mr-lg row items-center cursor-pointer"
+                                            @click="openLink(animation.sharingAddresses.aliCloud.url)"
+                                        >
                                                 <p class="q-my-none text-primary text-body1">
                                                     {{ animation.sharingAddresses.aliCloud.password }}
                                                 </p>
                                                 <q-icon name="fas fa-link" size="0.75em" color="primary" class="q-mx-sm"/>
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -295,13 +298,14 @@
                                         </p>
                                     </div>
                                     <div class="col-md-10 col-xs-12">
-                                        <div class="q-mr-lg">
-                                            <a :href="animation.sharingAddresses.baiduCloud.url" class=" row items-center">
-                                                <p class="q-my-none text-primary text-body1">
-                                                    {{ animation.sharingAddresses.baiduCloud.password }}
-                                                </p>
-                                                <q-icon name="fas fa-link" size="0.75em" color="primary" class="q-mx-sm"/>
-                                            </a>
+                                        <div
+                                            class="q-mr-lg row items-center cursor-pointer"
+                                            @click="openLink(animation.sharingAddresses.baiduCloud.url)"
+                                        >
+                                            <p class="q-my-none text-primary text-body1">
+                                                {{ animation.sharingAddresses.baiduCloud.password }}
+                                            </p>
+                                            <q-icon name="fas fa-link" size="0.75em" color="primary" class="q-mx-sm"/>
                                         </div>
                                     </div>
                                 </div>
@@ -327,7 +331,11 @@ export default {
         }
     },
     methods: {
-        foo() {
+        foo(url) {
+            window.open(url,'_blank')
+        },
+        openLink(url){
+            window.open(url,'_blank')
         },
         selectAnimation(id) {
             for (const ip of this.ips) {

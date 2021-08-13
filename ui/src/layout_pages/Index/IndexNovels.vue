@@ -120,7 +120,10 @@
         </div>
 
         <!--pagination-->
-        <div class="full-width row justify-center q-py-lg">
+        <div
+            class="full-width row justify-center q-py-lg"
+            v-if="$q.screen.gt.sm"
+        >
             <q-pagination
                 v-model="pageNum"
                 color="secondary"
@@ -129,6 +132,20 @@
                 :max="Math.ceil(filterResultNovels.length/pageLen)"
                 :max-pages="10"
                 boundary-links
+            />
+        </div>
+
+        <!--pagination-->
+        <div
+            class="full-width row justify-center q-py-lg"
+            v-if="!$q.screen.gt.sm"
+        >
+            <q-pagination
+                v-model="pageNum"
+                :max="Math.ceil(filterResultNovels.length/pageLen)"
+                color="secondary"
+                input
+                input-class="text-secondary text-weight-medium"
             />
         </div>
     </div>

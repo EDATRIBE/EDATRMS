@@ -155,13 +155,14 @@
                                         </p>
                                     </div>
                                     <div class="col-md-10 col-xs-12 row">
-                                        <div class="q-mr-lg">
-                                            <a :href="novel.sharingAddresses.aliCloud.url" class=" row items-center">
-                                                <p class="q-my-none text-secondary text-body1">
-                                                    {{ novel.sharingAddresses.aliCloud.password }}
-                                                </p>
-                                                <q-icon name="fas fa-link" size="0.75em" color="secondary" class="q-mx-sm"/>
-                                            </a>
+                                        <div
+                                            class="q-mr-lg row items-center cursor-pointer"
+                                            @click="openLink(novel.sharingAddresses.aliCloud.url)"
+                                        >
+                                            <p class="q-my-none text-secondary text-body1">
+                                                {{ novel.sharingAddresses.aliCloud.password }}
+                                            </p>
+                                            <q-icon name="fas fa-link" size="0.75em" color="secondary" class="q-mx-sm"/>
                                         </div>
                                     </div>
                                 </div>
@@ -178,13 +179,14 @@
                                         </p>
                                     </div>
                                     <div class="col-md-10 col-xs-12 row">
-                                        <div class="q-mr-lg">
-                                            <a :href="novel.sharingAddresses.baiduCloud.url" class=" row items-center">
+                                        <div
+                                            class="q-mr-lg row items-center cursor-pointer"
+                                            @click="openLink(novel.sharingAddresses.baiduCloud.url)"
+                                        >
                                                 <p class="q-my-none text-secondary text-body1">
                                                     {{ novel.sharingAddresses.baiduCloud.password }}
                                                 </p>
                                                 <q-icon name="fas fa-link" size="0.75em" color="secondary" class="q-mx-sm"/>
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -211,6 +213,9 @@ export default {
     },
     methods: {
         foo() {
+        },
+        openLink(url){
+            window.open(url,'_blank')
         },
         selectNovel(id) {
             for (const ip of this.ips) {

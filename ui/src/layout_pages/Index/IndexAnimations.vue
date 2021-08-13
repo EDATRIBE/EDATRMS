@@ -177,7 +177,10 @@
         </div>
 
         <!--pagination-->
-        <div class="full-width row justify-center q-py-lg">
+        <div
+            class="full-width row justify-center q-py-lg"
+            v-if="$q.screen.gt.sm"
+        >
             <q-pagination
                 v-model="pageNum"
                 color="primary"
@@ -187,6 +190,20 @@
                 :max-pages="10"
                 boundary-links
                 unelevated
+            />
+        </div>
+
+        <!--pagination-->
+        <div
+            class="full-width row justify-center q-py-lg"
+            v-if="!$q.screen.gt.sm"
+        >
+            <q-pagination
+                v-model="pageNum"
+                :max="Math.ceil(filterResultAnimations.length/pageLen)"
+                color="primary"
+                input
+                input-class="text-primary text-weight-medium"
             />
         </div>
     </div>
@@ -345,23 +362,23 @@ export default {
                 const compareAnimationByUpdatedAt = (aniA, aniB) => {
                     const dA = new Date(aniA.updatedAt)
                     const dB = new Date(aniB.updatedAt)
-                    return dA < dB ? 1:-1
+                    return dA < dB ? 1 : -1
                 }
 
-                const compareAnimationByName= (aniA, aniB) => {
-                    if (this.$i18n.locale == 'en'){
+                const compareAnimationByName = (aniA, aniB) => {
+                    if (this.$i18n.locale == 'en') {
                         return (aniA.reservedNames[this.$i18n.locale] || aniA.name) >
-                        (aniB.reservedNames[this.$i18n.locale] || aniB.name)? 1:-1
-                    }else if(this.$i18n.locale == 'cn'){
+                        (aniB.reservedNames[this.$i18n.locale] || aniB.name) ? 1 : -1
+                    } else if (this.$i18n.locale == 'cn') {
                         return (aniA.reservedNames[this.$i18n.locale] || aniA.name).localeCompare(
-                            (aniB.reservedNames[this.$i18n.locale] || aniB.name),'zh'
+                            (aniB.reservedNames[this.$i18n.locale] || aniB.name), 'zh'
                         )
                     }
                 }
 
-                if (this.filterBuffer.order==='date'){
+                if (this.filterBuffer.order === 'date') {
                     filterResultAnimations.sort(compareAnimationByUpdatedAt)
-                }else if (this.filterBuffer.order==='alphabet'){
+                } else if (this.filterBuffer.order === 'alphabet') {
                     filterResultAnimations.sort(compareAnimationByName)
                 }
 
