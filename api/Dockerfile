@@ -1,11 +1,9 @@
-FROM python:3.9
+FROM python:3.9.6-buster
 
 WORKDIR /api
 
-COPY sources.list /etc/apt/
 COPY requirements.txt .
 
-RUN apt-get -q update && apt-get -qy install netcat
 RUN pip install -r requirements.txt
 
 COPY . .

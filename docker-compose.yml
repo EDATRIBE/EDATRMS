@@ -1,10 +1,10 @@
 version: '3'
 services:
-  server:
+  api:
     image: edatrms-api
     environment:
       TZ: Asia/Shanghai
-      EDATRMS_DATA_PATH: /data
+      EDATRMS_DATA_PATH: /api_data
       EDATRMS_LOCAL_FILES_URL_BASE: 'http://123.57.162.123:7000/local/'
       EDATRMS_DEBUG: 'false'
       EDATRMS_AUTO_RELOAD: 'false'
@@ -17,8 +17,8 @@ services:
     ports:
       - 7000:7000
     volumes:
-      - ./api/api_data:/data
-    command: sh -c './wait-for.sh mysql:3306 -- python -u -m src.app'
+      - ./api/api_data:/api_data
+    command: sh -c './wait-for.sh -t 0 mysql:3306 -- python -u -m src.app'
     restart: always
   mysql:
     image: mysql/mysql-server:8.0
@@ -29,10 +29,12 @@ services:
       MYSQL_USER: edatrms
       MYSQL_PASSWORD: 123456
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
   redis:
     image: redis:6.0
     environment:
       TZ: Asia/Shanghai
+    restart: always
   ui:
     image: nginx
     environment:
