@@ -157,8 +157,13 @@
                                 :src="animation.images.vertical?
                                     animation.images.vertical.url:
                                     require('src/assets/placeholder.jpg')"
-                                class="mhs"
+                                class="mhs full-width full-height"
                             >
+                                <template v-slot:error>
+                                    <div class="absolute-full flex flex-center bg-white text-primary">
+                                        Cannot load image !
+                                    </div>
+                                </template>
                             </q-img>
                             <q-chip
                                 dense

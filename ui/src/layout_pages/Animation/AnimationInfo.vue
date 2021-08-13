@@ -8,11 +8,17 @@
                     <div class="column col-md-3 col-xs-12">
                         <q-img
                             class="q-mb-sm"
-                            style="border-radius: 4px"
+                            style="border-radius: 4px; min-height: 450px"
                             :src="animation.images.vertical?
                                     animation.images.vertical.url:
                                     require('src/assets/placeholder.jpg')"
-                        />
+                        >
+                            <template v-slot:error>
+                                <div class="absolute-full flex flex-center bg-white text-primary" style="z-index: 1">
+                                    Cannot load image !
+                                </div>
+                            </template>
+                        </q-img>
                         <q-btn dense class="q-mb-sm" color="primary" text-color="white">
                             REPORT A PROBLEM
                             <q-icon class="q-pl-sm" name="construction" size="1.5em"/>
