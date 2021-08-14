@@ -25,174 +25,178 @@
                         </q-btn>
                     </div>
                     <!--RIGHT-->
-                    <div class="column col-md-9 col-xs-12 q-pb-md">
-                        <!--TITLE-->
-                        <div style="width: 100%" class="q-px-md q-py-md ">
-                            <p class="q-my-none text-white text-h3">
-                                {{ novel.reservedNames[$i18n.locale] || novel.name }}
-                            </p>
-                        </div>
-                        <!--INFOS-->
-                        <div style="width: 100%" class="q-px-md q-pt-md ">
-                            <div class="row q-py-md">
-                                <div class="col-md-2 col-xs-12">
-                                    <q-icon
-                                        color="white"
-                                        name="fas fa-info-circle"
-                                        class="my-opacity-70"
-                                        size="2.5em"
-                                    />
-                                </div>
-                                <div class="col-md-10 col-xs-12">
-                                    <p class="q-my-none text-secondary  text-h4"></p>
-                                </div>
-                            </div>
-                            <q-separator class="bg-white my-opacity-20"/>
-                            <div class="row q-py-md ">
-                                <div class="col-md-2 col-xs-12"><p
-                                    class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">INTRO</p>
-                                </div>
-                                <div class="col-md-10 col-xs-12">
-                                    <p class="q-my-none text-white text-body1 text-justify">
-                                        {{ novel.intros[$i18n.locale] }}
+                    <div class="column col-md-9 col-xs-12 ">
+                        <div class="q-px-md q-pb-md">
+                            <!--TITLE-->
+                            <div style="width: 100%">
+                                <div class="q-py-md">
+                                    <p class="text-white text-h3">
+                                        {{ novel.reservedNames[$i18n.locale] || novel.name }}
                                     </p>
                                 </div>
                             </div>
-                            <q-separator class="bg-white my-opacity-20"/>
-                            <div class="row q-py-md">
-                                <div class="col-md-2 col-xs-12">
-                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
-                                        WRITTEN BY
-                                    </p>
+                            <!--INFOS-->
+                            <div style="width: 100%" class="q-pt-md ">
+                                <div class="row q-py-md">
+                                    <div class="col-md-2 col-xs-12">
+                                        <q-icon
+                                            color="white"
+                                            name="fas fa-info-circle"
+                                            class="my-opacity-70"
+                                            size="2.5em"
+                                        />
+                                    </div>
+                                    <div class="col-md-10 col-xs-12">
+                                        <p class="q-my-none text-secondary  text-h4"></p>
+                                    </div>
                                 </div>
-                                <div class="col-md-10 col-xs-12">
-                                    <p class="q-my-none text-white text-body1">
-                                        {{ novel.writtenBy }}
-                                    </p>
+                                <q-separator class="bg-white my-opacity-20"/>
+                                <div class="row q-py-md ">
+                                    <div class="col-md-2 col-xs-12"><p
+                                        class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">INTRO</p>
+                                    </div>
+                                    <div class="col-md-10 col-xs-12">
+                                        <p class="q-my-none text-white text-body1 text-justify">
+                                            {{ novel.intros[$i18n.locale] }}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                            <q-separator class="bg-white my-opacity-20"/>
-                            <div class="row q-py-md">
-                                <div class="col-md-2 col-xs-12"><p
-                                    class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">VOLUMES NUM</p>
-                                </div>
-                                <div class="col-md-10 col-xs-12">
-                                    <p class="q-my-none text-white text-body1">
-                                        {{ novel.volumesNum }}
-                                    </p>
-                                </div>
-                            </div>
-                            <q-separator class="bg-white my-opacity-20"/>
-                            <div class="row q-py-md">
-                                <div class="col-md-2 col-xs-12">
-                                    <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
-                                        INTEGRATED
-                                    </p>
-                                </div>
-                                <div class="col-md-10 col-xs-12">
-                                    <p class="q-my-none text-white text-body1">
-                                        {{ novel.integrated }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!--File-->
-                        <div style="width: 100%" class="q-px-md q-pt-md ">
-                            <div class="row q-py-md">
-                                <div class="col-md-2 col-xs-12">
-                                    <q-icon
-                                        color="white"
-                                        name="fas fa-file-alt"
-                                        size="2.5em"
-                                        class="my-opacity-70"
-                                    />
-                                </div>
-                                <div class="col-md-10 col-xs-12">
-                                    <p class="q-my-none text-secondary  text-h4"></p>
-                                </div>
-                            </div>
-                            <q-separator class="bg-white my-opacity-20"/>
-                            <div class="row q-py-md ">
-                                <div class="col-md-2 col-xs-12"><p
-                                    class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">FORMAT</p>
-                                </div>
-                                <div class="col-md-10 col-xs-12">
-                                    <p class="q-my-none text-white text-body1 text-justify">
-                                        {{ novel.fileMeta.type }}
-                                    </p>
-                                </div>
-                            </div>
-                            <q-separator class="bg-white my-opacity-20"/>
-                            <div class="row q-py-md ">
-                                <div class="col-md-2 col-xs-12"><p
-                                    class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">SIZE</p>
-                                </div>
-                                <div class="col-md-10 col-xs-12">
-                                    <p class="q-my-none text-white text-body1 text-justify">
-                                        {{ novel.fileMeta.size }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Address-->
-                        <div style="width: 100%" class="q-px-md q-pt-md">
-                            <div class="row q-py-md">
-                                <div class="col-md-2 col-xs-12">
-                                    <q-icon
-                                        color="white"
-                                        name="cloud_download"
-                                        size="2.7em"
-                                        class="my-opacity-70"
-                                    />
-                                </div>
-                                <div class="col-md-10 col-xs-12">
-                                    <p class="q-my-none text-white text-white text-h2"></p>
-                                </div>
-                            </div>
-                            <div
-                                v-if="novel.sharingAddresses.aliCloud !== undefined &&
-                             novel.sharingAddresses.aliCloud.url!==''"
-                            >
                                 <q-separator class="bg-white my-opacity-20"/>
                                 <div class="row q-py-md">
                                     <div class="col-md-2 col-xs-12">
                                         <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
-                                            ALI CLOUD
+                                            WRITTEN BY
                                         </p>
                                     </div>
-                                    <div class="col-md-10 col-xs-12 row">
-                                        <div
-                                            class="q-mr-lg row items-center cursor-pointer"
-                                            @click="openLink(novel.sharingAddresses.aliCloud.url)"
-                                        >
-                                            <p class="q-my-none text-secondary text-body1">
-                                                {{ novel.sharingAddresses.aliCloud.password }}
+                                    <div class="col-md-10 col-xs-12">
+                                        <p class="q-my-none text-white text-body1">
+                                            {{ novel.writtenBy }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <q-separator class="bg-white my-opacity-20"/>
+                                <div class="row q-py-md">
+                                    <div class="col-md-2 col-xs-12"><p
+                                        class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">VOLUMES NUM</p>
+                                    </div>
+                                    <div class="col-md-10 col-xs-12">
+                                        <p class="q-my-none text-white text-body1">
+                                            {{ novel.volumesNum }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <q-separator class="bg-white my-opacity-20"/>
+                                <div class="row q-py-md">
+                                    <div class="col-md-2 col-xs-12">
+                                        <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                            INTEGRATED
+                                        </p>
+                                    </div>
+                                    <div class="col-md-10 col-xs-12">
+                                        <p class="q-my-none text-white text-body1">
+                                            {{ novel.integrated }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--File-->
+                            <div style="width: 100%" class="q-pt-md ">
+                                <div class="row q-py-md">
+                                    <div class="col-md-2 col-xs-12">
+                                        <q-icon
+                                            color="white"
+                                            name="fas fa-file-alt"
+                                            size="2.5em"
+                                            class="my-opacity-70"
+                                        />
+                                    </div>
+                                    <div class="col-md-10 col-xs-12">
+                                        <p class="q-my-none text-secondary  text-h4"></p>
+                                    </div>
+                                </div>
+                                <q-separator class="bg-white my-opacity-20"/>
+                                <div class="row q-py-md ">
+                                    <div class="col-md-2 col-xs-12"><p
+                                        class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">FORMAT</p>
+                                    </div>
+                                    <div class="col-md-10 col-xs-12">
+                                        <p class="q-my-none text-white text-body1 text-justify">
+                                            {{ novel.fileMeta.type }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <q-separator class="bg-white my-opacity-20"/>
+                                <div class="row q-py-md ">
+                                    <div class="col-md-2 col-xs-12"><p
+                                        class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">SIZE</p>
+                                    </div>
+                                    <div class="col-md-10 col-xs-12">
+                                        <p class="q-my-none text-white text-body1 text-justify">
+                                            {{ novel.fileMeta.size }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Address-->
+                            <div style="width: 100%" class="q-pt-md">
+                                <div class="row q-py-md">
+                                    <div class="col-md-2 col-xs-12">
+                                        <q-icon
+                                            color="white"
+                                            name="cloud_download"
+                                            size="2.7em"
+                                            class="my-opacity-70"
+                                        />
+                                    </div>
+                                    <div class="col-md-10 col-xs-12">
+                                        <p class="q-my-none text-white text-white text-h2"></p>
+                                    </div>
+                                </div>
+                                <div
+                                    v-if="novel.sharingAddresses.aliCloud !== undefined &&
+                             novel.sharingAddresses.aliCloud.url!==''"
+                                >
+                                    <q-separator class="bg-white my-opacity-20"/>
+                                    <div class="row q-py-md">
+                                        <div class="col-md-2 col-xs-12">
+                                            <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                                ALI CLOUD
                                             </p>
-                                            <q-icon name="fas fa-link" size="0.75em" color="secondary" class="q-mx-sm"/>
+                                        </div>
+                                        <div class="col-md-10 col-xs-12 row">
+                                            <div
+                                                class="q-mr-lg row items-center cursor-pointer"
+                                                @click="openLink(novel.sharingAddresses.aliCloud.url)"
+                                            >
+                                                <p class="q-my-none text-secondary text-body1">
+                                                    {{ novel.sharingAddresses.aliCloud.password }}
+                                                </p>
+                                                <q-icon name="fas fa-link" size="0.75em" color="secondary" class="q-mx-sm"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div
-                                v-if="novel.sharingAddresses.baiduCloud !== undefined &&
+                                <div
+                                    v-if="novel.sharingAddresses.baiduCloud !== undefined &&
                              novel.sharingAddresses.baiduCloud.url!==''"
-                            >
-                                <q-separator class="bg-white my-opacity-20"/>
-                                <div class="row q-py-md">
-                                    <div class="col-md-2 col-xs-12">
-                                        <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
-                                            BAIDU CLOUD
-                                        </p>
-                                    </div>
-                                    <div class="col-md-10 col-xs-12 row">
-                                        <div
-                                            class="q-mr-lg row items-center cursor-pointer"
-                                            @click="openLink(novel.sharingAddresses.baiduCloud.url)"
-                                        >
+                                >
+                                    <q-separator class="bg-white my-opacity-20"/>
+                                    <div class="row q-py-md">
+                                        <div class="col-md-2 col-xs-12">
+                                            <p class="q-my-none text-white my-opacity-70 text-body1 text-weight-medium">
+                                                BAIDU CLOUD
+                                            </p>
+                                        </div>
+                                        <div class="col-md-10 col-xs-12 row">
+                                            <div
+                                                class="q-mr-lg row items-center cursor-pointer"
+                                                @click="openLink(novel.sharingAddresses.baiduCloud.url)"
+                                            >
                                                 <p class="q-my-none text-secondary text-body1">
                                                     {{ novel.sharingAddresses.baiduCloud.password }}
                                                 </p>
                                                 <q-icon name="fas fa-link" size="0.75em" color="secondary" class="q-mx-sm"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -292,6 +296,7 @@ a
     border-width: 3px
 
 .my-background-img
+    filter: blur(8px)
     position: absolute
     top: 0px
     width: 100%

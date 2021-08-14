@@ -83,7 +83,7 @@
         </div>
 
         <!--Content-->
-        <div class="row q-col-gutter-x-sm q-col-gutter-y-lg">
+        <div class="row q-col-gutter-x-sm q-col-gutter-y-lg" v-if="initialized">
             <div class="col-md-2 col-sm-3 col-xs-6 col-lg-2 col-xl-2"
                  v-for="(novel,i) in filterResultNovels.slice((pageNum-1)*pageLen,pageNum*pageLen)"
                  :key="i+novel.id+novel.name"
