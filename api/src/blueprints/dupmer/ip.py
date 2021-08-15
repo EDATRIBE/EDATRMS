@@ -25,7 +25,7 @@ async def dump_ip_info(request, ip):
     ip['novels'] = novels
 
     animation_ids = [animation['id'] for animation in animations]
-    videos_list = await video_service.infos_list_by_animations_ids(animation_ids)
+    videos_list = await video_service.infos_list_by_animation_ids(animation_ids)
     captions_list = await caption_service.infos_list_by_animations_ids(animation_ids)
     animation_vertical_image_ids = [animation['image_ids'].get('vertical') for animation in animations]
     animation_horizontal_image_ids = [animation['image_ids'].get('horizontal') for animation in animations]
@@ -92,7 +92,7 @@ async def dump_ip_infos(request, ips):
 
     all_animations = reduce(lambda l1, l2: l1 + l2, animations_list, [])
     all_animation_ids = [animation['id'] for animation in all_animations]
-    videos_list = await video_service.infos_list_by_animations_ids(all_animation_ids)
+    videos_list = await video_service.infos_list_by_animation_ids(all_animation_ids)
     captions_list = await caption_service.infos_list_by_animations_ids(all_animation_ids)
     all_animation_vertical_image_ids = [animation['image_ids'].get('vertical') for animation in all_animations]
     all_animation_horizontal_image_ids = [animation['image_ids'].get('horizontal') for animation in all_animations]

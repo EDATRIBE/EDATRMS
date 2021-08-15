@@ -43,7 +43,7 @@ async def dump_animation_infos(request, animations):
     caption_user_service = CaptionUserService(request.app.config, request.app.db, request.app.cache)
 
     animation_ids = [animation['id'] for animation in animations]
-    videos_list = await video_service.infos_list_by_animations_ids(animation_ids)
+    videos_list = await video_service.infos_list_by_animation_ids(animation_ids)
     captions_list = await caption_service.infos_list_by_animations_ids(animation_ids)
     vertical_image_ids = [animation['image_ids'].get('vertical') for animation in animations]
     horizontal_image_ids = [animation['image_ids'].get('horizontal') for animation in animations]

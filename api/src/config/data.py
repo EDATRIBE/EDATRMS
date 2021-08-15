@@ -21,7 +21,8 @@ UPLOAD_FILE_MAX_SIZE = 50 * 1024 * 1024
 UPLOAD_FILE_MAX_NUMBER = 10
 # Subdirectory of files uploaded to 'local' region
 LOCAL_FILES_DIR = 'local'
-LOCAL_FILES_URL_BASE = 'http://localhost:7000/local/'
+# LOCAL_FILES_URL_BASE = 'http://localhost:7000/local/'
+LOCAL_FILES_URL_BASE = 'api/local/'
 
 
 

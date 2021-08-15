@@ -24,7 +24,7 @@ class VideoService(BaseService):
 
         return [dict(row) for row in rows]
 
-    async def infos_list_by_animations_ids(self,animation_ids):
+    async def infos_list_by_animation_ids(self, animation_ids):
         valid_animation_ids = [v for v in animation_ids if v is not None]
 
         if valid_animation_ids:
