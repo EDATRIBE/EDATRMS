@@ -1,6 +1,5 @@
 # EDATRMS UI
 
-A Quasar Framework app
 
 ## Install the dependencies
 
