@@ -137,12 +137,12 @@ dict
 - 新增角色：create_role
 
     ```shell
-    Usage:          python -m api.manage user create_role [OPTIONS="VALUE"]
+    Usage:              python -m api.manage user create_role [OPTIONS="VALUE"]
     Options:
-    	-id				角色id，将用于展示时的排序
-        -name			角色名，该选项不可省略
-        -reservedNames	角色别名，该选项为json对象，格式为：{"cn":"名称","en":"name"}
-        -style       	角色徽章风格，该选项为json对象，格式为：{"icon":"face","color":"red-7"}
+        -id             角色id，将用于展示时的排序
+        -name           角色名，该选项不可省略
+        -reservedNames  角色别名，该选项为json对象，格式为：{"cn":"名称","en":"name"}
+        -style          角色徽章风格，该选项为json对象，格式为：{"icon":"face","color":"red-7"}
     ```
 
 - 列出全部角色信息摘要： list_roles
@@ -172,8 +172,8 @@ dict
   ```shell
   Usage:          python -m api.manage user assign_role [OPTIONS="VALUE"]
   Options:
-      -userId		所要分配的用户 id，值为整型，或可以转化为整型的字符串
-      -roleId		所要分配的角色 id，值为整型，或可以转化为整型的字符串
+      -userId.    所要分配的用户 id，值为整型，或可以转化为整型的字符串
+      -roleId.    所要分配的角色 id，值为整型，或可以转化为整型的字符串
   ```
 
 - 为取消用户的角色：cancel_role
@@ -181,8 +181,8 @@ dict
   ```shell
   Usage:          python -m api.manage user cancel_role [OPTIONS="VALUE"]
   Options:
-      -userId		所要取消的用户 id，值为整型，或可以转化为整型的字符串
-      -roleId		所要取消的角色 id，值为整型，或可以转化为整型的字符串
+      -userId.    所要取消的用户 id，值为整型，或可以转化为整型的字符串
+      -roleId.    所要取消的角色 id，值为整型，或可以转化为整型的字符串
   ```
 
 
