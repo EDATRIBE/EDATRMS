@@ -294,6 +294,10 @@
 
 不做格式上的检验。仅在有必要时做类型上的检验。传入数据的合法性应由调用方保证。
 
+#### 关于返回值
+
+所有模型的数据项都以字典形式返回
+
 ### 设计
 
 #### BaseService
@@ -308,19 +312,19 @@
 
   - create
 
-    接收由model对应的字段组成的关键字参数，返回info的调用结构
+    接收由model对应的字段组成的关键字参数，返回info的调用结果
 
   - edit
 
-    接收由model对应的字段组成的关键字参数，返回info的调用结构
+    接收由model对应的字段组成的关键字参数，返回info的调用结果
 
   - info
 
-    接收整数参数id，返回对应的数据库行对应的的字典对象
+    接收整数参数id，返回对应数据项
 
   - infos
 
-    接收id列表，返回对应的数据库行对应的的字典对象列表，顺序与id列表一一对应
+    接收id列表，返回对应的数据项列表，其顺序与id列表一一对应
 
     例如:
 
@@ -341,21 +345,19 @@
 
   - search_keyword_in_names
 
-    接收字符串参数keyword，返回名称或别名中包含该关键字的行对应的字段对象组成的列表
-
-
+    接收字符串参数keyword，以列表形式返回所有名称或别名中包含该关键字的数据项
 
 #### IPService(BaseService,SearchKeywordInNameMixin)
 
 继承自BaseService与SearchKeywordInNameMixin
 
-在实例化时，model属性会被设为ip model
+在实例化时model属性会被设为ip model
 
 #### AnimationService(BaseService,SearchKeywordInNameMixin)
 
 继承自BaseService与SearchKeywordInNameMixin
 
-在实例化时，model属性会被设为animation model
+在实例化时model属性会被设为animation model
 
 - methods:
 
@@ -367,7 +369,7 @@
 
     ```
     infos_by_animation_id(1)
-    #[1,2,3]
+    #[ani1,ani2,ani3]
     ```
 
   - infos_list_by_ip_ids
@@ -378,7 +380,7 @@
 
     ```
     infos_list_by_animation_ids([1,2,3])
-    #[[1,2,3],[4,5,6],[7,8,9]]
+    #[[ani1,ani2,ani3],[ani4,ani5,ani6],[ani7,ani8,ani9]]
     ```
 
 #### VideoService(BaseService)
@@ -397,7 +399,7 @@
 
     ```
     infos_by_animation_id(1)
-    #[1,2,3]
+    #[video1,video2,video3]
     ```
   
   - infos_list_by_animation_ids
@@ -407,8 +409,8 @@
     例如：
     
     ```
-    infos_list_by_animation_ids([1,2,3])
-    #[[1,2,3],[4,5,6],[7,8,9]]
+    infos_list_by_animation_ids([1,2])
+    #[[video1,video2,video3],[video4,video5,video6]]
     ```
     
     
@@ -421,18 +423,23 @@
 
 ### 准则
 
-对用户传入的数据进行如下处理：
+#### 请求与响应的格式
 
--   格式检验
--   必要参数是否为空
+除文件使用表单外，其他数据都是用json格式传输
 
-编辑对象时，如果编辑的字段未知，则需要sift_dict_by_key。若编辑的字段已知(如创建时)，则逐一填写。
+#### 如何检验传入的数据
+
+使用模型对应的schema类检验数据格式，并在需要时过滤掉不允许接收的字段
+
+#### 如何导出数据
+
+在导出结构化的条目时，应将所有数据全部取至内存，再建立结构。
+
+如导出多个ip时，应将其对应的所有animation和novel，以video、caption等数据一次性全部取至内存，然后在内存中分类、组织。而不应在导出每个ip，每个animation等等数据项时都访问数据库。
+
+
 
 ### 设计
-
-#### account
-
--   account/login
 
 
 
