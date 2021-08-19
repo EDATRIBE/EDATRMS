@@ -21,6 +21,9 @@
         -   logs
         -   database_backup
 -   [ ] 以oostyle重新设计announcement
+-   [ ] 迁移到poetry
+-   [ ] 配置isort、black、autoflake
+-   [ ] 再次尝试aio style command
 
 ## UI
 
