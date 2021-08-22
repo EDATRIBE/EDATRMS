@@ -1,4 +1,3 @@
-import string
 
 import sqlalchemy.sql as sasql
 
@@ -7,7 +6,6 @@ from .common import BaseService
 
 
 class IPTagService(BaseService):
-
     def __init__(self, config, db, cache):
         super().__init__(config, db, cache)
 
@@ -20,12 +18,11 @@ class IPTagService(BaseService):
 
         async with self.db.acquire() as conn:
             result = await conn.execute(
-                self.model.select().where(self.model.c.ip_id==ip_id)
+                self.model.select().where(self.model.c.ip_id == ip_id)
             )
             rows = await result.fetchall()
 
-        return [row['tag_id'] for row in rows]
-
+        return [row["tag_id"] for row in rows]
 
     async def tag_ids_list_by_ip_ids(self, ip_ids):
         valid_ip_ids = [v for v in ip_ids if v is not None]
@@ -37,7 +34,7 @@ class IPTagService(BaseService):
                     self.model.select().where(self.model.c.ip_id.in_(valid_ip_ids))
                 )
                 for row in await result.fetchall():
-                    d[row['ip_id']].append(dict(row)['tag_id'])
+                    d[row["ip_id"]].append(dict(row)["tag_id"])
         else:
             d = {}
 
@@ -46,4 +43,5 @@ class IPTagService(BaseService):
     async def delete_by_ip_id(self, ip_id):
         async with self.db.acquire() as conn:
             await conn.execute(
-                sasql.delete(self.model).where(self.model.c.ip_id == ip_id))
+                sasql.delete(self.model).where(self.model.c.ip_id == ip_id)
+            )

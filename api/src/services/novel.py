@@ -1,12 +1,11 @@
 from ..models import NovelModel
-from .common import BaseService,SearchKeywordInNameMixin
+from .common import BaseService, SearchKeywordInNameMixin
 
 
-class NovelService(BaseService,SearchKeywordInNameMixin):
-
+class NovelService(BaseService, SearchKeywordInNameMixin):
     def __init__(self, config, db, cache):
         super().__init__(config, db, cache)
-        
+
     def _init_model(self):
         self.model = NovelModel
 
@@ -16,13 +15,13 @@ class NovelService(BaseService,SearchKeywordInNameMixin):
 
         async with self.db.acquire() as conn:
             result = await conn.execute(
-                self.model.select().where(self.model.c.ip_id==ip_id)
+                self.model.select().where(self.model.c.ip_id == ip_id)
             )
             rows = await result.fetchall()
 
         return [dict(row) for row in rows]
 
-    async def infos_list_by_ip_ids(self,ip_ids):
+    async def infos_list_by_ip_ids(self, ip_ids):
         valid_ip_ids = [v for v in ip_ids if v is not None]
 
         if valid_ip_ids:
@@ -32,7 +31,7 @@ class NovelService(BaseService,SearchKeywordInNameMixin):
                     self.model.select().where(self.model.c.ip_id.in_(valid_ip_ids))
                 )
                 for row in await result.fetchall():
-                    d[row['ip_id']].append(dict(row))
+                    d[row["ip_id"]].append(dict(row))
         else:
             d = {}
 

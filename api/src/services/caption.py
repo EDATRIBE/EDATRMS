@@ -1,11 +1,9 @@
-import string
 
 from ..models import CaptionModel
 from .common import BaseService
 
 
 class CaptionService(BaseService):
-
     def __init__(self, config, db, cache):
         super().__init__(config, db, cache)
 
@@ -18,23 +16,25 @@ class CaptionService(BaseService):
 
         async with self.db.acquire() as conn:
             result = await conn.execute(
-                self.model.select().where(self.model.c.animation_id==animation_id)
+                self.model.select().where(self.model.c.animation_id == animation_id)
             )
             rows = await result.fetchall()
 
         return [dict(row) for row in rows]
 
-    async def infos_list_by_animations_ids(self,animation_ids):
+    async def infos_list_by_animations_ids(self, animation_ids):
         valid_animation_ids = [v for v in animation_ids if v is not None]
 
         if valid_animation_ids:
             d = {valid_animation_id: [] for valid_animation_id in valid_animation_ids}
             async with self.db.acquire() as conn:
                 result = await conn.execute(
-                    self.model.select().where(self.model.c.animation_id.in_(valid_animation_ids))
+                    self.model.select().where(
+                        self.model.c.animation_id.in_(valid_animation_ids)
+                    )
                 )
                 for row in await result.fetchall():
-                    d[row['animation_id']].append(dict(row))
+                    d[row["animation_id"]].append(dict(row))
         else:
             d = {}
 

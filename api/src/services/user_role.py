@@ -1,4 +1,3 @@
-import string
 
 import sqlalchemy.sql as sasql
 
@@ -7,14 +6,13 @@ from .common import BaseService
 
 
 class UserRoleService(BaseService):
-
     def __init__(self, config, db, cache):
         super().__init__(config, db, cache)
-        
+
     def _init_model(self):
         self.model = UserRoleModel
 
-    async def delete_by_user_id_and_role_id(self,*,user_id=None,role_id=None):
+    async def delete_by_user_id_and_role_id(self, *, user_id=None, role_id=None):
         async with self.db.acquire() as conn:
             delete_sm = sasql.delete(self.model)
 
@@ -33,11 +31,11 @@ class UserRoleService(BaseService):
 
         async with self.db.acquire() as conn:
             result = await conn.execute(
-                self.model.select().where(self.model.c.user_id==user_id)
+                self.model.select().where(self.model.c.user_id == user_id)
             )
             rows = await result.fetchall()
 
-        return [row['role_id'] for row in rows]
+        return [row["role_id"] for row in rows]
 
     async def role_ids_list_by_user_ids(self, user_ids):
         valid_user_ids = [v for v in user_ids if v is not None]
@@ -49,9 +47,8 @@ class UserRoleService(BaseService):
                     self.model.select().where(self.model.c.user_id.in_(valid_user_ids))
                 )
                 for row in await result.fetchall():
-                    d[row['user_id']].append(dict(row)['role_id'])
+                    d[row["user_id"]].append(dict(row)["role_id"])
         else:
             d = {}
 
         return [d.get(user_id) for user_id in user_ids]
-

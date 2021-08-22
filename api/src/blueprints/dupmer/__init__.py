@@ -4,8 +4,8 @@ from .caption_user import *
 from .ip import *
 from .ip_tag import *
 from .novel import *
+from .role import *
 from .semi_static import *
 from .tag import *
 from .user import *
 from .video import *
-from .role import *

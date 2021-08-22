@@ -24,19 +24,12 @@ class Manage:
         await close_db(self.db)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.config.dictConfig(get_log_config(config))
 
     manage = Manage(config)
-    asyncio.get_event_loop().run_until_complete(
-        manage.init()
-    )
+    asyncio.get_event_loop().run_until_complete(manage.init())
 
-    fire.Fire({
-        'model': manage.model,
-        'user': manage.user
-    })
+    fire.Fire({"model": manage.model, "user": manage.user})
 
-    asyncio.get_event_loop().run_until_complete(
-        manage.destruct()
-    )
+    asyncio.get_event_loop().run_until_complete(manage.destruct())

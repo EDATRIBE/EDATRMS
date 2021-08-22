@@ -1,5 +1,6 @@
-import sqlalchemy.sql as sasql
 import sqlalchemy as sa
+import sqlalchemy.sql as sasql
+
 
 class ServiceException(Exception):
     def __init__(self, message, code=None):
@@ -33,16 +34,14 @@ class BaseService:
 
         async with self.db.acquire() as conn:
             await conn.execute(
-                sasql.update(self.model).where(self.model.c.id == id).
-                    values(**data)
+                sasql.update(self.model).where(self.model.c.id == id).values(**data)
             )
 
         return await self.info(id)
 
     async def delete(self, id):
         async with self.db.acquire() as conn:
-            await conn.execute(
-                sasql.delete(self.model).where(self.model.c.id == id))
+            await conn.execute(sasql.delete(self.model).where(self.model.c.id == id))
 
     async def info(self, id):
         if id is None:
@@ -64,7 +63,7 @@ class BaseService:
                 result = await conn.execute(
                     self.model.select().where(self.model.c.id.in_(valid_ids))
                 )
-                d = {v['id']: dict(v) for v in await result.fetchall()}
+                d = {v["id"]: dict(v) for v in await result.fetchall()}
         else:
             d = {}
 
@@ -72,8 +71,7 @@ class BaseService:
 
     async def list_(self, *, limit=None, offset=None):
         select_sm = self.model.select()
-        count_sm = sasql.select([sasql.func.count()]). \
-            select_from(self.model)
+        count_sm = sasql.select([sasql.func.count()]).select_from(self.model)
         # select_sm = select_sm.order_by(self.model.c.id.desc())
 
         if limit is not None:
@@ -90,10 +88,11 @@ class BaseService:
 
         return (rows, total)
 
-class SearchKeywordInNameMixin(object):
-    model:sa.Table
 
-    async def search_keyword_in_names(self,keyword):
+class SearchKeywordInNameMixin(object):
+    model: sa.Table
+
+    async def search_keyword_in_names(self, keyword):
         if not keyword:
             return []
 
@@ -101,12 +100,13 @@ class SearchKeywordInNameMixin(object):
             result = await conn.execute(
                 self.model.select().where(
                     sasql.or_(
-                        self.model.c.name.like('%'+keyword+'%'),
+                        self.model.c.name.like("%" + keyword + "%"),
                         sasql.func.json_search(
                             sasql.func.upper(self.model.c.reserved_names),
-                            'all',
-                            sasql.func.upper('%'+keyword+'%')
-                        ) != None
+                            "all",
+                            sasql.func.upper("%" + keyword + "%"),
+                        )
+                        != None,
                     )
                 )
             )

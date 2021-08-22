@@ -4,9 +4,10 @@ from .datetime import as_local
 
 
 class LocalDateTime(satypes.TypeDecorator):
-    '''
+    """
     本地化的SQLAlchemy时间类型
-    '''
+    """
+
     impl = satypes.DateTime
 
     def process_bind_param(self, value, dialect):
